@@ -1,19 +1,19 @@
 ﻿export default [
   {
     path: '/welcome',
-    name: 'welcome',
+    name: '欢迎',
     icon: 'smile',
     component: './Welcome',
   },
   {
     path: '/admin',
-    name: 'admin',
+    name: '管理',
     icon: 'crown',
-    access: 'canAdmin',
+    // access: 'canAdmin',
     routes: [
       {
         path: '/admin/sub-page',
-        name: 'sub-page',
+        name: '你好',
         icon: 'smile',
         component: './Welcome',
       },
