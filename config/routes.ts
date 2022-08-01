@@ -48,6 +48,12 @@
         icon: 'CodeOutlined',
       },
       {
+        name: '错题本',
+        path: '/account/mistakes',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
+      {
         component: './404',
       },
     ],
