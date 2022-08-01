@@ -1,10 +1,7 @@
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
 import { AutoComplete, Input } from 'antd';
-import type { AutoCompleteProps } from 'antd/es/auto-complete';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/es/hooks/useMergedState';
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './index.less';
 
 export type HeaderSearchProps = {
@@ -13,17 +10,16 @@ export type HeaderSearchProps = {
   onVisibleChange?: (b: boolean) => void;
   className?: string;
   placeholder?: string;
-  options: AutoCompleteProps['options'];
   defaultVisible?: boolean;
   visible?: boolean;
-  defaultValue?: string;
+
   value?: string;
 };
 
 const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
   const {
     className,
-    defaultValue,
+
     onVisibleChange,
     placeholder,
     visible,
@@ -31,66 +27,37 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     ...restProps
   } = props;
 
-  const inputRef = useRef<InputRef | null>(null);
+  const options = [
+    { label: <a href='https://umijs.org/zh/guide/umi-ui.html'>umi ui</a>, value: 'umi ui' },
+    {
+      label: <a href='next.ant.design'>Ant Design</a>,
+      value: 'Ant Design',
+    },
+  ];
 
-  const [value, setValue] = useMergedState<string | undefined>(defaultValue, {
+  const [value, setValue] = useMergedState<string | undefined>('', {
     value: props.value,
     onChange: props.onChange,
   });
 
-  const [searchMode, setSearchMode] = useMergedState(defaultVisible ?? false, {
-    value: props.visible,
-    onChange: onVisibleChange,
-  });
-
-  const inputClass = classNames(styles.input, {
-    [styles.show]: searchMode,
-  });
   return (
-    <div
-      className={classNames(className, styles.headerSearch)}
-      onClick={() => {
-        setSearchMode(true);
-        if (searchMode && inputRef.current) {
-          inputRef.current.focus();
-        }
-      }}
-      onTransitionEnd={({ propertyName }) => {
-        if (propertyName === 'width' && !searchMode) {
-          if (onVisibleChange) {
-            onVisibleChange(searchMode);
-          }
-        }
-      }}
-    >
-      <SearchOutlined
-        key="Icon"
-        style={{
-          cursor: 'pointer',
-        }}
-      />
+    <div className={classNames(className, styles.headerSearch)}>
       <AutoComplete
-        key="AutoComplete"
-        className={inputClass}
         value={value}
-        options={restProps.options}
+        options={options}
         onChange={(completeValue) => setValue(completeValue)}
+        style={{ width: '100%' }}
       >
-        <Input
-          size="small"
-          ref={inputRef}
-          defaultValue={defaultValue}
-          aria-label={placeholder}
-          placeholder={placeholder}
+        <Input.Search
+          size='large'
+          placeholder={'题目搜索'}
+          enterButton
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               if (restProps.onSearch) {
                 restProps.onSearch(value);
               }
             }
-          }}
-          onBlur={() => {
-            setSearchMode(false);
           }}
         />
       </AutoComplete>

@@ -34,7 +34,6 @@ export type GlobalHeaderRightProps = {
 // };
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const onMenuClick = useCallback(
@@ -49,28 +48,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     },
     [setInitialState],
   );
-
-  // const loading = (
-  //   <span className={`${styles.action} ${styles.account}`}>
-  //     <Spin
-  //       size='small'
-  //       style={{
-  //         marginLeft: 8,
-  //         marginRight: 8,
-  //       }}
-  //     />
-  //   </span>
-  // );
-
-  // if (!initialState) {
-  //   return loading;
-  // }
-
-  // const { currentUser } = initialState;
-
-  // if (!currentUser || !currentUser.name) {
-  //   return loading;
-  // }
 
   const menuItems: ItemType[] = [
     ...(menu
