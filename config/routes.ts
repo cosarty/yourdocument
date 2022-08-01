@@ -2,6 +2,7 @@
   {
     path: '/user',
     layout: false,
+    name: 'das',
     routes: [
       {
         name: 'login',
@@ -23,7 +24,7 @@
     path: '/admin',
     name: 'admin',
     icon: 'crown',
-    access: 'canAdmin',
+    // access: 'canAdmin',
     routes: [
       {
         path: '/admin/sub-page',
