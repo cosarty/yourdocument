@@ -7,7 +7,7 @@ const Settings: LayoutSettings & {
   navTheme: 'light',
   // 拂晓蓝
   primaryColor: '#1890ff',
-  layout: 'top',
+  layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
@@ -16,6 +16,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'shitijun.png',
   iconfontUrl: '',
+  splitMenus: true,
 };
 
 export default Settings;
