@@ -2,8 +2,9 @@
   "service": "qq",
   "port": 465,
   "secureConnection": true,
+  "host": "smtp.qq.com",
   "auth": {
     "user": "1398675906@qq.com",
-    "pass": "lebqcyszauhxfdje"
+    "pass": "pdxjbyvjhwxpfiji"
   }
 }

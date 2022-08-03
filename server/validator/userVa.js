@@ -76,18 +76,16 @@ exports.loginValid = [
   ]),
 ];
 
-exports.sendMailValid = [
-  validator([
-    body('email')
-      .notEmpty()
-      .withMessage('邮箱不能为空！！')
-      .bail()
-      .isEmail()
-      .withMessage('请输入合法邮箱')
-      .bail()
-      .custom(async (email) => {
-        const user = await User.findOne({ email });
-        if (user) return Promise.reject('用户已注册!!!');
-      }),
-  ]),
-];
+exports.sendMailValid = validator([
+  body('email')
+    .notEmpty()
+    .withMessage('邮箱不能为空！！')
+    .bail()
+    .isEmail()
+    .withMessage('请输入合法邮箱')
+    .bail()
+    .custom(async (email) => {
+      const user = await User.findOne({ email });
+      if (user) return Promise.reject('用户已注册!!!');
+    }),
+]);

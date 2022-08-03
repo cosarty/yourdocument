@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const transporter = require('./transporter.json');
+const transporter_config = require('./transporter.json');
 /**
  * 发送邮件  sendEmail
  *
@@ -25,7 +25,8 @@ const sendMail = async (data) => {
   }
 
   let mailOptions = {
-    from: '试题君', // 发送方
+    from: '"test" <1398675906@qq.com>',
+
     to, // 收件人
     subject, // 标题
     text: content, // 发送text或者html格式
@@ -33,7 +34,9 @@ const sendMail = async (data) => {
   };
 
   const transporter = nodemailer.createTransport(transporter_config);
+  console.log('mailOptions: ', mailOptions);
   const res = await transporter.sendMail(mailOptions);
+
   return !!res;
 };
 

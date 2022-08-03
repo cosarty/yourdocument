@@ -1,10 +1,16 @@
 const express = require('express');
 
 // 获取控制层
-const { login, register, getCurrenrUser, updateCurrenrUser } = require('../controller/user');
+const {
+  login,
+  register,
+  getCurrenrUser,
+  updateCurrenrUser,
+  sendMail,
+} = require('../controller/user');
 
 // 验证模块
-const { loginValid, registerValid } = require('../validator/userVa');
+const { loginValid, registerValid, sendMailValid } = require('../validator/userVa');
 
 // 权限拦截
 const auth = require('../middleware/authorization');

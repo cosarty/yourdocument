@@ -12,7 +12,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// app.use(express.json());
 app.use(express.urlencoded());
 // 配置日志
 app.use(morgan('dev'));
@@ -27,7 +27,7 @@ app.all('*', (req, res, next) => {
   // google需要配置，否则报错cors error
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   // 允许的地址 http://127.0.0.1:9000 这样的格式
-  res.setHeader('Access-Control-Allow-Origin', req.get('Origin'));
+  res.setHeader('Access-Control-Allow-Origin', '*');
   // 允许跨域请求的方法
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
   // 允许跨域请求 header 携带哪些东西

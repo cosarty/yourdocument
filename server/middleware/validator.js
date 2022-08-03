@@ -15,6 +15,7 @@ const validate = function (validations) {
     if (errors.isEmpty()) {
       return next();
     }
+
     res.status(400).json({ code: 400, errors: errors.mapped(), data: null });
   };
 };
