@@ -7,6 +7,7 @@ const { body } = require('express-validator');
 const md5 = require('../util/md5');
 // 获取模型
 const User = require('../model/user');
+const AuthCode = require('../model/authCode ');
 
 // 注册验证
 exports.registerValid = validator([
@@ -35,12 +36,37 @@ exports.registerValid = validator([
         return Promise.reject('邮箱已存在!!!');
       }
     }),
+
   body('gender')
     .exists()
     .withMessage('请输入性别')
     .bail()
     .isIn([0, 1])
     .withMessage('性别不合法！！'),
+  body('captcha')
+    .exists()
+    .withMessage('请输入验证码！')
+    .bail()
+    .isLength({ max: 6, min: 6 })
+    .withMessage('验证码不合法！')
+    .bail()
+    .custom(async (captcha, { req }) => {
+      const { email } = req.body;
+      // 判断是否有验证码 大于现在日期的
+      const codeInfo = await AuthCode.find({ email })
+        .where('expireTime')
+        .gte(new Date())
+        .sort({ expireTime: -1 })
+        .limit(1);
+
+      if (codeInfo.length === 0) {
+        return Promise.reject('验证码不存在或邮箱错误!!!');
+      }
+
+      if (codeInfo.expireTime && codeInfo.expireTime !== captcha) {
+        return Promise.reject('验证码错误!!!');
+      }
+    }),
 ]);
 
 // 登录

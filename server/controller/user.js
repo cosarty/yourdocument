@@ -33,7 +33,7 @@ exports.register = async (req, res, next) => {
 
     // 发送成功响应
 
-    res.status(201).json({ user });
+    res.status(201).json({ code: 200, message: '成功！', data: { user } });
   } catch (err) {
     next(err);
   }
@@ -55,19 +55,22 @@ exports.updateCurrenrUser = async (req, res, next) => {
   }
 };
 
+// 发送验证码的逻辑
 exports.sendMail = async (req, res, next) => {
   const { email } = req.body;
   let captcha;
+
   // 查找验证码是否存在
   while (true) {
     captcha = randomString({ length: 6 }).toLowerCase();
     const codeInfo = await AuthCode.findOne({ captcha });
+
     // 如果验证码不存在或者有有效期过了就跳出去
     if (!codeInfo || codeInfo.expireTime < new Date().getTime()) break;
   }
 
   const d = await senMail({
-    to: '414359193@qq.com',
+    to: email,
     subject: '试题君',
     content: '欢迎注册试题君。验证码：' + captcha,
   });
@@ -77,11 +80,10 @@ exports.sendMail = async (req, res, next) => {
     return;
   }
   try {
-    await new AuthCode({ expireTime: new Date(), captcha, email });
-    res.status(200).json({ code: 200, message: '邮件发送成功！', data: null });
-  } catch {
-    console.log('保存失败');
+    const authcode = new AuthCode({ expireTime: new Date(), captcha, email });
+    await authcode.save();
+    res.status(200).json({ code: 200, message: '邮件发送成功！', data: { captcha } });
+  } catch (err) {
+    console.log(err);
   }
-
-  //
 };

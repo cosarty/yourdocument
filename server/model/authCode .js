@@ -4,12 +4,11 @@ const baseModel = require('./baseModel');
 const authCodeSchema = new mongose.Schema({
   expireTime: {
     type: Date,
-    default: Date.now,
     get(val) {
       return new Date(val).getTime();
     },
     set(val) {
-      return new Date().setTime(val * 5 * 60 * 1000); // 验证码的有效时间为五分钟
+      return new Date(new Date(val).getTime() + 5 * 60 * 1000); // 验证码的有效时间为五分钟
     },
   },
   captcha: {
