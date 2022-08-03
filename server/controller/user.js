@@ -4,6 +4,7 @@ const { createToken } = require('../util/jwt');
 const randomString = require('random-string');
 const senMail = require('../common/sendMail');
 
+// 用户登录
 exports.login = async (req, res, next) => {
   try {
     const user = req.user.toJSON();
@@ -11,7 +12,9 @@ exports.login = async (req, res, next) => {
     const token = await createToken({ userId: user._id });
 
     res.status(200).json({
-      token,
+      code: 200,
+      message: '成功',
+      data: { token },
     });
   } catch (err) {
     next(err);
