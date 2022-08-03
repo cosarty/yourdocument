@@ -34,7 +34,7 @@ data:{
   //   return req.query.type === 'user' ? ObjectId(value) : Number(value);
   // }),
 17、default('foo')
-18、replace（
+18、replace()
 
 
 equals()

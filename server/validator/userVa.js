@@ -3,16 +3,16 @@
  */
 
 const validator = require('../middleware/validator');
-const { body, check } = require('express-validator');
+const { body } = require('express-validator');
 const md5 = require('../util/md5');
 // 获取模型
 const User = require('../model/user');
 
 // 注册验证
 exports.registerValid = validator([
-  body('username')
+  body('nickname')
     .exists()
-    .withMessage('请输入账号！！！')
+    .withMessage('请输入昵称!')
     .bail()
     .notEmpty()
     .withMessage('用户名不能为空!'),
@@ -21,14 +21,13 @@ exports.registerValid = validator([
     .withMessage('用户密码不能为空')
     .bail()
     .isLength({ min: 6 })
-    .withMessage('密码长度小于6')
-    .bail(),
-  check('email')
+    .withMessage('密码长度小于6'),
+  body('email')
     .notEmpty()
     .withMessage('邮箱不能为空')
     .bail()
     .isEmail()
-    .withMessage('Not an email')
+    .withMessage('请输入合法邮箱')
     .bail()
     .custom(async (email) => {
       const user = await User.findOne({ email });
@@ -36,6 +35,12 @@ exports.registerValid = validator([
         return Promise.reject('邮箱已存在!!!');
       }
     }),
+  body('gender')
+    .exists()
+    .withMessage('请输入性别')
+    .bail()
+    .isIn([0, 1])
+    .withMessage('性别不合法！！'),
 ]);
 
 // 登录
@@ -68,5 +73,21 @@ exports.loginValid = [
         return Promise.reject('密码错误!!!');
       }
     }),
+  ]),
+];
+
+exports.sendMailValid = [
+  validator([
+    body('email')
+      .notEmpty()
+      .withMessage('邮箱不能为空！！')
+      .bail()
+      .isEmail()
+      .withMessage('请输入合法邮箱')
+      .bail()
+      .custom(async (email) => {
+        const user = await User.findOne({ email });
+        if (user) return Promise.reject('用户已注册!!!');
+      }),
   ]),
 ];

@@ -2,7 +2,7 @@ const userSchema = {
   avtarUrl: String, // 头像
   favourQuestionIds: [ObjectId], // 收藏id
   gender: String, //性别
-  isDelete: Boolean, // 是否封号
+  isBan: Boolean, // 是否封号
   nickName: String, //昵称
   _createTime: String,
   _updateTime: String,
@@ -20,7 +20,12 @@ const replySchema = {
   _updateTime: String,
 };
 
-const NotesSchema = {};
+// 短信验证码
+const authCodeSchema = {
+  expireTime: Date, // 过期时间
+  email: String,
+  captcha: String, // 验证码
+};
 
 // 题目信息
 // 组织信息

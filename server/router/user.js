@@ -4,7 +4,7 @@ const express = require('express');
 const { login, register, getCurrenrUser, updateCurrenrUser } = require('../controller/user');
 
 // 验证模块
-const { loginValid, registerValid } = require('../validator/user');
+const { loginValid, registerValid } = require('../validator/userVa');
 
 // 权限拦截
 const auth = require('../middleware/authorization');
@@ -13,6 +13,9 @@ const router = express.Router();
 
 // 用户登录
 router.post('/login', loginValid, login);
+
+// 发送邮件
+router.post('/sendmail', sendMailValid, sendMail);
 
 // 用户注册
 router.post('/sign', registerValid, register);

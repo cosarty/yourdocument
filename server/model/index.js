@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 获取配置
-mongoose.connect(require('config').get('dbUrl'));
+mongoose.connect(require('config').get('dbUrl'), { keepAlive: 12 });
 
 var db = mongoose.connection;
 
