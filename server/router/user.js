@@ -1,12 +1,10 @@
 const express = require('express');
-// 数据校验 body 是验证请求体里面的参数
-// const { check, body, validationResult } = require('express-validator')
 
 // 获取控制层
-const userCtrl = require('../controller/user');
+const { login, register, getCurrenrUser, updateCurrenrUser } = require('../controller/user');
 
 // 验证模块
-const userValidator = require('../validator/user');
+const { loginValid, registerValid } = require('../validator/user');
 
 // 权限拦截
 const auth = require('../middleware/authorization');
@@ -14,14 +12,14 @@ const auth = require('../middleware/authorization');
 const router = express.Router();
 
 // 用户登录
-router.post('/login', userValidator.login, userCtrl.login);
+router.post('/login', loginValid, login);
 
 // 用户注册
-router.post('/sign', userValidator.register, userCtrl.register);
+router.post('/sign', registerValid, register);
 // 获取当前登录用户
-router.get('/', auth, userCtrl.getCurrenrUser);
+router.get('/', auth, getCurrenrUser);
 
 // 更新当前用户
-router.put('/', auth, userCtrl.updateCurrenrUser);
+router.put('/', auth, updateCurrenrUser);
 
 module.exports = router;

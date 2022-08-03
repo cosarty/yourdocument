@@ -9,7 +9,7 @@ const md5 = require('../util/md5');
 const User = require('../model/user');
 
 // 注册验证
-exports.register = validator([
+exports.registerValid = validator([
   body('username')
     .exists()
     .withMessage('请输入账号！！！')
@@ -28,10 +28,7 @@ exports.register = validator([
     .withMessage('邮箱不能为空')
     .bail()
     .isEmail()
-    .withMessage({
-      message: 'Not an email',
-      errorCode: 1,
-    })
+    .withMessage('Not an email')
     .bail()
     .custom(async (email) => {
       const user = await User.findOne({ email });
@@ -42,7 +39,7 @@ exports.register = validator([
 ]);
 
 // 登录
-exports.login = [
+exports.loginValid = [
   validator([
     body('email').notEmpty().withMessage('邮箱不能为空！！'),
     body('password').notEmpty().withMessage('密码不能为空'),

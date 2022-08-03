@@ -1,4 +1,3 @@
-const article = require('../model/article');
 const Article = require('../model/article');
 const User = require('../model/user');
 

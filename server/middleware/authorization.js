@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 
   token = token ? token.split('Bearer ')[1] : null;
 
-  if (!token) res.status(401).send({ msg: '请先登录!!' });
+  if (!token) res.status(401).send({ code: 401, messgae: '请先登录!!', data: null });
   try {
     const data = await verifyToken(token);
     req.userId = data.userId;

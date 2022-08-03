@@ -1,10 +1,11 @@
 const User = require('../model/user');
 const { createToken } = require('../util/jwt');
+
 exports.login = async (req, res, next) => {
   try {
     const user = req.user.toJSON();
     delete user.password;
-    const token = await createToken({ userId: user._id }, '1h');
+    const token = await createToken({ userId: user._id });
 
     res.status(200).json({
       token,

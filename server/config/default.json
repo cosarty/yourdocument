@@ -1,4 +1,4 @@
 {
-  "dbUrl": "mongodb://localhost/realworld",
+  "dbUrl": "mongodb://localhost/shitijun",
   "jwtSecret": "8fbff7aa-b69d-48e0-963b-6eaea1530211"
 }
