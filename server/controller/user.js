@@ -1,5 +1,8 @@
 const User = require('../model/user');
+const AuthCode = require('../model/authCode ');
 const { createToken } = require('../util/jwt');
+const randomString = require('random-string');
+const senMail = require('../common/sendMail');
 
 exports.login = async (req, res, next) => {
   try {
@@ -50,4 +53,32 @@ exports.updateCurrenrUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.sendMail = async (req) => {
+  const { email } = req.body;
+  let captcha;
+  // 查找验证码是否存在
+  while (true) {
+    captcha = randomString({ length }).toLowerCase();
+    const codeInfo = await AuthCode.findOne({ captcha });
+    // 如果验证码不存在或者有有效期过了就跳出去
+    if (!codeInfo || codeInfo.expireTime < new Date().getTime()) break;
+  }
+
+  const res = await senMail({
+    to: '414359193@qq.com',
+    subject: '试题君',
+    text: '欢迎注册试题君。验证码：' + captcha,
+  });
+
+  if (!res) next({ code: 401, message: '邮件发送失败', data: null });
+  try {
+    await new AuthCode({ expireTime: new Date(), captcha, email });
+    next({ code: 200, message: '邮件发送成功！', data: null });
+  } catch {
+    console.log('保存失败');
+  }
+
+  //
 };

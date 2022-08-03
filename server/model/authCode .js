@@ -9,7 +9,7 @@ const authCodeSchema = new mongose.Schema({
       return new Date(val).getTime();
     },
     set(val) {
-      return new Date().setTime(Date.now * 5 * 60 * 1000); // 验证码的有效时间为五分钟
+      return new Date().setTime(val * 5 * 60 * 1000); // 验证码的有效时间为五分钟
     },
   },
   captcha: {

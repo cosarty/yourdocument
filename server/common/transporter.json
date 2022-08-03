@@ -1,0 +1,9 @@
+{
+  "service": "qq",
+  "port": 465,
+  "secureConnection": true,
+  "auth": {
+    "user": "1398675906@qq.com",
+    "pass": "lebqcyszauhxfdje"
+  }
+}
