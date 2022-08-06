@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 
-exports.createToken = async (data, expiresIn = '1h') => {
+// 默认30天刷新
+exports.createToken = async (data, expiresIn = 30 * 24 * 60 * 60 * 1000) => {
   const privateKey = fs.readFileSync(path.join(__dirname, '../keys/rsa_private_key.pem'));
   const token = await jwt.sign(data, privateKey, {
     algorithm: 'RS256',
