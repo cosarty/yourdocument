@@ -13,9 +13,9 @@ const userSchema = {
 
 const replySchema = {
   uid: ObjectId, //评论用户id
-  content: '', // 评论内容
-  reviewStatus: '', // 已读状态
-  readTime: '', // 阅读时间
+  content: String, // 评论内容
+  reviewStatus: String, // 已读状态
+  readTime: String, // 阅读时间
   _createTime: String,
   _updateTime: String,
 };

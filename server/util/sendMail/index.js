@@ -25,7 +25,7 @@ const sendMail = async (data) => {
   }
 
   let mailOptions = {
-    from: '"test" <1398675906@qq.com>',
+    from: '"试题君" <1398675906@qq.com>',
 
     to, // 收件人
     subject, // 标题

@@ -86,6 +86,13 @@
         redirect: '/manage/question',
       },
       {
+        name: '题目管理',
+        path: '/manage/question',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
+
+      {
         name: '人员管理',
         path: '/manage/users',
         component: './Welcome',
@@ -97,12 +104,7 @@
         component: './Welcome',
         icon: 'CodeOutlined',
       },
-      {
-        name: '题目管理',
-        path: '/manage/question',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
+
       {
         name: '审核',
         path: '/manage/checkquestion',
