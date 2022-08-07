@@ -23,7 +23,7 @@ const addTagsValidator = [
       .withMessage('tags必须是一个数组!!!')
       .bail()
       .notEmpty()
-      .withMessage('tag不能含有空字符串!!!'),
+      .withMessage('tag不能含有空字符串或为空!!!'),
   ]),
   validator([
     body('tags').custom(async (tags, { req }) => {

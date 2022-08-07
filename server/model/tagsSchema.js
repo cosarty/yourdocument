@@ -13,6 +13,7 @@ const tagsSchema = new mongose.Schema(
       createdAt: false,
       updatedAt: 'update_time',
     },
+    versionKey: false,
   },
 );
 
