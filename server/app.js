@@ -12,7 +12,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded());
 // 配置日志
 app.use(morgan('dev'));
