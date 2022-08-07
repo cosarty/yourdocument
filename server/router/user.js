@@ -14,9 +14,9 @@ router.post('/sendmail', require('../controller/user/register/sendMail'));
 // 用户注册
 router.post('/sign', require('../controller/user/register/register'));
 // 获取当前登录用户
-router.get('/', auth, require('../controller/user/login/getCurrent'));
+router.get('/getCurrent', auth(), require('../controller/user/login/getCurrentUser'));
 
-// // 更新当前用户
-// router.put('/', auth, updateCurrenrUser);
+// 更新当前用户
+router.put('/updateCurrent', auth(), require('../controller/user/login/updateCurrenrUser'));
 
 module.exports = router;

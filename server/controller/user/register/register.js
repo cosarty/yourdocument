@@ -1,8 +1,8 @@
-const User = require('../../../model/user');
+const User = require('../../../model/userSchema');
 
 const validator = require('../../../middleware/validator');
 const { body } = require('express-validator');
-const AuthCode = require('../../../model/authCode ');
+const AuthCode = require('../../../model/authCodeSchema');
 
 // 注册验证
 const registerValid = // 注册验证
@@ -61,6 +61,7 @@ const registerValid = // 注册验证
           return Promise.reject('验证码错误!!!');
         }
       }),
+    // body('auth').isIn(['user', 'admin', 'super']).withMessage('请输入合法权限！！').bail(),
   ]));
 
 const register = async (req, res, next) => {

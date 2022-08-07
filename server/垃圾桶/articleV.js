@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const validate = require('../middleware/validator');
-const article = require('../model/article');
-const Article = require('../model/article');
+const article = require('./articleModel');
+const Article = require('./articleModel');
 
 exports.createArticle = validate([
   body('title').notEmpty().withMessage('文章标题不能为空'),

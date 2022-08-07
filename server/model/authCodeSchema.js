@@ -1,5 +1,4 @@
 const mongose = require('mongoose');
-const baseModel = require('./baseModel');
 
 const authCodeSchema = new mongose.Schema({
   expireTime: {

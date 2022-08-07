@@ -1,8 +1,8 @@
 const validator = require('../../../middleware/validator');
 const { body } = require('express-validator');
 // 获取模型
-const User = require('../../../model/user');
-const AuthCode = require('../../../model/authCode ');
+const User = require('../../../model/userSchema');
+const AuthCode = require('../../../model/authCodeSchema');
 
 const randomString = require('random-string');
 const senMail = require('../../../util/sendMail');

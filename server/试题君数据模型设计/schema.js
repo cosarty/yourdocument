@@ -9,6 +9,7 @@ const userSchema = {
   profile: String, // 个人简介
   email: String, //邮箱
   organize: [], // 加入的组织
+  auth: String, //  user admin super
 };
 // 注册要填写 邮箱  性别 昵称  密码
 
@@ -42,6 +43,7 @@ const authCodeSchema = {
 
 // 题目信息
 const questionsSchema = {
+  difficulty: Number, // 难度
   title: String,
   commentNum: Number, //  回答数
   detail: String, // 题目详情
@@ -93,7 +95,10 @@ const paperSchema = {
 };
 
 // 分类信息
-const tagsSchema = {};
+const tagsSchema = {
+  name: String,
+  tags: [String], // 标签
+};
 
 // 消息信息
 const messageSchema = {

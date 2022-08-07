@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const baseModel = require('./baseModel');
 
 const md5 = require('../util/md5');
 
@@ -18,7 +17,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       set: (value) => md5(value),
       // 查询的时候不输出password
-      select: false,
+      // select: false,
     },
     gender: {
       type: Number,
@@ -36,9 +35,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    ...baseModel,
+    organize: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Organize' }], // 加入的组织
+    auth: {
+      //  user admin super
+      type: String,
+      default: 'user',
+      required: true,
+    },
+    create_time: { type: Date, default: Date.now },
   },
-  { timestamps: true },
+  {
+    timestamps: {
+      createdAt: false,
+      updatedAt: 'update_time',
+    },
+  },
 );
 
 module.exports = mongoose.model('User', userSchema);

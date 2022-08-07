@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const baseModel = require('./baseModel');
 
 const articleSchema = new mongoose.Schema({
   title: {
@@ -28,7 +27,6 @@ const articleSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  ...baseModel,
 });
 
 module.exports = mongoose.model('Article', articleSchema);

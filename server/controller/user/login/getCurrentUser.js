@@ -1,7 +1,7 @@
 // 获取当前用户
 const getCurrenrUser = async (req, res, next) => {
   try {
-    res.send('我是用户');
+    res.status(200).send({ ...req.user });
   } catch (err) {
     next(err);
   }

@@ -1,5 +1,5 @@
-const Article = require('../model/article');
-const User = require('../model/user');
+const Article = require('./articleModel');
+const User = require('../model/userSchema');
 
 // 获取文章
 exports.getArticle = async (req, res, next) => {
