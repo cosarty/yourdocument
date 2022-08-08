@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-
+const { model, Schema } = require('mongoose');
+const createShcema = require('./util/createShcema');
 const md5 = require('../util/md5');
 
-const userSchema = new mongoose.Schema(
+const userSchema = createShcema(
   {
     nickname: {
       type: String,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    organize: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Organize' }], // 加入的组织
+    organize: [{ type: Schema.Types.ObjectId, ref: 'Organize' }], // 加入的组织
     auth: {
       //  user admin super
       type: String,
@@ -52,4 +52,4 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);

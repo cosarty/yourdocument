@@ -5,6 +5,7 @@ const router = express.Router();
 // 用户路由
 router.use('/user', require('./user'));
 router.use('/tags', require('./tags'));
+router.use('/questions', require('./questions'));
 
 // 404
 // 所有路由定义完之后，最后做404处理 /

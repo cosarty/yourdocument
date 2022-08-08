@@ -1,6 +1,6 @@
-const mongose = require('mongoose');
-
-const authCodeSchema = new mongose.Schema({
+const createShcema = require('./util/createShcema');
+const { model } = require('mongoose');
+const authCodeSchema = createShcema({
   expireTime: {
     type: Date,
     get(val) {
@@ -20,4 +20,4 @@ const authCodeSchema = new mongose.Schema({
   },
 });
 
-module.exports = mongose.model('AuthCode', authCodeSchema);
+module.exports = model('AuthCode', authCodeSchema);

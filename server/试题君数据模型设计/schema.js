@@ -50,6 +50,7 @@ const questionsSchema = {
   favourNum: Number, // 收藏人数
   isDelete: Boolean, // 是否删除
   params: {
+    // 可选项  如果是多选或者单选 才填入
     // 题目选项
     answer: 'A',
     options: {
@@ -63,14 +64,23 @@ const questionsSchema = {
   reviewStatus: Number, //  审核状态 1 2 3
   reviewTime: Date, // 审核时间
   reviewMessage: String, // 审核信息
-  reviewerId: Object.id, // 审核id
   tags: [], // 标签
-  type: Number, //题目类型
+  type: Number, //题目类型 0 1 2 3
   userId: Object.id, // 用户id
   viewNum: Number, // 点击人数
-  // 每一张表都要加
-  _createTime: '2022-08-05T01:52:43.887Z', // 创建时间
-  _updateTime: '2022-08-06T15:53:26.693Z', //  更新时间
+};
+
+// 消息信息
+const messageSchema = {
+  content: String,
+  fromUserId: Object.Id, // 发送者
+  isDelete: Boolean,
+  readTime: Date, // 读取时间
+  status: 1,
+  title: '回复标题',
+  // type: 0,
+  _createTime: '2022-08-03T09:39:08.766Z',
+  _updateTime: '2022-08-03T09:42:58.313Z',
 };
 
 // 组织信息
@@ -78,7 +88,6 @@ const organizeSchema = {};
 
 // 试卷信息
 const paperSchema = {
-  _id: String,
   name: String,
   detail: String,
   questions: String,
@@ -98,19 +107,6 @@ const paperSchema = {
 const tagsSchema = {
   name: String,
   tags: [String], // 标签
-};
-
-// 消息信息
-const messageSchema = {
-  content: String,
-  fromUserId: Object.Id, // 发送者
-  isDelete: Boolean,
-  readTime: Date, // 读取时间
-  status: 1,
-  title: '回复标题',
-  // type: 0,
-  _createTime: '2022-08-03T09:39:08.766Z',
-  _updateTime: '2022-08-03T09:42:58.313Z',
 };
 
 //错题本
