@@ -14,6 +14,7 @@ const createSchema = (fields) =>
         updatedAt: 'update_time',
       },
       versionKey: false,
+      strictPopulate: false,
     },
   );
 
