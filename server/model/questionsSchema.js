@@ -5,14 +5,13 @@ const questionsSchema = createShcema({
     type: Number, // 0 简单 1 中等 2 困难
     default: 0,
   },
-  title: String, // title不能超过80
+  title: { type: String, require: true }, // title不能超过80
   commentNum: {
     type: Number,
     default: 0,
   }, // 评论数
   detail: {
     type: String,
-    require: true,
   },
   favourNum: {
     type: Number,
@@ -30,11 +29,18 @@ const questionsSchema = createShcema({
     options: {
       A: { type: String, require: true },
       B: { type: String, require: true },
-      C: { type: String, require: true },
+      C: { type: String },
       D: { type: String },
       E: { type: String },
       F: { type: String },
       G: { type: String },
+    },
+    reference: {
+      type: String, // 简答题答案
+    },
+    type: {
+      type: Number, //题目类型 0 1 2 3
+      require: true,
     },
     belong: {
       grade: {
