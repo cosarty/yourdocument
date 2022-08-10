@@ -9,4 +9,7 @@ router.post('/addQuestion', auth(), require('../controller/questions/addQuestion
 // 更新题目
 router.put('/updateQuestion/:qutionsId', auth(), require('../controller/questions/updateQuetions'));
 
+// 获取题目
+router.get('/search', auth(), require('../controller/questions/searchQuestions'));
+
 module.exports = router;
