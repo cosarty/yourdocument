@@ -10,6 +10,6 @@ router.post('/addQuestion', auth(), require('../controller/questions/addQuestion
 router.put('/updateQuestion/:qutionsId', auth(), require('../controller/questions/updateQuetions'));
 
 // 获取题目
-router.get('/search', auth(), require('../controller/questions/searchQuestions'));
+router.post('/search', require('../controller/questions/searchQuestions'));
 
 module.exports = router;
