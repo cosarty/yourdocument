@@ -4,6 +4,9 @@ const router = express.Router();
 const auth = require('../middleware/authorization');
 
 // 添加题目
-router.put('/addQuestion', auth(), require('../controller/questions/addQuestion'));
+router.post('/addQuestion', auth(), require('../controller/questions/addQuestion'));
+
+// 更新题目
+router.put('/updateQuestion/:qutionsId', auth(), require('../controller/questions/updateQuetions'));
 
 module.exports = router;
