@@ -19,7 +19,10 @@ const addMessage = async (contexnt, user) => {
     message = await message.populate('toUserId');
 
     // 是否发送邮件
-    if (sendEmail && message.toUserId.email && !message.toUserId.isDelete) {
+    if (
+      (sendEmail && message.toUserId.email && !message.toUserId.isDelete) ||
+      message.toUserId.auth !== 'super'
+    ) {
       // 美化标题
       const mailTitle = cheerio.load(op.title).text().trim();
       await sendMail({

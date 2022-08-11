@@ -47,8 +47,8 @@ const questionsSchema = createShcema({
     grade: {
       type: Number, // 最低分数
     },
+    organize: { type: Schema.Types.ObjectId, ref: 'Organize' }, // 加入的组织
   },
-  organize: { type: Schema.Types.ObjectId, ref: 'Organize', require: true }, // 加入的组织
   reviewStatus: { type: Number, default: 1 }, // 审核状态 1 待审核 2 审核通过  3 驳回
   reviewTime: Date,
   reviewMessage: String, // 审核消息

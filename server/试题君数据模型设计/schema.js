@@ -111,3 +111,9 @@ const tagsSchema = {
 
 //错题本
 const wrongTopic = {};
+
+// 浏览记录
+const historySchame = {
+  userId: ObjectId,
+  quetionsId: ObjectId,
+};

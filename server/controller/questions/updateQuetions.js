@@ -10,9 +10,9 @@ const updateQurstionsValidator = [
     const qutionsId = req.params.qutionsId;
 
     const question = await QuestionsModel.findById(qutionsId);
-    if (!question) return next({ code: 400, message: '文章不存在', data: null });
+    if (!question) return next({ code: 400, message: '题目不存在', data: null });
     // 如果被删除的文章就不能修改
-    if (question.isDelete) return next({ code: 400, message: '文章无效', data: null });
+    if (question.isDelete) return next({ code: 400, message: '无权修改', data: null });
 
     // 普通用户不能修改其他用户的题目  只有管理员可以修改题目
     if (req.user._id !== question.userId.toString() && req.user.auth === 'user')

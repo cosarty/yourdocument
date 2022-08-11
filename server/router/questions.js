@@ -12,7 +12,23 @@ router.put('/updateQuestion/:qutionsId', auth(), require('../controller/question
 // 获取题目
 router.post('/search', require('../controller/questions/searchQuestions'));
 
+// 获取题目详情
+router.get('/get/:qutionsId', require('../controller/questions/getQuestions'));
+
+// 删除题目
+router.delete('/delete', require('../controller/questions/searchQuestions'));
+
 // 获取自己上传的题目
+router.post('/search/origin', require('../controller/questions/searchQuestions'));
+
+// 审核题目
+router.post('/review', require('../controller/questions/searchQuestions'));
+
+// 浏览题目
+router.post('/view', require('../controller/questions/searchQuestions'));
+
+// 收藏题目
+router.post('/favour', require('../controller/questions/searchQuestions'));
 
 // 删除题目 -> 发送消息  1、组织的创建者 2、自己上传的题目 3、管理员
 
