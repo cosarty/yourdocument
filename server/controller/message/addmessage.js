@@ -1,16 +1,16 @@
 const MessageModle = require('../../model/messageSchame');
 const sendMail = require('../../util/sendMail');
-
+const cheerio = require('cheerio');
 /**
  * 发送系统消息（内部调用）
  * @param context   { toUserId, title, content, sendEmail, mailContent }
  * @return {Promise<*|boolean>}
  */
 
-const addMessage = async (contexnt, user) => {
+const addMessage = async (contexnt) => {
   const { sendEmail, mailContent, ...op } = contexnt;
 
-  if (!op.toUserId || !op.title || !op.toUserId) {
+  if (!op.toUserId || !op.title) {
     return false;
   }
 
@@ -20,7 +20,7 @@ const addMessage = async (contexnt, user) => {
 
     // 是否发送邮件
     if (
-      (sendEmail && message.toUserId.email && !message.toUserId.isDelete) ||
+      (sendEmail && message.toUserId.email && !message.toUserId.is_ban) ||
       message.toUserId.auth !== 'super'
     ) {
       // 美化标题
@@ -33,6 +33,7 @@ const addMessage = async (contexnt, user) => {
     }
     return true;
   } catch (error) {
+    console.log('error: ', error);
     return false;
   }
 };

@@ -36,7 +36,7 @@ const searchQuestions = async (req, res, next) => {
   const queryQuestion = () =>
     QuestionsModel.find()
       .populate('userId')
-      .where({ ...queryData, isDelete: false })
+      .where({ ...queryData, reviewStatus: 2, isDelete: false })
       .skip(pageSize || null)
       .limit(pageSize || null);
   // 搜索

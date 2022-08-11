@@ -1,5 +1,5 @@
 const createShcema = require('./util/createShcema');
-const { model } = require('mongoose');
+const { model, Schema } = require('mongoose');
 const messageSchema = createShcema({
   content: { type: String, require: true },
   toUserId: { type: Schema.Types.ObjectId, ref: 'User', require: true },

@@ -14,7 +14,7 @@ module.exports = (auth) => async (req, res, next) => {
   if (!token) res.status(401).send({ code: 401, messgae: '请先登录!!', data: null });
   try {
     const data = await verifyToken(token);
-    if (auth && data.user.auth !== auth) {
+    if (auth && !auth.includes(data.user.auth)) {
       res.status(403).send({ code: 403, messgae: '您不具备此权限!!!', data: null });
       return;
     }

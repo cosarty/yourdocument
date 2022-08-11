@@ -68,6 +68,16 @@ const questionsSchema = {
   type: Number, //题目类型 0 1 2 3
   userId: Object.id, // 用户id
   viewNum: Number, // 点击人数
+  belong: {
+    // 一个组织有多套试卷
+    // 一个试卷有多道题目
+    // 一道题目可以属于多套试卷
+    // 一道题目可以属于多个组织
+    grade: {
+      type: Number, // 最低分数
+    },
+    organize: { type: Schema.Types.ObjectId, ref: 'Organize' }, // 加入的组织
+  },
 };
 
 // 消息信息
@@ -83,6 +93,7 @@ const messageSchema = {
   _updateTime: '2022-08-03T09:42:58.313Z',
 };
 
+// 私有题目和公有题目
 // 组织信息
 const organizeSchema = {};
 
