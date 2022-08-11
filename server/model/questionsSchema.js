@@ -45,14 +45,14 @@ const questionsSchema = createShcema({
   },
   belong: {
     grade: {
-      type: Number,
-      default: 1, // 最低分数
+      type: Number, // 最低分数
     },
   },
   organize: { type: Schema.Types.ObjectId, ref: 'Organize', require: true }, // 加入的组织
   reviewStatus: { type: Number, default: 1 }, // 审核状态 1 待审核 2 审核通过  3 驳回
   reviewTime: Date,
   reviewMessage: String, // 审核消息
+  reviewId: { type: Schema.Types.ObjectId, ref: 'User' }, // 审核人
   tags: [{ type: String, require: true }],
   userId: { type: Schema.Types.ObjectId, ref: 'User', require: true },
   viewNum: { type: Number, default: 0 }, // 阅读人数

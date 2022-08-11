@@ -72,8 +72,8 @@ const questionsSchema = {
 
 // 消息信息
 const messageSchema = {
-  content: String,
-  fromUserId: Object.Id, // 发送者
+  content: String, //内容
+  toUserId: Object.Id, // 发送者
   isDelete: Boolean,
   readTime: Date, // 读取时间
   status: 1,

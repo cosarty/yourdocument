@@ -1,7 +1,7 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 
-const { difficulty, title, tags, detail, params, reference } = require('./checkBody');
+const { difficulty, title, tags, detail, params, reference } = require('./questionsValidate');
 
 const updateQurstionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),

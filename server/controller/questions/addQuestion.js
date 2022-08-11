@@ -1,6 +1,6 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
-const { difficulty, type, title, tags, detail, params, reference } = require('./checkBody');
+const { difficulty, type, title, tags, detail, params, reference } = require('./questionsValidate');
 
 // 校验参数
 const addQuestionValidator = validator([difficulty, type, title, tags, detail, params, reference]);

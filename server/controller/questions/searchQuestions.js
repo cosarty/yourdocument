@@ -1,7 +1,7 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-const { tags, difficulty } = require('./checkBody');
+const { tags, difficulty } = require('./questionsValidate');
 // title  tags[]   type  difficulty  最新 最多收藏  -> pageSize  pageNum
 // orderKey  用来指定排序  update_time  favourNum
 const searchQuestionsValidator = validator([
@@ -36,7 +36,7 @@ const searchQuestions = async (req, res, next) => {
   const queryQuestion = () =>
     QuestionsModel.find()
       .populate('userId')
-      .where(queryData)
+      .where({ ...queryData, isDelete: false })
       .skip(pageSize || null)
       .limit(pageSize || null);
   // 搜索
