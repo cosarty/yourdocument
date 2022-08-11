@@ -19,4 +19,7 @@ router.get('/getCurrent', auth(), require('../controller/user/login/getCurrentUs
 // 更新当前用户
 router.put('/updateCurrent', auth(), require('../controller/user/login/updateCurrenrUser'));
 
+// 设置权限
+// 删除用户  -> 把他发布的所有题目删除  -> 收藏夹->错题本
+
 module.exports = router;

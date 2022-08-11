@@ -42,7 +42,14 @@ const login = async (req, res, next) => {
     const user = req.user.toJSON();
     delete user.password;
     const token = await createToken({ user });
-
+    console.log(user.is_ban);
+    if (user.is_ban) {
+      return res.status(403).json({
+        code: 403,
+        message: '您没有权限！',
+        data: null,
+      });
+    }
     res.status(200).json({
       code: 200,
       message: '成功',

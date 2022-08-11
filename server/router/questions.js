@@ -16,7 +16,11 @@ router.post('/search', require('../controller/questions/searchQuestions'));
 router.get('/get/:qutionsId', require('../controller/questions/getQuestions'));
 
 // 删除题目
-router.delete('/delete', require('../controller/questions/searchQuestions'));
+router.delete(
+  '/delete/:qutionsId',
+  auth(['super', 'admin']),
+  require('../controller/questions/deleteQuestions'),
+);
 
 // 获取自己上传的题目
 router.post('/search/origin', require('../controller/questions/searchQuestions'));
