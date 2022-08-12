@@ -18,7 +18,6 @@ module.exports = (auth) => async (req, res, next) => {
       res.status(403).send({ code: 403, messgae: '您不具备此权限!!!', data: null });
       return;
     }
-
     req.user = data.user;
     next();
   } catch (error) {

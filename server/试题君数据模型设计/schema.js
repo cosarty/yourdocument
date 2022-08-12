@@ -72,7 +72,6 @@ const questionsSchema = {
     // 一个组织有多套试卷
     // 一个试卷有多道题目
     // 一道题目可以属于多套试卷
-    // 一道题目可以属于多个组织
     grade: {
       type: Number, // 最低分数
     },

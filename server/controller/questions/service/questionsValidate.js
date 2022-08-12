@@ -1,5 +1,5 @@
-const TagsModel = require('../../model/tagsSchema');
-const validateType = require('../../util/validateType');
+const TagsModel = require('../../../model/tagsSchema');
+const validateType = require('../../../util/validateType');
 const { body } = require('express-validator');
 
 exports.difficulty = body('difficulty')

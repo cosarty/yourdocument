@@ -1,7 +1,7 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-const { tags, difficulty } = require('./questionsValidate');
+const { tags, difficulty } = require('./service/questionsValidate');
 // title  tags[]   type  difficulty  最新 最多收藏  -> pageSize  pageNum
 // orderKey  用来指定排序  update_time  favourNum
 const searchQuestionsValidator = validator([

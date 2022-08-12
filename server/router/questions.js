@@ -28,7 +28,7 @@ router.post('/search/origin', auth(), require('../controller/questions/searchOri
 
 // 审核题目 // 管理员审核题目  修改题目状态  -> 发送消息
 router.post(
-  '/review',
+  '/review/:qutionsId',
   auth(['admin', 'super']),
   require('../controller/questions/reviewQuestions'),
 );

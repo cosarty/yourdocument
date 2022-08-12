@@ -1,14 +1,17 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
+const { checkQutionsId } = require('./service/QuetionsServe');
 const getQuestionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),
   async (req, res, next) => {
-    console.log('qutionsId: ', req.params.qutionsId);
-    const qutionsId = req.params.qutionsId;
-    const question = await QuestionsModel.findById(qutionsId);
-    if (!question) return next({ code: 400, message: '题目不存在', data: null });
-    req.question = question;
-    next();
+    try {
+      const question = await checkQutionsId(req.params.qutionsId);
+      req.question = question;
+      next();
+    } catch (err) {
+      console.log('err: ', err);
+      next({ code: 400, message: err, data: null });
+    }
   },
 ];
 
