@@ -9,13 +9,19 @@ const {
   params,
   reference,
 } = require('./service/questionsValidate');
+const { checkLimit } = require('./service/QuetionsServe');
 
 // 校验参数
 const addQuestionValidator = validator([difficulty, type, title, tags, detail, params, reference]);
 
 const addQuestion = async (req, res, next) => {
   try {
-    //  TODO 题目限流 以及多选题的 answer应该允许是数组
+    //  TODO 以及多选题的 answer应该允许是数组
+    // 题目限流
+    const limit = await checkLimit(req.user._id);
+    if (limit === -1) {
+      return next({ code: 403, message: '今日题目已上限！！！', data: null });
+    }
     const question = await new QuestionsModel({
       ...req.body,
       userId: req.user._id,
@@ -24,7 +30,7 @@ const addQuestion = async (req, res, next) => {
     });
     await question.save();
     await question.populate('userId');
-    res.status(200).send({ code: 200, message: '创建成功!!!', data: question });
+    res.status(200).send({ code: 200, message: `今日剩余可上传数${limit}`, data: question });
   } catch (error) {
     console.log('error: ', error);
     next({ code: 500, message: '保存失败', data: null });
