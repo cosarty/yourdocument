@@ -22,8 +22,9 @@ router.put('/updateCurrent', auth(), require('../controller/user/login/updateCur
 // 设置权限
 router.put('/setPermission', auth(['super']), require('../controller/user/setPermission'));
 
-// 删除用户   -> 收藏夹->错题本
+// 删除用户   ->错题本   admin -> 只能ban 普通用户   super可以ban所有用户
+router.put('/ban', auth(['super', 'admin']), require('../controller/user/banUser'));
 
-// 获取用户列表
+// 获取用户列表  获取ban的用户和没有ban的用户
 
 module.exports = router;
