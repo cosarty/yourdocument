@@ -27,10 +27,10 @@ router.delete(
 router.post('/search/origin', auth(), require('../controller/questions/searchOriginQuestions'));
 
 // 审核题目 // 管理员审核题目  修改题目状态  -> 发送消息
-router.post('/review/:qutionsId', auth(), require('../controller/questions/reviewQuestions'));
+router.put('/review/:qutionsId', auth(), require('../controller/questions/reviewQuestions'));
 
 // 浏览题目  浏览数加1
-router.post(
+router.put(
   '/view/:qutionsId',
   auth(undefined, true),
   require('../controller/questions/viewQuestions'),
@@ -40,10 +40,10 @@ router.post(
 router.get('/history', auth(), require('../controller/questions/historyQuestions'));
 
 // 收藏题目  添加 取消 -> 更新收藏列表
-router.post('/favour', require('../controller/questions/searchQuestions'));
+router.put('/favour/:qutionsId', auth(), require('../controller/questions/favourQuestion'));
 
 // 获取收藏列表
-router.post('/getfavour', require('../controller/questions/searchQuestions'));
+router.post('/getfavour', auth(), require('../controller/questions/searchQuestions'));
 
 //TODO 添加题目到试卷
 
