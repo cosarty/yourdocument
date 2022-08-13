@@ -20,7 +20,7 @@ router.get('/getCurrent', auth(), require('../controller/user/login/getCurrentUs
 router.put('/updateCurrent', auth(), require('../controller/user/login/updateCurrenrUser'));
 
 // 设置权限
-router.put('/setPermission ', auth(['super']), require('../controller/user/setPermission'));
+router.put('/setPermission', auth(['super']), require('../controller/user/setPermission'));
 
 // 删除用户   -> 收藏夹->错题本
 
