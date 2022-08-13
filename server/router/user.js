@@ -26,5 +26,6 @@ router.put('/setPermission', auth(['super']), require('../controller/user/setPer
 router.put('/ban', auth(['super', 'admin']), require('../controller/user/banUser'));
 
 // 获取用户列表  获取ban的用户和没有ban的用户
+router.get('/getUserList', auth(['super', 'admin']), require('../controller/user/getUserList'));
 
 module.exports = router;
