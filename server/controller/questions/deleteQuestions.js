@@ -18,6 +18,7 @@ const deleteQuestionsValidator = [
 
 const delteteQuestions = async (req, res, next) => {
   try {
+    // 这边到时候要加一个删除原因
     await req.question.update({ isDelete: true });
     await addMessage({
       toUserId: req.question.userId,

@@ -15,7 +15,7 @@ router.post('/search', require('../controller/questions/searchQuestions'));
 // 获取题目详情
 router.get('/get/:qutionsId', require('../controller/questions/getQuestions'));
 
-// 删除题目  --- 遗留bug  自己也可以删除自己的题目
+//TODO 删除题目  --- 遗留bug  自己也可以删除自己的题目
 // 删除题目 -> 发送消息  1、组织的创建者 2、自己上传的题目 3、管理员
 router.delete(
   '/delete/:qutionsId',
@@ -27,21 +27,19 @@ router.delete(
 router.post('/search/origin', auth(), require('../controller/questions/searchOriginQuestions'));
 
 // 审核题目 // 管理员审核题目  修改题目状态  -> 发送消息
-router.post(
-  '/review/:qutionsId',
-  auth(['admin', 'super']),
-  require('../controller/questions/reviewQuestions'),
-);
+router.post('/review/:qutionsId', auth(), require('../controller/questions/reviewQuestions'));
 
-// 浏览题目
-router.post('/view', auth(), require('../controller/questions/searchQuestions'));
+// 浏览题目  获取自己的浏览题目 然后浏览数加1  最多可查看50条浏览记录
+router.post('/view/:qutionsId', auth(), require('../controller/questions/viewQuestions'));
 
+// 获取自己的浏览记录
+// router.get('/history', auth(), require('../controller/questions/historyQuestions'));
 // 收藏题目
 router.post('/favour', auth(), require('../controller/questions/searchQuestions'));
 
 // 获取收藏列表
 router.post('/getfavour', require('../controller/questions/searchQuestions'));
 
-// 添加题目到组织 或试卷
+//TODO 添加题目到组织 或试卷
 
 module.exports = router;

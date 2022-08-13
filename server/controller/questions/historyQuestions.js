@@ -8,7 +8,7 @@ const { checkQutionsId } = require('./service/QuetionsServe');
  *  管理员可以设置2 3  通过审核
  *
  */
-const reviewQuestionsValidator = [
+const historyQuestionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),
   validator([
     body('reviewMessage').optional().isString().withMessage('审核消息为字符串类型'),
@@ -40,7 +40,7 @@ const reviewQuestionsValidator = [
   },
 ];
 
-const reviewQuestions = async (req, res, next) => {
+const historyQuestions = async (req, res, next) => {
   console.log('req.body: ', req.body);
   const { reviewMessage, reviewStatus } = req.body;
 
@@ -76,4 +76,4 @@ const reviewQuestions = async (req, res, next) => {
   }
 };
 
-module.exports = [reviewQuestionsValidator, reviewQuestions];
+module.exports = [historyQuestionsValidator, historyQuestions];
