@@ -28,9 +28,10 @@ const viewQuestions = async (req, res, next) => {
     .or([{ userId: req.user?._id }, { ip }]);
   if (isHistory) {
     next({ code: 202, message: '重复浏览！！', data: null });
+    return;
   }
   if (req.user) {
-    const hi = await new historyModel({ questionId, userId });
+    const hi = await new historyModel({ questionId, userId: req.user?._id });
     await hi.save();
   } else {
     const hi = await new historyModel({ questionId, ip });

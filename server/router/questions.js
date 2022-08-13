@@ -30,12 +30,16 @@ router.post('/search/origin', auth(), require('../controller/questions/searchOri
 router.post('/review/:qutionsId', auth(), require('../controller/questions/reviewQuestions'));
 
 // 浏览题目  浏览数加1
-router.post('/view/:qutionsId', require('../controller/questions/viewQuestions'));
+router.post(
+  '/view/:qutionsId',
+  auth(undefined, true),
+  require('../controller/questions/viewQuestions'),
+);
 
 // 获取自己的浏览记录 获取自己的浏览题目  最多可查看50条浏览记录
 // router.get('/history', auth(), require('../controller/questions/historyQuestions'));
 // 收藏题目
-router.post('/favour', auth(), require('../controller/questions/searchQuestions'));
+router.post('/favour', require('../controller/questions/searchQuestions'));
 
 // 获取收藏列表
 router.post('/getfavour', require('../controller/questions/searchQuestions'));
