@@ -42,8 +42,8 @@ router.get('/history', auth(), require('../controller/questions/historyQuestions
 // 收藏题目  添加 取消 -> 更新收藏列表
 router.put('/favour/:qutionsId', auth(), require('../controller/questions/favourQuestion'));
 
-// 获取收藏列表
-router.post('/getfavour', auth(), require('../controller/questions/searchQuestions'));
+//TODO 获取收藏列表   目前是直接从登陆获取
+// router.post('/getfavour', auth(), require('../controller/questions/searchQuestions'));
 
 //TODO 添加题目到试卷
 

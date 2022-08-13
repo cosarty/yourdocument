@@ -15,7 +15,7 @@ const loginValid = [
       .bail()
       .custom(async (email, { req }) => {
         // 告诉他我需要password
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate('favours');
         if (!user) {
           return Promise.reject('用户不存在!!!');
         }
