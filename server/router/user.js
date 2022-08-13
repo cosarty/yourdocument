@@ -23,4 +23,6 @@ router.put('/updateCurrent', auth(), require('../controller/user/login/updateCur
 
 // 删除用户   -> 收藏夹->错题本
 
+// 获取用户列表
+
 module.exports = router;

@@ -13,6 +13,7 @@ const userSchema = {
 };
 // 注册要填写 邮箱  性别 昵称  密码
 
+// 评论
 const commentSchema = {
   userId: String, // 用户id
   questionId: String, // 问题id

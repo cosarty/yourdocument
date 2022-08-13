@@ -16,7 +16,6 @@ const addQuestionValidator = validator([difficulty, type, title, tags, detail, p
 
 const addQuestion = async (req, res, next) => {
   try {
-    //  TODO 以及多选题的 answer应该允许是数组
     // 题目限流
     const limit = await checkLimit(req.user._id);
     if (limit === -1) {

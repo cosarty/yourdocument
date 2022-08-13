@@ -25,13 +25,22 @@ const searchQuestionsValidator = validator([
 ]);
 const searchQuestions = async (req, res, next) => {
   const queryData = {};
-  const { title, tags, type, difficulty, orderKey, order = -1, pageSize, pageNum = 1 } = req.body;
+  const {
+    title,
+    tags,
+    type,
+    difficulty,
+    orderKey,
+    order = -1,
+    pageSize = 20,
+    pageNum = 1,
+  } = req.body;
 
   title && (queryData.title = title);
   tags.length > 0 && (queryData.tags = tags);
   type && (queryData.type = type);
   difficulty && (queryData.difficulty = difficulty);
-  const skip = (pageSize ?? pageSize * pageNum) || null;
+  const skip = pageSize * (pageNum - 1);
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()

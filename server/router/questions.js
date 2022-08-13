@@ -37,13 +37,14 @@ router.post(
 );
 
 // 获取自己的浏览记录 获取自己的浏览题目  最多可查看50条浏览记录
-// router.get('/history', auth(), require('../controller/questions/historyQuestions'));
-// 收藏题目
+router.get('/history', auth(), require('../controller/questions/historyQuestions'));
+
+// 收藏题目  添加 取消 -> 更新收藏列表
 router.post('/favour', require('../controller/questions/searchQuestions'));
 
 // 获取收藏列表
 router.post('/getfavour', require('../controller/questions/searchQuestions'));
 
-//TODO 添加题目到组织 或试卷
+//TODO 添加题目到试卷
 
 module.exports = router;
