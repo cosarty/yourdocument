@@ -72,6 +72,7 @@ const questionsSchema = {
     // 一个组织有多套试卷
     // 一个试卷有多道题目
     // 一道题目可以属于多套试卷
+    // 已经发布了的卷子里面的题目无法删除
     grade: {
       type: Number, // 最低分数
     },
@@ -126,4 +127,6 @@ const wrongTopic = {};
 const historySchame = {
   userId: ObjectId,
   quetionsId: ObjectId,
+  // 如果没有登录就获取ip 来判断是否刷点击量
+  ip: Object,
 };

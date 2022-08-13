@@ -29,10 +29,10 @@ router.post('/search/origin', auth(), require('../controller/questions/searchOri
 // 审核题目 // 管理员审核题目  修改题目状态  -> 发送消息
 router.post('/review/:qutionsId', auth(), require('../controller/questions/reviewQuestions'));
 
-// 浏览题目  获取自己的浏览题目 然后浏览数加1  最多可查看50条浏览记录
-router.post('/view/:qutionsId', auth(), require('../controller/questions/viewQuestions'));
+// 浏览题目  浏览数加1
+router.post('/view/:qutionsId', require('../controller/questions/viewQuestions'));
 
-// 获取自己的浏览记录
+// 获取自己的浏览记录 获取自己的浏览题目  最多可查看50条浏览记录
 // router.get('/history', auth(), require('../controller/questions/historyQuestions'));
 // 收藏题目
 router.post('/favour', auth(), require('../controller/questions/searchQuestions'));
