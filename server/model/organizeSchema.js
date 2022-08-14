@@ -3,6 +3,7 @@ const createShcema = require('./util/createShcema');
 
 const organizeSchema = createShcema({
   name: { type: String, require: true },
+  flag: { type: String, require: true }, //邀请码
   is_Delete: { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, ref: 'User', require: true }, //组织的发起人
   papers: [{ type: Schema.Types.ObjectId, ref: 'Paper' }], // 组织试卷

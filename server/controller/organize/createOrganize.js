@@ -1,7 +1,7 @@
-const TagsModel = require('../../model/tagsSchema');
+const OrganizeModel = require('../../model/organizeSchema');
+const randomString = require('random-string');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-const { checkUser } = require('../user/server/userServe');
 const createOrganizeValidator = [
   validator([
     body('name')
@@ -14,12 +14,24 @@ const createOrganizeValidator = [
 ];
 
 const createOrganize = async (req, res, next) => {
-  const { name, tags } = req.body;
-  console.log(1);
+  const { name, motto = '' } = req.body;
+  const { _id: userId } = req.user;
+
   try {
-    res.status(202).send({ code: 202, message: '删除成功!!', data: null });
+    const count = await OrganizeModel.find({ userId }).count();
+    if (count > 5) return next({ code: 403, message: '每个用户最多创建5个组织!!', data: null });
+    // 创建邀请码
+    let flag;
+    while (true) {
+      flag = randomString({ length: 9 });
+      const or = await OrganizeModel.findOne({ flag });
+      if (!or) break;
+    }
+    const organize = await new OrganizeModel({ name, motto, flag });
+    await organize.save();
+    res.status(202).send({ code: 202, message: '创建成功!!', data: null });
   } catch {
-    next({ code: 500, message: '删除失败!!', data: null });
+    next({ code: 500, message: '创建失败!!', data: null });
   }
 };
 
