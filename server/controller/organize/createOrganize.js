@@ -19,7 +19,8 @@ const createOrganize = async (req, res, next) => {
 
   try {
     const count = await OrganizeModel.find({ userId }).count();
-    if (count > 5) return next({ code: 403, message: '每个用户最多创建5个组织!!', data: null });
+    console.log('count: ', count);
+    if (count >= 5) return next({ code: 403, message: '每个用户最多创建5个组织!!', data: null });
     // 创建邀请码
     let flag;
     while (true) {
@@ -27,7 +28,7 @@ const createOrganize = async (req, res, next) => {
       const or = await OrganizeModel.findOne({ flag });
       if (!or) break;
     }
-    const organize = await new OrganizeModel({ name, motto, flag });
+    const organize = await new OrganizeModel({ userId, name, motto, flag });
     await organize.save();
     res.status(202).send({ code: 202, message: '创建成功!!', data: null });
   } catch {

@@ -13,8 +13,8 @@ const createSchema = (fields) =>
         createdAt: false,
         updatedAt: 'update_time',
       },
-      versionKey: false,
-      strictPopulate: false,
+      // versionKey: false,
+      // strictPopulate: false,
     },
   );
 

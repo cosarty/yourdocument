@@ -6,7 +6,8 @@ const auth = require('../middleware/authorization');
 // 创建组织
 
 router.post('/create', auth(), require('../controller/organize/createOrganize'));
-// 删除组织
+// 删除组织  只有创建者可以删除组织
+router.delete('/del/:organizeId', auth(), require('../controller/organize/deleteOrganize'));
 // 邀请加入组织  不能邀请自己  ----先不做  后面看看
 // 踢出组织
 // 查看组织人员
