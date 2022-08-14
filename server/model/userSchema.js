@@ -16,7 +16,7 @@ const userSchema = createShcema({
     required: true,
     set: (value) => md5(value),
     // 查询的时候不输出password
-    // select: false,
+    select: false,
   },
   gender: {
     type: Number,
