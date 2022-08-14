@@ -22,11 +22,13 @@ router.get('/applyList', auth(), require('../controller/organize/applyListOrgani
 
 // 设置组织昵称
 
+// 设置组织名称
+
 // 获取自己创建组织列表
 router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 
 // 获取自己加入的组织列表
-// router.get('/get', auth(), require('../controller/organize/getOrganize'));
+router.get('/get', auth(), require('../controller/organize/getOrganize'));
 // 踢出组织
 
 module.exports = router;
