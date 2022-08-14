@@ -7,6 +7,7 @@ const myValidationResult = validationResult.withDefaults({
   formatter: (error) => error.msg,
 });
 
+// 校验规则
 const validate = function (validations) {
   return async (req, res, next) => {
     await Promise.all(validations.map((validation) => validation.run(req)));

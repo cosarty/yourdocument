@@ -8,7 +8,6 @@ const userSchema = {
   _updateTime: String,
   profile: String, // 个人简介
   email: String, //邮箱
-  organize: [], // 加入的组织
   auth: String, //  user admin super
 };
 // 注册要填写 邮箱  性别 昵称  密码
@@ -93,25 +92,45 @@ const messageSchema = {
   _updateTime: '2022-08-03T09:42:58.313Z',
 };
 
-// 私有题目和公有题目
 // 组织信息
-const organizeSchema = {};
+const organizeSchema = {
+  name: String,
+  flag: String, //组织号
+  is_Delete: Boolean,
+  motto: String,
+  userId: ObjectId, //组织的发起人
+  papers: [ObjectId], // 组织试卷
+  part: [{ user: ObjectId, nickname: String, pass: Boolean }], // 参与用户 用户昵称
+};
+
+// 成绩  两个主键   组织和试卷id
+const gradeSchema = {
+  organize: ObjectId,
+  paper: ObjectId,
+  userSocre: [
+    {
+      userId: objectId,
+      score: [{ question: ObjectId, point: Number }],
+    },
+  ],
+};
 
 // 试卷信息
 const paperSchema = {
   name: String,
   detail: String,
   questions: String,
-  viewNum: Number,
-  // tags: String[],
-  userId: String, // 创建者
-  publishTime: Date,
-  questions: [], // 题目
+  ownership: ObjectId, // 创建者
+  questions: [
+    {
+      question: Object,
+      grade: Number, //分数
+    },
+  ], // 题目
   _createTime: Date,
   _updateTime: Date,
-  organize: Object.id, // 所属组织
   completeNum: Object.id, //人数
-  gross: Number, // 总分
+  points: Number, //总分
 };
 
 // 分类信息

@@ -34,14 +34,13 @@ const userSchema = createShcema({
     type: String,
     default: null,
   },
-  organize: [{ type: Schema.Types.ObjectId, ref: 'Organize' }], // 加入的组织
   auth: {
     //  user admin super
     type: String,
     default: 'user',
     required: true,
   },
-  favours: [{ type: Schema.Types.ObjectId, ref: 'Questions' }],
+  favours: [{ type: Schema.Types.ObjectId, ref: 'Questions' }], //收藏夹
 });
 
 module.exports = model('User', userSchema);
