@@ -1,5 +1,5 @@
 const { verifyToken } = require('../util/jwt');
-
+const { getUserInfo } = require('../controller/user/server/userServe');
 /**
  *
  * @param {*} auth  权限用户  vi 如果为true的话则可登录可不登录
@@ -18,11 +18,13 @@ module.exports = (auth, vi) => async (req, res, next) => {
   try {
     if (token) {
       const data = await verifyToken(token);
-      if (Array.isArray(auth) && !auth.includes(data.user.auth)) {
+      // 重新获取用户信息
+      const user = await getUserInfo(data.user._id);
+      if ((Array.isArray(auth) && !auth.includes(user.auth)) || user.is_ban) {
         res.status(403).send({ code: 403, messgae: '您不具备此权限!!!', data: null });
         return;
       }
-      req.user = data.user;
+      req.user = user;
     }
     next();
   } catch (error) {

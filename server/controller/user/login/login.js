@@ -42,7 +42,6 @@ const login = async (req, res, next) => {
     const user = req.user.toJSON();
     delete user.password;
     const token = await createToken({ user });
-    console.log(user.is_ban);
     // 判断是否是封号用户
     if (user.is_ban) {
       return res.status(403).json({

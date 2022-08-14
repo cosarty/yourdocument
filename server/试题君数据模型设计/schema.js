@@ -95,7 +95,7 @@ const messageSchema = {
 // 组织信息
 const organizeSchema = {
   name: String,
-  flag: String, //组织号
+  // flag: String, //组织号
   is_Delete: Boolean,
   motto: String,
   userId: ObjectId, //组织的发起人

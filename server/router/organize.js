@@ -5,7 +5,7 @@ const auth = require('../middleware/authorization');
 
 // 创建组织
 
-router.post('/create', require('../controller/organize/createOrganize'));
+router.post('/create', auth(), require('../controller/organize/createOrganize'));
 // 删除组织
 // 邀请加入组织  不能邀请自己  ----先不做  后面看看
 // 踢出组织
