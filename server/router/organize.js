@@ -15,13 +15,16 @@ router.post('/apply', auth(), require('../controller/organize/applyOrganize'));
 // 通过组织
 router.put('/pass/:userId', auth(), require('../controller/organize/passOrganize'));
 
-// 踢出组织
-// 查看组织人员
-// 设置组织昵称
-// 查看组织信息
-
-// 驳回 组织
-// 获取自己的组织列表
 // 申请列表
+router.get('/applyList', auth(), require('../controller/organize/applyListOrganize'));
+// 获取组织详情
+
+// 设置组织昵称
+
+// 驳回 组织  发送消息
+// 获取自己的组织列表
+// 获取自己加入组织列表
+
+// 踢出组织
 
 module.exports = router;

@@ -11,6 +11,13 @@ const createOrganizeValidator = [
       .withMessage('名称应该为字符串！！！'),
     body('motto').optional().isString().withMessage('简介应为字符串类型数据！！'),
   ]),
+  async (req, res, next) => {
+    const { name } = req.body;
+    const or = await OrganizeModel.find({ name });
+    if (or) return next({ code: 403, message: '不能创建名字一样的组织!!', data: null });
+
+    next();
+  },
 ];
 
 const createOrganize = async (req, res, next) => {
