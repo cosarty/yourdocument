@@ -1,6 +1,4 @@
 const OrganizeModel = require('../../model/organizeSchema');
-const validator = require('../../middleware/validator');
-const { body } = require('express-validator');
 
 // 申请加入组织
 const applyListOrganize = async (req, res, next) => {
@@ -9,11 +7,10 @@ const applyListOrganize = async (req, res, next) => {
     console.log('userId: ', userId);
     // 查找没有通过的用户信息
     // 平铺消息
-
     const applyList = await OrganizeModel.aggregate()
       .match({ userId, 'part.pass': false })
       .unwind('part')
-      .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'users' });
+      .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' });
 
     res.status(200).send({ code: 202, message: '获取成功!!', data: applyList });
   } catch (err) {

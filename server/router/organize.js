@@ -12,19 +12,21 @@ router.delete('/del/:organizeId', auth(), require('../controller/organize/delete
 
 router.post('/apply', auth(), require('../controller/organize/applyOrganize'));
 
-// 通过组织
+// 通过组织   -> 驳回 组织  发送消息
+// TODO 发送邮箱通知
 router.put('/pass/:userId', auth(), require('../controller/organize/passOrganize'));
 
 // 申请列表
 router.get('/applyList', auth(), require('../controller/organize/applyListOrganize'));
-// 获取组织详情
+// 获取组织人员
 
 // 设置组织昵称
 
-// 驳回 组织  发送消息
-// 获取自己的组织列表
-// 获取自己加入组织列表
+// 获取自己创建组织列表
+router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 
+// 获取自己加入的组织列表
+// router.get('/get', auth(), require('../controller/organize/getOrganize'));
 // 踢出组织
 
 module.exports = router;
