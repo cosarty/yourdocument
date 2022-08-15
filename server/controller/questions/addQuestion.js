@@ -9,7 +9,7 @@ const {
   params,
   reference,
 } = require('./service/questionsValidate');
-const { checkLimit } = require('./service/QuetionsServe');
+const { checkLimit } = require('./service/quetionsServe');
 
 // 校验参数
 const addQuestionValidator = validator([difficulty, type, title, tags, detail, params, reference]);

@@ -1,7 +1,7 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const addMessage = require('../message/addmessage');
-const { checkQutionsId } = require('./service/QuetionsServe');
+const { checkQutionsId } = require('./service/quetionsServe');
 const deleteQuestionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),
   async (req, res, next) => {

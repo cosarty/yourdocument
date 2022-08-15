@@ -1,6 +1,6 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
-const { checkQutionsId } = require('./service/QuetionsServe');
+const { checkQutionsId } = require('./service/quetionsServe');
 const getQuestionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),
   async (req, res, next) => {

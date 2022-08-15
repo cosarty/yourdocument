@@ -1,5 +1,5 @@
 const validator = require('../../middleware/validator');
-const { checkQutionsId } = require('./service/QuetionsServe');
+const { checkQutionsId } = require('./service/quetionsServe');
 const { getClientIp } = require('../../util/getClientIP');
 const historyModel = require('../../model/historySchema');
 /**

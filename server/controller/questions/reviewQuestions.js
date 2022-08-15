@@ -1,7 +1,7 @@
 const validator = require('../../middleware/validator');
 const addMessage = require('../message/addmessage');
 const { body } = require('express-validator');
-const { checkQutionsId } = require('./service/QuetionsServe');
+const { checkQutionsId } = require('./service/quetionsServe');
 
 /**
  *  普通用户只能设置 1 发起审核
