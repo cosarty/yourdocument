@@ -67,16 +67,6 @@ const questionsSchema = {
   type: Number, //题目类型 0 1 2 3
   userId: Object.id, // 用户id
   viewNum: Number, // 点击人数
-  belong: {
-    // 一个组织有多套试卷
-    // 一个试卷有多道题目
-    // 一道题目可以属于多套试卷
-    // 已经发布了的卷子里面的题目无法删除
-    grade: {
-      type: Number, // 最低分数
-    },
-    organize: { type: Schema.Types.ObjectId, ref: 'Organize' }, // 加入的组织
-  },
 };
 
 // 消息信息

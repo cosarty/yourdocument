@@ -10,13 +10,7 @@ router.use('/tags', require('./tags'));
 router.use('/questions', require('./questions'));
 
 // 试卷路由
-// 1、下发试卷  -> 下发后的试卷是无法删的
-// 2、创建试卷
-// 3、删除试卷   -> 删除自己创建的试卷
-// 4、 更新试卷
-// 5、 开放试卷
-// 6、 删除下发的试卷
-// 7、 添加题目到试卷
+router.use('/paper', require('./paper'));
 
 // 成绩接口路由
 // 试卷完成接口

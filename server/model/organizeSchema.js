@@ -6,7 +6,12 @@ const organizeSchema = createShcema({
   flag: { type: String, require: true }, //邀请码
   isDelete: { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, ref: 'User', require: true }, //组织的发起人
-  papers: [{ type: Schema.Types.ObjectId, ref: 'Paper' }], // 组织试卷
+  papers: [
+    {
+      papersId: { type: Schema.Types.ObjectId, ref: 'Paper' },
+      publishTime: { type: Date, default: Date.now },
+    },
+  ], // 组织试卷
   part: [
     {
       user: { type: Schema.Types.ObjectId, ref: 'User', require: true },
