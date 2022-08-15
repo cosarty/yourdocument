@@ -23,6 +23,7 @@ router.get('/users/:organizeId', auth(), require('../controller/organize/usersOr
 //TODO 组织昵称 写前端的时候在搞
 // 设置组织昵称
 
+//TODO 组织名称 写前端的时候在搞
 // 设置组织名称
 
 // 获取自己创建组织列表
@@ -31,5 +32,6 @@ router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 // 获取自己加入的组织列表
 router.get('/get', auth(), require('../controller/organize/getOrganize'));
 // 踢出组织
+router.put('/kickout/:organizeId', auth(), require('../controller/organize/kickoutOrganize'));
 
 module.exports = router;

@@ -6,7 +6,7 @@ const getOrganize = async (req, res, next) => {
     const { _id: userId } = req.user;
     const getList = await OrganizeModel.aggregate()
       .match({
-        'part.pass': false,
+        'part.pass': true,
         'part.user': userId,
       })
       .project({ _id: 0, organizeId: '$_id', name: 1, motto: 1 });
