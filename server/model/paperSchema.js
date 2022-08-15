@@ -2,9 +2,9 @@ const { model, Schema } = require('mongoose');
 const createShcema = require('./util/createShcema');
 
 const paperSchema = createShcema({
-  name: String, // 试卷名称
+  name: { type: String, require: true }, // 试卷名称
   detail: String, // 试卷详情
-  ownership: { type: Schema.Types.ObjectId, ref: 'User', require: true }, // 创建者
+  ownership: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 创建者
   questions: [
     {
       question: Object,

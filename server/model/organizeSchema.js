@@ -2,10 +2,10 @@ const { model, Schema } = require('mongoose');
 const createShcema = require('./util/createShcema');
 
 const organizeSchema = createShcema({
-  name: { type: String, require: true },
-  flag: { type: String, require: true }, //邀请码
+  name: { type: String, required: true },
+  flag: { type: String, required: true }, //邀请码
   isDelete: { type: Boolean, default: false },
-  userId: { type: Schema.Types.ObjectId, ref: 'User', require: true }, //组织的发起人
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, //组织的发起人
   papers: [
     {
       papersId: { type: Schema.Types.ObjectId, ref: 'Paper' },
@@ -14,7 +14,7 @@ const organizeSchema = createShcema({
   ], // 组织试卷
   part: [
     {
-      user: { type: Schema.Types.ObjectId, ref: 'User', require: true },
+      user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
       nickname: { type: String },
       pass: { type: Boolean, default: false }, // 是否通过组织
     },

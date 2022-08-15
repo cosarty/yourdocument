@@ -5,7 +5,7 @@ const questionsSchema = createShcema({
     type: Number, // 0 简单 1 中等 2 困难
     default: 0,
   },
-  title: { type: String, require: true }, // title不能超过80
+  title: { type: String, required: true }, // title不能超过80
   commentNum: {
     type: Number,
     default: 0,
@@ -24,11 +24,11 @@ const questionsSchema = createShcema({
   params: {
     answer: {
       type: String,
-      require,
+      required: true,
     },
     options: {
-      A: { type: String, require: true },
-      B: { type: String, require: true },
+      A: { type: String, required: true },
+      B: { type: String, required: true },
       C: { type: String },
       D: { type: String },
       E: { type: String },
@@ -41,14 +41,14 @@ const questionsSchema = createShcema({
   },
   type: {
     type: Number, //题目类型 0 1 2 3
-    require: true,
+    required: true,
   },
   reviewStatus: { type: Number, default: 1 }, // 审核状态 1 待审核 2 审核通过  3 驳回
   reviewTime: Date,
   reviewMessage: String, // 审核消息
   reviewId: { type: Schema.Types.ObjectId, ref: 'User' }, // 审核人
-  tags: [{ type: String, require: true }],
-  userId: { type: Schema.Types.ObjectId, ref: 'User', require: true },
+  tags: [{ type: String, required: true }],
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   viewNum: { type: Number, default: 0 }, // 阅读人数
 });
 

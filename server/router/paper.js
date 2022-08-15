@@ -5,6 +5,8 @@ const auth = require('../middleware/authorization');
 
 // 1、下发试卷  -> 下发后的试卷题目是无法删的
 // 2、创建试卷
+router.post('/create', auth(), require('../controller/paper/createPaper'));
+
 // 3、删除试卷   -> 删除自己创建的试卷
 // 4、 更新试卷
 // 5、 开放试卷
