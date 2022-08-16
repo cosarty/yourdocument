@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { checkQutionsId } = require('../../questions/service/quetionsServe');
+const PaperModel = require('../../../model/paperSchema');
 
+// questions参数校验
 exports.checkQuestions = async (questions) => {
   if (
     !questions.every(async (q) => {
@@ -31,4 +33,10 @@ exports.checkQuestions = async (questions) => {
   if (noexist.length > 0) {
     return Promise.reject(`以下题目不存在 ${noexist.join(',')}`);
   }
+};
+// 检查试卷是否合法
+exports.checkPaperId = async (paperId) => {
+  const paper = await PaperModel.findById(paperId);
+  if (!paper || paper.isDelete) return Promise.reject('试卷不存在');
+  return paper;
 };

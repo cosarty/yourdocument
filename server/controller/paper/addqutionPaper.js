@@ -1,72 +1,55 @@
-const PaperModel = require('../../model/paperSchema');
-const { checkQutionsId } = require('../questions/service/quetionsServe');
+const { questions } = require('./service/paperValidator');
+const { checkPaperId } = require('./service/paperSvice');
 const validator = require('../../middleware/validator');
-const { body } = require('express-validator');
-const mongoose = require('mongoose');
+
 /**
  *试卷添加题目
  */
 const addqutionPaperValidator = [
+  validator([validator.isValidObjectId(['params'], 'paperId')]),
+  async (req, res, next) => {
+    const { paperId } = req.params;
+    const id = req.user._id.toString();
+    try {
+      const paper = await checkPaperId(paperId);
+      if (paper.ownership.toString() !== id)
+        return next({ code: 403, message: '您没有此试卷的权限', data: null });
+
+      req.paper = paper;
+      next();
+    } catch (error) {
+      return next({ code: 403, message: error, data: null });
+    }
+  },
   validator([
-    body('questions')
-      .isArray()
-      .withMessage('题目必须是一个数组!!!')
-      .bail()
-      .notEmpty()
-      .withMessage('qustion不能含有空字符串或为空!!!')
-      .bail()
-      .custom(async (questions, { req }) => {
-        if (
-          !questions.every(async (q) => {
-            const flag = await mongoose.isValidObjectId(q.question);
+    questions.custom(async (questions, { req }) => {
+      const paper = req.paper;
 
-            const k = Object.keys(q);
+      const noexist = [];
+      questions.forEach((q) => {
+        const exist = paper?.questions.find((p) => p.question.toString() === q.question.toString());
 
-            return (
-              k.length === 2 &&
-              ['question', 'grade'].every((s) => k.includes(s)) &&
-              !isNaN(Number(q.grade)) &&
-              q.grade < 100 &&
-              flag
-            );
-          })
-        ) {
-          return Promise.reject(
-            '数据类型错误：{ question: String, grade: Number},单题分数最高为100',
-          );
-        }
-        const noexist = [];
-        for (let que of questions) {
-          try {
-            await checkQutionsId(que.question);
-          } catch {
-            noexist.push(que.question);
-          }
-        }
+        if (exist) return;
+        noexist.push(q);
+      });
 
-        if (noexist.length > 0) {
-          return Promise.reject(`以下题目不存在 ${noexist.join(',')}`);
-        }
-      }),
-    body('points')
-      .isNumeric()
-      .withMessage('分数必须是整数!!!')
-      .custom(async (points) => {
-        if (points > 200) return Promise.reject('分数最大支持200分');
-      }),
+      req.noexist = noexist;
+    }),
   ]),
 ];
 
 const addqutionPaper = async (req, res, next) => {
-  const { name, detail, points, questions } = req.body;
-  const { _id: ownership } = req.user;
-  try {
-    const newpaper = new PaperModel({ name, detail, points, questions, ownership });
-    await newpaper.save();
+  const paper = req.paper;
+  const noexist = req.noexist;
 
-    res.status(200).send({ code: 200, message: '创建成功!!', data: newpaper });
+  paper.questions.push(...noexist);
+
+  await paper.save();
+
+  try {
+    res.status(200).send({ code: 200, message: '添加成功!!', data: 111 });
   } catch {
-    next({ code: 500, message: '创建失败!!', data: null });
+    next({ code: 500, message: '添加失败!!', data: null });
   }
 };
 

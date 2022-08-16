@@ -8,7 +8,7 @@ const auth = require('../middleware/authorization');
 router.post('/create', auth(), require('../controller/paper/createPaper'));
 
 //  添加题目
-router.post('/addqution/:paperId', auth(), require('../controller/paper/addqutionPaper'));
+router.put('/addqution/:paperId', auth(), require('../controller/paper/addqutionPaper'));
 //删除题目
 
 // 更新试卷 ->更新简介和标题和总成绩

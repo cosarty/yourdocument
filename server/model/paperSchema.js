@@ -5,7 +5,7 @@ const paperSchema = createShcema({
   name: { type: String, require: true }, // 试卷名称
   detail: String, // 试卷详情
   ownership: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 创建者
-  isDelete: false,
+  isDelete: { type: Boolean, default: false },
   questions: [
     {
       question: { type: Schema.Types.ObjectId, ref: 'Questions' },

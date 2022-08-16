@@ -7,7 +7,7 @@ const validator = require('../../middleware/validator');
  * 创建试卷
  * 试卷名称不能一样
  */
-const createPaperValidator = [validator([name, questions, detail, points])];
+const createPaperValidator = [validator([name, detail, points, questions])];
 
 const createPaper = async (req, res, next) => {
   const { name, detail, points, questions } = req.body;

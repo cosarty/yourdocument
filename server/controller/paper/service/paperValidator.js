@@ -8,7 +8,6 @@ exports.name = body('name')
   .withMessage('试卷名称应该为字符串')
   .bail()
   .custom(async (name, { req }) => {
-    console.log('name: ', name);
     const { _id: ownership } = req.user;
 
     const paper = await PaperModel.findOne({ ownership, name: name.trim() });
@@ -31,7 +30,8 @@ exports.questions = body('questions')
     } catch (error) {
       return Promise.reject(error);
     }
-  });
+  })
+  .bail();
 
 exports.points = body('points')
   .isNumeric()
