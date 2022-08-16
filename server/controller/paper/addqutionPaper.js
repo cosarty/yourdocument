@@ -3,7 +3,7 @@ const { checkPaperId } = require('./service/paperSvice');
 const validator = require('../../middleware/validator');
 
 /**
- *试卷添加题目
+ *试卷添加和删除题目
  */
 const addqutionPaperValidator = [
   validator([validator.isValidObjectId(['params'], 'paperId')]),
@@ -24,12 +24,15 @@ const addqutionPaperValidator = [
   validator([
     questions.custom(async (questions, { req }) => {
       const paper = req.paper;
-
       const noexist = [];
       questions.forEach((q) => {
-        const exist = paper?.questions.find((p) => p.question.toString() === q.question.toString());
+        const exist = paper?.questions.find(
+          (p) => p.question.toString() === q.question.toString() && p.isDelete === false,
+        );
 
-        if (exist) return;
+        if (exist) {
+          return;
+        }
         noexist.push(q);
       });
 
@@ -41,13 +44,11 @@ const addqutionPaperValidator = [
 const addqutionPaper = async (req, res, next) => {
   const paper = req.paper;
   const noexist = req.noexist;
-
   paper.questions.push(...noexist);
-
   await paper.save();
 
   try {
-    res.status(200).send({ code: 200, message: '添加成功!!', data: 111 });
+    res.status(200).send({ code: 200, message: '添加成功!!', data: null });
   } catch {
     next({ code: 500, message: '添加失败!!', data: null });
   }
