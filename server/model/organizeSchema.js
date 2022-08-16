@@ -9,7 +9,7 @@ const organizeSchema = createShcema({
   papers: [
     {
       papersId: { type: Schema.Types.ObjectId, ref: 'Paper' },
-      publishTime: { type: Date, default: Date.now },
+      publish: { type: Date, default: false },
     },
   ], // 组织试卷
   part: [

@@ -4,7 +4,6 @@ const router = express.Router();
 const auth = require('../middleware/authorization');
 
 // 创建组织
-
 router.post('/create', auth(), require('../controller/organize/createOrganize'));
 // 删除组织  只有创建者可以删除组织
 router.delete('/del/:organizeId', auth(), require('../controller/organize/deleteOrganize'));
@@ -33,5 +32,9 @@ router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 router.get('/get', auth(), require('../controller/organize/getOrganize'));
 // 踢出组织
 router.put('/kickout/:organizeId', auth(), require('../controller/organize/kickoutOrganize'));
+
+//TODO 查看组织试卷列表
+
+//TODO 查看下发试卷详情
 
 module.exports = router;

@@ -89,7 +89,7 @@ const organizeSchema = {
   is_Delete: Boolean,
   motto: String,
   userId: ObjectId, //组织的发起人
-  papers: [ObjectId], // 组织试卷
+  papers: [{ paper: ObjectId, publish: Boolean }], // 组织试卷
   part: [{ user: ObjectId, nickname: String, pass: Boolean }], // 参与用户 用户昵称
 };
 
