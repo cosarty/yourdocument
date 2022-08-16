@@ -4,28 +4,10 @@ const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
 const mongoose = require('mongoose');
 /**
- *
- * 创建试卷
- * 试卷名称不能一样
+ *试卷添加题目
  */
 const addqutionPaperValidator = [
   validator([
-    body('name')
-      .exists()
-      .withMessage('请输入试卷名称')
-      .isString()
-      .withMessage('试卷名称应该为字符串')
-      .bail()
-      .custom(async (name, { req }) => {
-        console.log('name: ', name);
-        const { _id: ownership } = req.user;
-
-        const paper = await PaperModel.findOne({ ownership, name: name.trim() });
-
-        if (paper) return Promise.reject('不能创建名字一样的试卷!!');
-      }),
-
-    body('detail').optional().isString().withMessage('试卷简介应该为字符串类型'),
     body('questions')
       .isArray()
       .withMessage('题目必须是一个数组!!!')
