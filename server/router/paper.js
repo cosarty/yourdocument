@@ -7,14 +7,16 @@ const auth = require('../middleware/authorization');
 // 2、创建试卷
 router.post('/create', auth(), require('../controller/paper/createPaper'));
 
-// 删除试卷   -> 删除自己创建的试卷
 //  添加题目
+router.post('/addqution/:paperId', auth(), require('../controller/paper/addqutionPaper'));
 //删除题目
+
 // 更新试卷 ->更新简介和标题和总成绩
 // 开放试卷
 //  删除下发的试卷
 //  添加题目到试卷
 //   查看试卷详情
 // 修改分数
+// 删除试卷   -> 删除自己创建的试卷
 
 module.exports = router;
