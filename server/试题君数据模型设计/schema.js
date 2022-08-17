@@ -38,6 +38,7 @@ const authCodeSchema = {
   expireTime: Date, // 过期时间
   email: String,
   captcha: String, // 验证码
+  type: String,
 };
 
 // 题目信息

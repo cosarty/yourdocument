@@ -14,6 +14,7 @@ const authCodeSchema = createShcema({
     type: String,
     required: true,
   },
+  type: String,
   email: {
     type: String,
     required: true,

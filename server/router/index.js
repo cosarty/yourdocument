@@ -21,6 +21,7 @@ router.use('/paper', require('./paper'));
 // 组织路由
 router.use('/organize', require('./organize'));
 
+// 消息路由
 // 评论路由
 // 回复路由
 // 上传路由
