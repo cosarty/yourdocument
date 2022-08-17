@@ -2,6 +2,8 @@ const { checkPaperId } = require('./service/paperSvice');
 const validator = require('../../middleware/validator');
 const { query } = require('express-validator');
 const { name, detail, points } = require('./service/paperValidator');
+const PaperModel = require('../../model/paperSchema');
+const mongoose = require('mongoose');
 /**
  *查看试卷详情
  */
@@ -28,10 +30,48 @@ const viewPaperValidator = [
 
 const viewPaper = async (req, res, next) => {
   try {
+    // 坑 aggregate的match搜索id的时候必须先转换
+    const paper = await PaperModel.aggregate()
+      .match({ _id: mongoose.Types.ObjectId(req.query.paperId) })
+      .unwind('questions')
+      .match({ 'questions.isDelete': false })
+      .group({
+        _id: {
+          id: '$_id',
+          ownership: '$ownership',
+          detail: '$detail',
+          points: '$points',
+          name: '$name',
+        },
+        questions: { $addToSet: '$questions' },
+      })
+      .lookup({
+        from: 'users',
+        foreignField: '_id',
+        localField: '_id.ownership',
+        as: 'ownership',
+      })
+      .unwind('ownership')
+      .project({
+        _id: 0,
+        paperInfo: {
+          paperId: '$_id.id',
+          detail: '$_id.detail',
+          name: '$_id.name',
+          points: '$_id.points、',
+        },
+        'ownership.nickname': 1,
+        'questions.question': 1,
+        'questions.grade': 1,
+      });
     res.status(200).send({
       code: 200,
       message: '查看成功!!',
-      data: await req.paper.populate({ path: 'ownership', select: { nickname: 1 } }),
+      // 坑 aggregate的match搜索id的时候必须先转换
+      data: paper,
+
+      // .where('questions.isDelete', false)
+      // .populate({ path: 'ownership', select: { nickname: 1 } }),
     });
   } catch (err) {
     console.log(err);
