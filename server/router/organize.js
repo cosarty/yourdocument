@@ -30,12 +30,14 @@ router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 
 // 获取自己加入的组织列表
 router.get('/get', auth(), require('../controller/organize/getOrganize'));
-// 踢出组织
+// 踢出组织  要把成绩一起删掉  设置成isDelete
 router.put('/kickout/:organizeId', auth(), require('../controller/organize/kickoutOrganize'));
 
-//TODO 查看组织试卷列表
+// 查看组织试卷列表  组织成员查看开发试卷
+router.get('/viewPaper', auth(), require('../controller/organize/viewPaper'));
 
 //TODO 查看下发试卷详情   删除的也可以看
 
 // TODO 开放试卷
+
 module.exports = router;

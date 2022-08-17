@@ -11,9 +11,6 @@ const usersOrganizeValidator = [
 
       if (or.userId.toString() !== req.user._id.toString())
         return next({ code: 403, message: '您没有权限', data: null });
-      console.log('or: ', or);
-      if (or.isDelete) return next({ code: 403, message: '组织不存在!!!', data: null });
-
       req.organize = or;
       next();
     } catch (error) {
