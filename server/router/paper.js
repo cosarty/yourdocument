@@ -23,6 +23,8 @@ router.put('/issued/:paperId', auth(), require('../controller/paper/issuedPaper'
 router.get('/view', auth(), require('../controller/paper/viewPaper'));
 
 // 修改题目分数
+router.put('/updateCore/:paperId', auth(), require('../controller/paper/updateCore'));
+
 // 删除试卷   -> 删除自己创建的试卷
 
 module.exports = router;
