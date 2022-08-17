@@ -1,5 +1,3 @@
-const OrganizeModel = require('../../model/organizeSchema');
-const randomString = require('random-string');
 const validator = require('../../middleware/validator');
 const { checkOrganizeId } = require('./service/organizeServe');
 const usersOrganizeValidator = [

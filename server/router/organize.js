@@ -36,7 +36,8 @@ router.put('/kickout/:organizeId', auth(), require('../controller/organize/kicko
 // 查看组织试卷列表  组织成员查看开发试卷
 router.get('/viewPaper', auth(), require('../controller/organize/viewPaper'));
 
-//TODO 查看下发试卷详情   删除的也可以看
+//TODO 查看下发试卷详情   删除的也可以看  只能创建者查看  获取试卷内的题目
+router.get('/getPaper', auth(), require('../controller/organize/getPaper'));
 
 // TODO 开放试卷
 
