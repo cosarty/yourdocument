@@ -1,5 +1,5 @@
 const OrganizeModel = require('../../model/organizeSchema');
-const randomString = require('random-string');
+
 const validator = require('../../middleware/validator');
 const { checkOrganizeId } = require('./service/organizeServe');
 const deleteOrganizeValidator = [
@@ -11,7 +11,6 @@ const deleteOrganizeValidator = [
 
       if (or.userId.toString() !== req.user._id.toString())
         return next({ code: 403, message: '您没有权限', data: null });
-      if (or.isDelete) return next({ code: 403, message: '组织已删除！！！', data: null });
       req.organize = or;
       next();
     } catch (error) {

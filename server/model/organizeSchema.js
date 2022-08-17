@@ -9,12 +9,12 @@ const organizeSchema = createShcema({
   papers: [
     {
       papersId: { type: Schema.Types.ObjectId, ref: 'Paper' },
-      publish: { type: Date, default: false },
+      publish: { type: Boolean, default: false },
     },
   ], // 组织试卷
   part: [
     {
-      user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      user: { type: Schema.Types.ObjectId, ref: 'User' },
       nickname: { type: String },
       pass: { type: Boolean, default: false }, // 是否通过组织
     },

@@ -35,6 +35,7 @@ router.put('/kickout/:organizeId', auth(), require('../controller/organize/kicko
 
 //TODO 查看组织试卷列表
 
-//TODO 查看下发试卷详情
+//TODO 查看下发试卷详情   删除的也可以看
 
+// TODO 开发试卷
 module.exports = router;

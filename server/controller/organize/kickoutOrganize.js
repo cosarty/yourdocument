@@ -16,7 +16,6 @@ const kickoutOrganizeValidator = [
 
       if (or.userId.toString() !== req.user._id.toString())
         return next({ code: 403, message: '您没有权限', data: null });
-      if (or.isDelete) return next({ code: 403, message: '组织已删除！！！', data: null });
       if (!or.part.find((u) => u?.user?.toString() === userId))
         return next({ code: 403, message: '用户不存在!!!', data: null });
       req.organize = or;
