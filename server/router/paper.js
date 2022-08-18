@@ -17,7 +17,6 @@ router.put('/update/:paperId', auth(), require('../controller/paper/updatePaper'
 // 下发试卷  -> 下发后的试卷题目是无法删的  下发到自己创建的组织
 
 router.put('/issued/:paperId', auth(), require('../controller/paper/issuedPaper'));
-// TODO 前端的时候写  删除下发的试卷 要把成绩一起删除掉不能忘记 要不然出大事情
 
 //   查看试卷详情  只能获取没有被删除的题目哦
 router.get('/view', auth(), require('../controller/paper/viewPaper'));

@@ -67,11 +67,7 @@ const viewPaper = async (req, res, next) => {
     res.status(200).send({
       code: 200,
       message: '查看成功!!',
-      // 坑 aggregate的match搜索id的时候必须先转换
       data: paper,
-
-      // .where('questions.isDelete', false)
-      // .populate({ path: 'ownership', select: { nickname: 1 } }),
     });
   } catch (err) {
     console.log(err);

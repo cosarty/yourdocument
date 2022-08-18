@@ -13,26 +13,22 @@ const userSchema = {
 // 注册要填写 邮箱  性别 昵称  密码
 
 const commentSchema = {
-  userId: String, // 用户id
+  user: String, // 用户id
   questionId: String, // 问题id
   content: String, // 回答内容
-  thumbNum: String, // 点赞
-  replyList: [
-    {
-      commentId: String, // 评论id
-      content: String, // 评论内容
-      isDelete: false, // 是否删除
-      questionId: Object.id, // 问题id
-      userId: Object.id, // 用户id
-      userInfo: Object,
-    },
-  ], // 回复列表
+  priority: Number, // 优先级
+  // thumbNum: String, // 点赞
   userInfo: Object, // 用户信息
-  _createTime: Date,
-  _updateTime: Date,
   isDelete: Boolean,
 };
-
+const replySchema = {
+  commentId: String, // 评论id
+  content: String, // 评论内容
+  isDelete: Boolean, // 是否删除
+  user: Object.id, // 用户id
+  replyId: Object.id,
+  replyUserId: Object.id,
+};
 // 短信验证码
 const authCodeSchema = {
   expireTime: Date, // 过期时间
