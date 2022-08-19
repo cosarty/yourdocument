@@ -1,12 +1,13 @@
 const CommentModel = require('../../model/commentSchema');
 const validator = require('../../middleware/validator');
-const { param } = require('express-validator');
+const { body } = require('express-validator');
 const { checkQutionsId } = require('../questions/service/quetionsServe');
+const { priority } = require('./service/commentValidate');
 // 校验参数
-const deleteCommentValidator = [
-  validator([validator.isValidObjectId(['params'], 'commentId')]),
+const updateCommentPriorityValidator = [
+  validator([validator.isValidObjectId(['body'], 'commentId')], priority.optional()),
   validator([
-    param('commentId').custom(async (commentId, { req }) => {
+    body('commentId').custom(async (commentId, { req }) => {
       const { _id, auth } = req.user;
       const comment = await CommentModel.findById(commentId);
 
@@ -15,28 +16,26 @@ const deleteCommentValidator = [
       if (!['admin', 'super'].includes(auth) || comment.user.toString() !== _id.toString())
         return Promise.reject('您没有此权限');
       try {
-        const question = await checkQutionsId(comment.questionId);
+        await checkQutionsId(comment.questionId);
         req.comment = comment;
-        req.question = question;
       } catch (error) {
-        return Promise.reject(error);
+        return Promise.reject('error');
       }
     }),
   ]),
 ];
 
 // 删除评论
-const deleteComment = async (req, res, next) => {
+const updateCommentPriority = async (req, res, next) => {
+  const { priority = false } = req.body;
   try {
-    await req.comment.update({ isDelete: true });
-    // 评论减一
-    req.question.commentNum -= 1;
-    await req.question.save();
-    res.status(200).send({ code: 202, message: '删除成功!!', data: null });
+    await req.comment.update({ priority });
+
+    res.status(200).send({ code: 202, message: '采纳成功!!', data: null });
   } catch (err) {
     console.log(err);
-    next({ code: 500, message: '删除失败', data: null });
+    next({ code: 500, message: '采纳失败!!', data: null });
   }
 };
 
-module.exports = [deleteCommentValidator, deleteComment];
+module.exports = [updateCommentPriorityValidator, updateCommentPriority];

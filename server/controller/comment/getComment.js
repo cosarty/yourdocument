@@ -18,8 +18,12 @@ const getCommentValidator = [
       // 仅评论所有者和管理员可操作
       if (!['admin', 'super'].includes(auth) || comment.user._id.toString() !== _id.toString())
         return Promise.reject('您没有此权限');
-      const question = await checkQutionsId(comment.questionId);
-      req.comment = comment;
+      try {
+        await checkQutionsId(comment.questionId);
+        req.comment = comment;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }),
   ]),
 ];

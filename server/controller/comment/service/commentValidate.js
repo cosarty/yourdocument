@@ -15,3 +15,5 @@ exports.content = body('content')
   .notEmpty()
   .withMessage('请输入评论')
   .customSanitizer((content) => xss(content));
+
+exports.priority = body('priority').isBoolean().withMessage('采纳只能是true或者false');
