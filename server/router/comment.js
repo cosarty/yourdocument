@@ -4,5 +4,8 @@ const router = express.Router();
 const auth = require('../middleware/authorization');
 
 router.post('/add', auth(), require('../controller/comment/addComment'));
+router.delete('/delete/:commentId', auth(), require('../controller/comment/deleteComment'));
+router.post('/get', auth(), require('../controller/comment/addComment'));
+router.post('/update/priority', auth(), require('../controller/comment/addComment'));
 
 module.exports = router;

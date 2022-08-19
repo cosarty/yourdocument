@@ -24,6 +24,9 @@ const addComment = async (req, res, next) => {
       sendEmail: true,
       type: 4,
     });
+    // 评论数加一
+    req.question.commentNum += 1;
+    req.question.save();
     await comment.save();
     res.status(200).send({ code: 200, message: '保存成功!!', data: comment });
   } catch (err) {
