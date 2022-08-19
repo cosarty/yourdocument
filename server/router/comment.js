@@ -8,7 +8,7 @@ router.delete('/delete/:commentId', auth(), require('../controller/comment/delet
 router.get('/get', auth(), require('../controller/comment/getComment'));
 router.post('/update/priority', auth(), require('../controller/comment/updateCommentPriority'));
 
-//TODO 搜索题目
+//TODO 搜索评论
 router.post('/search', auth(), require('../controller/comment/addComment'));
 
 module.exports = router;
