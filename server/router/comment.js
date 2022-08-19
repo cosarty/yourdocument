@@ -5,7 +5,10 @@ const auth = require('../middleware/authorization');
 
 router.post('/add', auth(), require('../controller/comment/addComment'));
 router.delete('/delete/:commentId', auth(), require('../controller/comment/deleteComment'));
-router.post('/get', auth(), require('../controller/comment/addComment'));
+router.get('/get', auth(), require('../controller/comment/getComment'));
 router.post('/update/priority', auth(), require('../controller/comment/addComment'));
+
+//TODO 搜索题目
+router.post('/search', auth(), require('../controller/comment/addComment'));
 
 module.exports = router;
