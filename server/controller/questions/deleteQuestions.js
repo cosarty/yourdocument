@@ -25,6 +25,7 @@ const delteteQuestions = async (req, res, next) => {
       title: '问题下架!!',
       content: `你的文章存在违规问题！！！【${req.question.title}】`,
       sendEmail: true,
+      type: 1,
     });
     res.status(200).send({
       code: 202,

@@ -27,7 +27,7 @@ const addMessage = async (contexnt) => {
       const mailTitle = cheerio.load(op.title).text().trim();
       await sendMail({
         to: message.toUserId.email,
-        subject: `试题君${mailTitle}`,
+        subject: `${mailTitle}`,
         content: mailContent ?? op.content,
       });
     }

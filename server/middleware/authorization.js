@@ -28,6 +28,6 @@ module.exports = (auth, vi) => async (req, res, next) => {
     }
     next();
   } catch (error) {
-    res.status(401).send({ msg: error.message });
+    res.status(401).send({ code: 401, message: '登录失效！！！', data: null });
   }
 };

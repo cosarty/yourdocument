@@ -11,7 +11,7 @@ exports.checkQutionsId = async (qutionsId) => {
 exports.checkLimit = async (userId, count = 30) => {
   const yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
   const limitCount = await QuestionsModel.find()
-    .where({ userId })
+    .where({ userId, isDelete: false })
     .gte('create_time', yesterday)
     .count();
   if (limitCount <= count) return count - limitCount;

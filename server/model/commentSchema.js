@@ -4,7 +4,7 @@ const commentSchema = createShcema({
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 用户id
   questionId: { type: Schema.Types.ObjectId, ref: 'Questions', required: true }, // 问题id
   content: { type: String, required: true }, // 回答内容
-  priority: { type: Number, default: 1 }, // 优先级
+  priority: { type: Boolean, default: 1 }, // 采纳
   // thumbNum: String, // 点赞
   isDelete: { type: Boolean, default: false },
 });

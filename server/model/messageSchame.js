@@ -7,6 +7,7 @@ const messageSchema = createShcema({
   status: { type: Number, default: 0 }, // 0 未读  1 已读
   title: { type: String, required: true },
   isMail: { type: Boolean, required: false }, // 是否发送邮件通知
+  type: { type: String, required: true },
 });
 
 module.exports = model('Message', messageSchema);

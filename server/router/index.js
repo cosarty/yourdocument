@@ -22,8 +22,13 @@ router.use('/paper', require('./paper'));
 router.use('/organize', require('./organize'));
 
 // 消息路由
+
 // 评论路由
+router.use('/comment', require('./comment'));
+
 // 回复路由
+router.use('/reply', require('./reply'));
+
 // 上传路由
 
 //TODO 错题本 等前端写的差不多再来写

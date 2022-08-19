@@ -54,6 +54,7 @@ const reviewQuestions = async (req, res, next) => {
         title: '题目审核通过!!',
         content: `您上传的题目【${req.question.title}】已通过审核`,
         sendEmail: true,
+        type: 2,
       });
     } else if (reviewStatus === 3) {
       await addMessage({
@@ -63,6 +64,7 @@ const reviewQuestions = async (req, res, next) => {
           reviewMessage || '无'
         }`,
         sendEmail: true,
+        type: 3,
       });
     }
 
