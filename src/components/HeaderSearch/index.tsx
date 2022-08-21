@@ -10,10 +10,11 @@ export type HeaderSearchProps = {
   onSearch?: () => void;
   placeholder?: string;
   value?: string;
+  className?: string;
 };
 
 const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
-  const { placeholder, value, onChange, onSearch } = props;
+  const { placeholder, value, onChange, onSearch, className } = props;
   const { addSearchHistory, searchList, deleteSearchHistory, clearhistory } =
     useModel('searchHistory');
   const { pathname } = useLocation();
@@ -92,7 +93,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
   };
 
   return (
-    <div className={classNames(styles.headerSearch)}>
+    <div className={classNames(className, styles.headerSearch)}>
       <AutoComplete
         value={value}
         options={options}
@@ -103,13 +104,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         }}
         style={{ width: '100%' }}
       >
-        <Input.Search
-          size='large'
-          placeholder={placeholder}
-          maxLength={40}
-          enterButton
-          onSearch={handleSearch}
-        />
+        <Input.Search size='large' placeholder={placeholder} enterButton onSearch={handleSearch} />
       </AutoComplete>
     </div>
   );

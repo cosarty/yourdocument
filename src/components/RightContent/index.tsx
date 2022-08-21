@@ -2,6 +2,7 @@ import { useModel, useSearchParams } from '@umijs/max';
 import { Button } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Access, useAccess } from 'umi';
 import HeaderSearch from '../HeaderSearch';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
@@ -11,16 +12,23 @@ export type SiderTheme = 'light' | 'dark';
 const GlobalHeaderRight: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const [searchParams] = useSearchParams();
+  const { canLogin } = useAccess();
   const [searchText, setSearchText] = useState<string>(searchParams.get('q') || '');
   if (!initialState || !initialState.settings) {
     return null;
   }
 
+  const login = (
+    <>
+      <Button type='text'>登录</Button>
+    </>
+  );
+
   return (
     <div className={styles.right}>
-      <div style={{ width: '40vw' }}>
+      <div style={{ width: '30vw' }}>
         <HeaderSearch
-          // className={`${styles.action} ${styles.search}`}
+          className={`${styles.action} ${styles.search}`}
           placeholder='题目搜索'
           value={searchText}
           onChange={(value) => {
@@ -31,13 +39,15 @@ const GlobalHeaderRight: React.FC = () => {
           }}
         />
       </div>
-      <div>
-        <Link to='/'>
-          <Button type='primary' size='large'>
-            上传题目
-          </Button>
-        </Link>
-        <Avatar />
+      <div className={styles.user}>
+        <Access accessible={canLogin} fallback={login}>
+          <Link to='/'>
+            <Button type='primary' size='large' className={styles.btn}>
+              上传题目
+            </Button>
+          </Link>
+          <Avatar />
+        </Access>
       </div>
     </div>
   );
