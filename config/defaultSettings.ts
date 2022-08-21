@@ -14,7 +14,7 @@ const Settings: LayoutSettings & {
   colorWeak: false,
   title: '试题君',
   pwa: false,
-  logo: 'shitijun.png',
+  logo: '/shitijun.png',
   iconfontUrl: '',
   splitMenus: true,
 };

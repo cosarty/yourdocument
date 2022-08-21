@@ -79,7 +79,12 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
 
   // 搜索事件
   const handleSearch = (name: string) => {
-    searchParams.set('q', name);
+    if (!!name) {
+      searchParams.set('q', name);
+      addSearchHistory(name);
+    } else {
+      searchParams.delete('q');
+    }
     if (pathname === '/') {
       history.push({
         pathname: '/',
@@ -89,7 +94,6 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
       window.open(`/questions?q=${name}`);
     }
     onSearch?.();
-    addSearchHistory(name);
   };
 
   return (
@@ -104,7 +108,13 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         }}
         style={{ width: '100%' }}
       >
-        <Input.Search size='large' placeholder={placeholder} enterButton onSearch={handleSearch} />
+        <Input.Search
+          size='large'
+          placeholder={placeholder}
+          enterButton
+          onSearch={handleSearch}
+          allowClear
+        />
       </AutoComplete>
     </div>
   );

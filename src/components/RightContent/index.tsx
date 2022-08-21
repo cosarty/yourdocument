@@ -1,3 +1,4 @@
+import { isMobile } from '@/util/utils';
 import { useModel, useSearchParams } from '@umijs/max';
 import { Button } from 'antd';
 import React, { useState } from 'react';
@@ -20,13 +21,13 @@ const GlobalHeaderRight: React.FC = () => {
 
   const login = (
     <>
-      <Button type='text'>登录</Button>
+      <Button type='link'>登录</Button>
     </>
   );
 
   return (
     <div className={styles.right}>
-      <div style={{ width: '30vw' }}>
+      <div style={{ minWidth: '30vw' }}>
         <HeaderSearch
           className={`${styles.action} ${styles.search}`}
           placeholder='题目搜索'
@@ -34,17 +35,16 @@ const GlobalHeaderRight: React.FC = () => {
           onChange={(value) => {
             setSearchText(value);
           }}
-          onSearch={() => {
-            setSearchText('');
-          }}
         />
       </div>
       <div className={styles.user}>
         <Access accessible={canLogin} fallback={login}>
           <Link to='/'>
-            <Button type='primary' size='large' className={styles.btn}>
-              上传题目
-            </Button>
+            {!isMobile() && (
+              <Button type='primary' size='large' className={styles.btn}>
+                上传题目
+              </Button>
+            )}
           </Link>
           <Avatar />
         </Access>
