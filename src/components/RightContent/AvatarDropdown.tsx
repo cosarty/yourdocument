@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import defaultAvtar from '@/assets/shitijun.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { Avatar, Menu } from 'antd';
@@ -81,7 +82,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size='small' className={styles.avatar} src={''} alt='avatar' />
+        <Avatar size='small' className={styles.avatar} src={defaultAvtar} alt='avatar' />
         <span className={`${styles.name} anticon`}>{''}</span>
       </span>
     </HeaderDropdown>
