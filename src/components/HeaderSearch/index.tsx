@@ -1,32 +1,17 @@
 import { AutoComplete, Input } from 'antd';
 import classNames from 'classnames';
-import useMergedState from 'rc-util/es/hooks/useMergedState';
 import React from 'react';
 import styles from './index.less';
 
 export type HeaderSearchProps = {
-  onSearch?: (value?: string) => void;
-  onChange?: (value?: string) => void;
-  onVisibleChange?: (b: boolean) => void;
-  className?: string;
+  onChange: (value: string) => void;
   placeholder?: string;
-  defaultVisible?: boolean;
-  visible?: boolean;
-
   value?: string;
 };
 
 const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
-  const {
-    className,
-
-    onVisibleChange,
-    placeholder,
-    visible,
-    defaultVisible,
-    ...restProps
-  } = props;
-
+  const { placeholder, value, onChange } = props;
+  // const {} = useModel('searchHistory');
   const options = [
     { label: <a href='https://umijs.org/zh/guide/umi-ui.html'>umi ui</a>, value: 'umi ui' },
     {
@@ -35,30 +20,28 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     },
   ];
 
-  const [value, setValue] = useMergedState<string | undefined>('', {
-    value: props.value,
-    onChange: props.onChange,
-  });
+  const handleSearch = (name: string) => {
+    console.log('name: ', name);
+  };
 
   return (
-    <div className={classNames(className, styles.headerSearch)}>
+    <div className={classNames(styles.headerSearch)}>
       <AutoComplete
         value={value}
         options={options}
-        onChange={(completeValue) => setValue(completeValue)}
+        onChange={(v) => {
+          if (onChange && v.length < 40) {
+            onChange(v);
+          }
+        }}
         style={{ width: '100%' }}
       >
         <Input.Search
           size='large'
-          placeholder={'题目搜索'}
+          placeholder={placeholder}
+          maxLength={40}
           enterButton
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              if (restProps.onSearch) {
-                restProps.onSearch(value);
-              }
-            }
-          }}
+          onSearch={handleSearch}
         />
       </AutoComplete>
     </div>
