@@ -1,8 +1,8 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
-
+import { request as requestConf } from '@/util/request';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
+import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 
 import defaultSettings from '../config/defaultSettings';
 
@@ -68,3 +68,5 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     ...initialState?.settings,
   };
 };
+
+export const request: RequestConfig = requestConf;

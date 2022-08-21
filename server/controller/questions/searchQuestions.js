@@ -54,7 +54,7 @@ const searchQuestions = async (req, res, next) => {
   try {
     res.status(200).send({
       code: 200,
-      message: '创建成功!!!',
+      message: '搜索成功!!!',
       data: { list: questionslist, total },
     });
   } catch (error) {
