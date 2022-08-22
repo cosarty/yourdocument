@@ -15,13 +15,22 @@ const GlobalHeaderRight: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { canLogin } = useAccess();
   const [searchText, setSearchText] = useState<string>(searchParams.get('q') || '');
+  const { gotoLogin } = useModel('user');
+
   if (!initialState || !initialState.settings) {
     return null;
   }
 
   const login = (
     <>
-      <Button type='link'>登录</Button>
+      <Button
+        type='link'
+        onClick={() => {
+          gotoLogin();
+        }}
+      >
+        登录
+      </Button>
     </>
   );
 

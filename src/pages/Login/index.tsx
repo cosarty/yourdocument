@@ -1,17 +1,17 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import React from 'react';
-import { ProFormText, LoginForm } from '@ant-design/pro-form';
-import { SelectLang, connect, useModel } from 'umi';
-import Footer from '@/components/Footer';
+
 import Logo from '@/assets/shitijun.png';
+import Footer from '@/components/Footer';
+import { LoginForm, ProFormText } from '@ant-design/pro-form';
+import { Image } from 'antd';
+import { SelectLang, useModel } from 'umi';
 import styles from './index.less';
-import { Image } from 'antd'
 
+const Login = () => {
+  const { login } = useModel('user');
 
-const Login = (props) => {
-
-  const handleSubmit = async (values) => {
-    await ringup(values)
+  const handleSubmit = async (values: any) => {
+    await login(values);
   };
 
   return (
@@ -21,9 +21,9 @@ const Login = (props) => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          logo={<Image alt="logo" src={Logo} />}
-          title="cxn"
-          subTitle={'试题君'}
+          logo={<Image alt='logo' src={Logo} />}
+          title='试题君'
+          subTitle={'欢迎登录'}
           initialValues={{
             autoLogin: true,
           }}
@@ -33,7 +33,7 @@ const Login = (props) => {
         >
           {/* {status === 'error' && <LoginMessage content={'账户或密码错误(admin/ant.design)'} />} */}
           <ProFormText
-            name="email"
+            name='email'
             fieldProps={{
               size: 'large',
               prefix: <UserOutlined className={styles.prefixIcon} />,
@@ -47,7 +47,7 @@ const Login = (props) => {
             ]}
           />
           <ProFormText.Password
-            name="password"
+            name='password'
             fieldProps={{
               size: 'large',
               prefix: <LockOutlined className={styles.prefixIcon} />,
@@ -67,5 +67,4 @@ const Login = (props) => {
   );
 };
 
-export default Login
-
+export default Login;

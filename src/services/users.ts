@@ -7,7 +7,7 @@ import { request } from 'umi'
  * @param payload  {email  password}
  * @returns API.Login
  */
-export const login = async (payload: Payload.Login) => await request<API.Login>('user/login', {
+export const login = async (payload: Payload.Login) => await request<API.Login>('/api/user/login', {
   method: 'POST', data: payload
 })
 

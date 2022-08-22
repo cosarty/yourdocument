@@ -3,12 +3,14 @@ import { getStorage, setStorage } from '@/util/storage';
 import { useEffect, useState } from 'react';
 const useSearchHistory = () => {
   const [searchList, setSearchList] = useState<SEARCH_KEY_TYPE>(
-    getStorage<SEARCH_KEY_TYPE>(SEARCH_KEY) || [],
+    getStorage<SEARCH_KEY_TYPE>(SEARCH_KEY) ?? [],
   );
 
   useEffect(() => {
+
     // 每次有新值就加入storage
     setStorage(SEARCH_KEY, searchList);
+
   }, [searchList]);
 
   const addSearchHistory = (value: SEARCH_KEY_TYPE[number]) => {

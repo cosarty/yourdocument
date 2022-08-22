@@ -3,7 +3,8 @@
     name: 'login',
     path: '/login',
     component: '@/pages/Login',
-    menu: false
+    menu: false,
+    layout: false
   },
   {
     path: '/',
@@ -123,7 +124,7 @@
     ],
   },
   {
-    path: '/question/:key',
+    path: '/questions',
     icon: 'CodeOutlined',
     component: './Welcome',
   },

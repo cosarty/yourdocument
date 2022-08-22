@@ -1,12 +1,7 @@
 import type { AxiosResponse, RequestConfig } from '@umijs/max';
 
 
-// 与后端约定的响应数据格式
-interface ResponseStructure {
-  message: any;
-  data: any;
-  code?: number
-}
+
 
 // 运行时配置
 export const request: RequestConfig = {
