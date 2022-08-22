@@ -1,5 +1,11 @@
 ﻿export default [
   {
+    name: 'login',
+    path: '/login',
+    component: '@/pages/Login',
+    menu: false
+  },
+  {
     path: '/',
     name: '题目',
     icon: 'smile',

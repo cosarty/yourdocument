@@ -6,7 +6,7 @@ const Welcome: React.FC = () => {
   useEffect(() => {
     request('/api/questions/search', {
       method: 'POST',
-      data: { orderKey: 'update_time', tags: ['python'] },
+      data: { orderKey: 'update_time' },
     }).then((res) => {
       console.log(res);
     });

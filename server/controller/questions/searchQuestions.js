@@ -6,7 +6,7 @@ const { tags, difficulty } = require('./service/questionsValidate');
 // orderKey  用来指定排序  update_time  favourNum
 const searchQuestionsValidator = validator([
   body('title').optional().isString().withMessage('title是字符串类型!!!'),
-  tags,
+  tags.optional(),
   body('type')
     .optional()
     .bail()
@@ -37,14 +37,14 @@ const searchQuestions = async (req, res, next) => {
   } = req.body;
 
   title && (queryData.title = title);
-  tags.length > 0 && (queryData.tags = tags);
+  tags && tags.length > 0 && (queryData.tags = tags);
   type && (queryData.type = type);
   difficulty && (queryData.difficulty = difficulty);
   const skip = pageSize * (pageNum - 1);
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()
-      .populate('userId')
+      .populate({ path: 'userId', select: { nickname: 1 } })
       .where({ ...queryData, reviewStatus: 2, isDelete: false })
       .skip(skip)
       .limit(pageSize || null);
