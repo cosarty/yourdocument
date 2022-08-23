@@ -27,7 +27,7 @@ const codeMessage = {
 // 运行时配置
 export const request: RequestConfig = {
   // 统一的请求设定
-  timeout: 1000,
+  timeout: 10000,
   // headers: { 'X-Requested-With': 'XMLHttpRequest' },
 
   // 错误处理： umi@3 的错误处理方案。
@@ -35,6 +35,7 @@ export const request: RequestConfig = {
     // 错误抛出
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
+      console.log('error: ', error);
       if (opts?.skipErrorHandler) throw error;
       const response = error['response']
       const errData = response?.data as API.API_TYPE<null>
@@ -64,6 +65,9 @@ export const request: RequestConfig = {
             });
           }
         }
+
+
+        return
       }
       if (!response) {
         notification.error({

@@ -24,6 +24,7 @@ declare namespace API {
     aut: 'super' | 'admin' | 'user',
     create_time: Date,
     update_time: Date,
+    auth: string
   }>
 }
 

@@ -41,7 +41,6 @@ const sendMail = async (req, res, next) => {
     subject: '试题君',
     content: '欢迎注册试题君。验证码：' + captcha,
   });
-
   if (!d) {
     next({ code: 401, message: '邮件发送失败', data: null });
     return;
@@ -51,7 +50,7 @@ const sendMail = async (req, res, next) => {
     await authcode.save();
     res.status(200).json({ code: 200, message: '邮件发送成功！', data: { captcha } });
   } catch (err) {
-    console.log(err);
+    next({ code: 401, message: '邮件发送失败', data: null });
   }
 };
 

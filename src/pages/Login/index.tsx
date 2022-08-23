@@ -13,10 +13,19 @@ type LoginType = 'login' | 'register';
 
 const Login = () => {
   const [loginType, setLoginType] = useState<LoginType>('login');
-  const { login } = useModel('user');
+  const { login, register } = useModel('user');
   const formRef = useRef<ProFormInstance>();
   const handleSubmit = async (values: any) => {
-    await login(values);
+    if (loginType === 'login') await login(values);
+    if (loginType === 'register') {
+      console.log('values: ', values);
+      if (await register(values)) {
+        message.success('注册成功');
+        setLoginType('login');
+      } else {
+        message.error('注册失败');
+      }
+    }
   };
 
   return (
@@ -35,6 +44,12 @@ const Login = () => {
           }}
           onFinish={async (values) => {
             await handleSubmit(values);
+          }}
+          submitter={{
+            // 配置按钮文本
+            searchConfig: {
+              submitText: loginType === 'login' ? '登录' : '注册',
+            },
           }}
         >
           <Tabs
@@ -86,8 +101,7 @@ const Login = () => {
           {loginType === 'register' && (
             <>
               <ProFormText
-                name='nickname'
-                label='昵称'
+                name={'nickname'}
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,

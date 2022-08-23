@@ -7,7 +7,7 @@ import defaultSettings from '../config/defaultSettings';
 import { getCurrentUser } from './services/users';
 
 // const isDev = process.env.NODE_ENV === 'development';
-// const loginPath = '/user/login';
+// const loginPath = '/login';
 
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;

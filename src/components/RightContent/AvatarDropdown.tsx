@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import defaultAvtar from '@/assets/shitijun.png';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { Avatar, Menu } from 'antd';
 import type { ItemType } from 'antd/lib/menu/hooks/useItems';
@@ -8,10 +8,6 @@ import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-
-export type GlobalHeaderRightProps = {
-  menu?: boolean;
-};
 
 /**
  * 退出登录，并且将当前的 url 保存
@@ -34,15 +30,14 @@ export type GlobalHeaderRightProps = {
 //   }
 // };
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
+const AvatarDropdown: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
-
+  const { logout } = useModel('user');
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       const { key } = event;
       if (key === 'logout') {
-        // setInitialState((s) => ({ ...s, currentUser: undefined }));
-        // loginOut();
+        logout();
         return;
       }
       // history.push(`/account/${key}`);
@@ -51,23 +46,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   );
 
   const menuItems: ItemType[] = [
-    ...(menu
-      ? [
-          {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
-          },
-          {
-            type: 'divider' as const,
-          },
-        ]
-      : []),
     {
       key: 'logout',
       icon: <LogoutOutlined />,
