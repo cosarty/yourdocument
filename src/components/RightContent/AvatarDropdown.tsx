@@ -9,27 +9,6 @@ import React, { useCallback } from 'react';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
-/**
- * 退出登录，并且将当前的 url 保存
- */
-/* const loginOut = async () => {
-  // 退出登录
-  // await outLogin();
-  const { search, pathname } = history.location;
-  const urlParams = new URL(window.location.href).searchParams;
-  /** 此方法会跳转到 redirect 参数所在的位置 */
-//   const redirect = urlParams.get('redirect');
-//   // Note: There may be security issues, please note
-//   if (window.location.pathname !== '/user/login' && !redirect) {
-//     history.replace({
-//       pathname: '/user/login',
-//       search: stringify({
-//         redirect: pathname + search,
-//       }),
-//     });
-//   }
-// };
-
 const AvatarDropdown: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { logout } = useModel('user');
@@ -40,7 +19,6 @@ const AvatarDropdown: React.FC = () => {
         logout();
         return;
       }
-      // history.push(`/account/${key}`);
     },
     [setInitialState],
   );

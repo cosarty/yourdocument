@@ -1,9 +1,9 @@
 ﻿export default [
   {
-    name: '登录',
+    title: '登录',
     path: '/login',
     component: '@/pages/Login',
-    menu: false,
+    // menu: false,
     layout: false
   },
   {
@@ -11,13 +11,13 @@
     name: '题目',
     icon: 'smile',
     component: './Welcome',
+
   },
   {
     path: '/account',
     name: '个人中心',
-
     icon: 'CodeOutlined',
-    // access: 'canUser',
+    access: 'canLogin',
     routes: [
       {
         path: '/account',
@@ -68,6 +68,7 @@
   {
     path: '/organi',
     name: '组织',
+    access: 'canLogin',
     routes: [
       {
         name: '我的组织',
@@ -85,7 +86,7 @@
   },
   {
     path: '/manage',
-    // access: 'canAdmin',
+    access: 'canAdmin',
     name: '管理员界面',
     routes: [
       {
@@ -104,6 +105,7 @@
         path: '/manage/users',
         component: './Welcome',
         icon: 'CodeOutlined',
+        access: 'canSuper'
       },
       {
         name: '分类管理',

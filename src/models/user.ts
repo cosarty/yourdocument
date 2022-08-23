@@ -1,22 +1,27 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import users from '@/services/users'
-import { history, useModel } from '@umijs/max'
+import { useModel, history as historys } from '@umijs/max'
+
 import { getStorage, removeStorage, setStorage } from '@/util/storage'
 import { TOKEN_KEY } from '@/constant/storKey'
 import { message } from 'antd'
 
+
 const useUser = () => {
 
-  const { search, pathname } = location
+
   const { setInitialState } = useModel('@@initialState');
 
 
   const gotoLogin = () => {
+    const { search, pathname } = location
     const params = new URLSearchParams()
     params.set('redirect', pathname + search)
-    history.push({ pathname: '/login', search: params.toString() })
+    historys.replace({ pathname: '/login', search: params.toString() })
+
   }
   const login = async (pra: Payload.Login) => {
+    const { search } = location
     const { data } = await users.login(pra)
     setStorage(TOKEN_KEY, data?.token)
     // 获取当前登录用户
@@ -26,7 +31,11 @@ const useUser = () => {
       // 保存用户信息
       if (user) await setInitialState((s) => ({ ...s, currentUser: user.data }));
       const redirect = new URLSearchParams(search).get('redirect')
-      history.push(redirect ?? '/')
+      // history.replace({ pathname: redirect ?? '/' })
+      // 设置但是不跳转
+      // window.history.replaceState(null, null, redirect ?? '/')
+      // history.go()
+      window.location.href = redirect ?? '/';
     } catch (error) {
       message.error('登录失败！！')
     }
@@ -36,7 +45,7 @@ const useUser = () => {
     if (getStorage(TOKEN_KEY)) {
       removeStorage(TOKEN_KEY)
     }
-    gotoLogin()
+    window.location.href = '/'
   }
 
   // 注册

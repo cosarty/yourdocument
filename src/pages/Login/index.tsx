@@ -5,7 +5,7 @@ import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { ProFormCaptcha, ProFormInstance, ProFormRadio } from '@ant-design/pro-components';
 import { LoginForm, ProFormText } from '@ant-design/pro-form';
 import { Image, message, Tabs } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SelectLang, useModel } from 'umi';
 import styles from './index.less';
 
@@ -15,8 +15,16 @@ const Login = () => {
   const [loginType, setLoginType] = useState<LoginType>('login');
   const { login, register } = useModel('user');
   const formRef = useRef<ProFormInstance>();
+
+  useEffect(() => {
+    document.title = loginType === 'login' ? '登录' : '注册';
+  }, [loginType]);
+
   const handleSubmit = async (values: any) => {
-    if (loginType === 'login') await login(values);
+    if (loginType === 'login') {
+      await login(values);
+      message.success('登录成功!!!');
+    }
     if (loginType === 'register') {
       console.log('values: ', values);
       if (await register(values)) {

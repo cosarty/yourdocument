@@ -27,9 +27,9 @@ export default {
   },
   pre: {
     '/api/': {
-      target: 'your pre url',
+      target: 'http://localhost:3000',
       changeOrigin: true,
-      pathRewrite: { '^': '' },
+      // pathRewrite: { '^': '' },
     },
   },
 };

@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { request as requestConf } from '@/util/request';
 import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
-import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { matchRoutes, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+
 import defaultSettings from '../config/defaultSettings';
+
+import { TOKEN_KEY } from './constant/storKey';
 import { getCurrentUser } from './services/users';
+import { getStorage, removeStorage } from './util/storage';
 
 // const isDev = process.env.NODE_ENV === 'development';
 // const loginPath = '/login';
@@ -15,12 +20,29 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
   loading?: boolean;
 }> {
-  const user = await getCurrentUser(false);
+  try {
+    const user = await getCurrentUser();
 
-  return {
-    currentUser: user?.data ?? null,
-    settings: defaultSettings,
-  };
+    return {
+      currentUser: user?.data ?? null,
+      settings: defaultSettings,
+    };
+  } catch (error) {
+    if (getStorage(TOKEN_KEY)) {
+      removeStorage(TOKEN_KEY);
+    }
+    return {
+      currentUser: null,
+      settings: defaultSettings,
+    };
+  }
+}
+
+export function onRouteChange({ clientRoutes, location }: { clientRoutes: any; location: any }) {
+  const route = matchRoutes(clientRoutes, location.pathname)?.pop()?.route;
+  if (route) {
+    // document.title = route?.title || '首页';
+  }
 }
 
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
@@ -45,7 +67,17 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     // 自定义 404 页面
     noFound: <div>noFoun</div>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    childrenRender: (children, props) => {
+    menuDataRender: (menuData: any) => {
+      const { currentUser } = initialState ?? {};
+      const access = {
+        canAdmin: ['admin', 'super'].includes(currentUser?.auth ?? ''),
+        canLogin: !!currentUser,
+        canSuper: currentUser?.auth === 'super',
+      };
+
+      return menuData.filter((menuItem: any) => !menuItem.access || access[menuItem.access]);
+    },
+    childrenRender: (children) => {
       if (initialState?.loading) return <PageLoading />;
       return <>{children}</>;
     },

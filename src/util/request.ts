@@ -35,7 +35,7 @@ export const request: RequestConfig = {
     // 错误抛出
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
-      console.log('error: ', error);
+      // console.log('error: ', error);s
       if (opts?.skipErrorHandler) throw error;
       const response = error['response']
       const errData = response?.data as API.API_TYPE<null>
