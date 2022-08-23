@@ -11,32 +11,26 @@ const useUser = () => {
   const { setInitialState } = useModel('@@initialState');
 
 
-
-  // 跳转登录页  然后 设置url
-  // 然后登录之后获取当前登录用户跳转实现
-
   const gotoLogin = () => {
     const params = new URLSearchParams()
     params.set('redirect', pathname + search)
     history.push({ pathname: '/login', search: params.toString() })
   }
-
   const login = async (pra: Payload.Login) => {
-    const data = await users.login(pra)
+    const { data } = await users.login(pra)
     setStorage(TOKEN_KEY, data?.token)
     // 获取当前登录用户
     try {
       const user = await users.getCurrentUser()
+
       // 保存用户信息
-      if (user) await setInitialState((s) => ({ ...s, currentUser: user }));
+      if (user) await setInitialState((s) => ({ ...s, currentUser: user.data }));
       const redirect = new URLSearchParams(search).get('redirect')
       history.push(redirect ?? '/')
     } catch (error) {
       message.error('登录失败！！')
     }
-
   }
-
 
   const logout = () => {
     if (getStorage(TOKEN_KEY)) {
@@ -45,10 +39,16 @@ const useUser = () => {
     gotoLogin()
   }
 
+  // 注册
+  const register = () => {
+
+  }
+
   return {
     gotoLogin,
     login,
-    logout
+    logout,
+    register
   }
 }
 
