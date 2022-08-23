@@ -17,7 +17,7 @@ const validate = function (validations) {
       return next();
     }
 
-    res.status(400).json({ code: 400, errors: errors.mapped(), data: null });
+    res.status(400).json({ code: 400, message: errors.mapped(), data: null });
   };
 };
 

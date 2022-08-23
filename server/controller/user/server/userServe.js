@@ -9,4 +9,4 @@ exports.checkUser = async (userId) => {
   if (!user || user.is_ban) return Promise.reject('用户不存在');
 };
 
-exports.getUserInfo = async (userId) => await UserModel.findById(userId);
+exports.getUserInfo = async (userId) => await UserModel.findById(userId).populate('favours');

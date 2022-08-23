@@ -19,7 +19,9 @@ module.exports = (auth, vi) => async (req, res, next) => {
     if (token) {
       const data = await verifyToken(token);
       // 重新获取用户信息
-      const user = await getUserInfo(data.user._id);
+      let user = await getUserInfo(data.user._id);
+      user = user.toJSON();
+      delete user.password;
       if ((Array.isArray(auth) && !auth.includes(user.auth)) || user.is_ban) {
         res.status(403).send({ code: 403, messgae: '您不具备此权限!!!', data: null });
         return;

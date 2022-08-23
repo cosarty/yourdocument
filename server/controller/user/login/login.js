@@ -16,6 +16,7 @@ const loginValid = [
       .custom(async (email, { req }) => {
         // 告诉他我需要password
         const user = await User.findOne({ email }).populate('favours');
+
         if (!user) {
           return Promise.reject('用户不存在!!!');
         }
@@ -40,6 +41,7 @@ const login = async (req, res, next) => {
   // 登录
   try {
     const user = req.user.toJSON();
+
     delete user.password;
     const token = await createToken({ user });
     // 判断是否是封号用户

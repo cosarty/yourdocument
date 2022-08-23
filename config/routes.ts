@@ -1,6 +1,6 @@
 ﻿export default [
   {
-    name: 'login',
+    name: '登录',
     path: '/login',
     component: '@/pages/Login',
     menu: false,
