@@ -1,20 +1,24 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { request as requestConf } from '@/util/request';
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
 import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
-
 import defaultSettings from '../config/defaultSettings';
+import { getCurrentUser } from './services/users';
 
 // const isDev = process.env.NODE_ENV === 'development';
 // const loginPath = '/user/login';
 
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.CurrentUser['data'] | null;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  loading?: boolean;
 }> {
+  const user = await getCurrentUser(false);
+
   return {
+    currentUser: user ?? null,
     settings: defaultSettings,
   };
 }
@@ -37,13 +41,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     menuHeaderRender: undefined,
     // 自定义 403 页面
-
-    unAccessible: <div>unAccessible</div>,
+    // unAccessible: <div>unAccessible</div>,
     // 自定义 404 页面
     noFound: <div>noFoun</div>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     childrenRender: (children, props) => {
-      // if (initialState?.loading) return <PageLoading />;
+      if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

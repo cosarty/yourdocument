@@ -1,8 +1,9 @@
 import Logo from '@/assets/shitijun.png';
 import Footer from '@/components/Footer';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { ProFormCaptcha } from '@ant-design/pro-components';
 import { LoginForm, ProFormText } from '@ant-design/pro-form';
-import { Image, Tabs } from 'antd';
+import { Image, message, Tabs } from 'antd';
 import { useState } from 'react';
 import { SelectLang, useModel } from 'umi';
 import styles from './index.less';
@@ -57,6 +58,10 @@ const Login = () => {
                     required: true,
                     message: '请输入邮箱!',
                   },
+                  {
+                    type: 'email',
+                    message: '邮箱格式错误',
+                  },
                 ]}
               />
               <ProFormText.Password
@@ -89,6 +94,10 @@ const Login = () => {
                     required: true,
                     message: '请输入邮箱!',
                   },
+                  {
+                    type: 'email',
+                    message: '邮箱格式错误',
+                  },
                 ]}
               />
               <ProFormText.Password
@@ -104,6 +113,33 @@ const Login = () => {
                     message: '请输入密码！',
                   },
                 ]}
+              />
+              <ProFormCaptcha
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined className={'prefixIcon'} />,
+                }}
+                captchaProps={{
+                  size: 'large',
+                }}
+                placeholder={'请输入验证码'}
+                captchaTextRender={(timing, count) => {
+                  if (timing) {
+                    return `${count} ${'获取验证码'}`;
+                  }
+                  return '获取验证码';
+                }}
+                name='captcha'
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入验证码！',
+                  },
+                ]}
+                countDown={60}
+                onGetCaptcha={async () => {
+                  message.success('获取验证码成功！验证码为：1234');
+                }}
               />
             </>
           )}

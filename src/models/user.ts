@@ -9,13 +9,14 @@ const useUser = () => {
 
   const { search, pathname } = location
   const { setInitialState } = useModel('@@initialState');
-  const params = new URLSearchParams()
+
 
 
   // 跳转登录页  然后 设置url
   // 然后登录之后获取当前登录用户跳转实现
 
   const gotoLogin = () => {
+    const params = new URLSearchParams()
     params.set('redirect', pathname + search)
     history.push({ pathname: '/login', search: params.toString() })
   }
@@ -26,7 +27,10 @@ const useUser = () => {
     // 获取当前登录用户
     try {
       const user = await users.getCurrentUser()
-      console.log('user: ', user);
+      // 保存用户信息
+      if (user) await setInitialState((s) => ({ ...s, currentUser: user }));
+      const redirect = new URLSearchParams(search).get('redirect')
+      history.push(redirect ?? '/')
     } catch (error) {
       message.error('登录失败！！')
     }

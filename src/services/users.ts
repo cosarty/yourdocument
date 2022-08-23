@@ -16,9 +16,9 @@ export const login = async (payload: Payload.Login) => await request<API.Login['
  * @returns 获取当前登录信息
  * 
  */
-export const getCurrentUser = async () => await request<API.CurrentUser['data']>('/api/user/getCurrent', {
+export const getCurrentUser = async (skipErrorHandler: boolean = true) => await request<API.CurrentUser['data']>('/api/user/getCurrent', {
   method: 'GET',
-  skipErrorHandler: true
+  skipErrorHandler
 }).catch(err => {
   if (err.response) {
     const er = err.response.data as API.CurrentUser
