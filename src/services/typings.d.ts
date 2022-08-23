@@ -33,4 +33,16 @@ declare namespace Payload {
     eamil: string,
     password: string
   }
+  type SendMail = {
+    email: string,
+  }
+
+  type Register = {
+    nickname: string,
+    gender,
+    password,
+    email,
+    gender,
+    captcha
+  }
 }

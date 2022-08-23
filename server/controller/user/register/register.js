@@ -33,11 +33,14 @@ const registerValid = // 注册验证
         }
       }),
     body('gender')
-      .exists()
-      .withMessage('请输入性别')
+      .isInt()
+      .withMessage('请输入数字类型数据')
       .bail()
-      .isIn([0, 1])
-      .withMessage('性别不合法！！'),
+      .custom(async (gender, { req }) => {
+        if (![0, 1].includes(Number(gender))) return Promise.reject('0:女生,1:男生!!');
+      })
+      .bail()
+      .toInt(),
     body('captcha')
       .exists()
       .withMessage('请输入验证码！')

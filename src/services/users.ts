@@ -7,7 +7,7 @@ import { request } from 'umi'
  * @param payload  {email  password}
  * @returns API.Login
  */
-export const login = async (payload: Payload.Login) => await request<API.Login['data']>('/api/user/login', {
+export const login = async (payload: Payload.Login) => await request<API.Login>('/api/user/login', {
   method: 'POST', data: payload
 })
 
@@ -16,7 +16,7 @@ export const login = async (payload: Payload.Login) => await request<API.Login['
  * @returns 获取当前登录信息
  * 
  */
-export const getCurrentUser = async (skipErrorHandler: boolean = true) => await request<API.CurrentUser['data']>('/api/user/getCurrent', {
+export const getCurrentUser = async (skipErrorHandler: boolean = true) => await request<API.CurrentUser>('/api/user/getCurrent', {
   method: 'GET',
   skipErrorHandler
 }).catch(err => {
@@ -27,4 +27,13 @@ export const getCurrentUser = async (skipErrorHandler: boolean = true) => await 
 })
 
 
-export default { login, getCurrentUser }
+
+export const sendMail = async (payload: Payload.SendMail) => await request<API.API_TYPE<null>>('/api/user/sendmail', {
+  method: 'POST', data: payload
+})
+
+
+export const register = async (payload: Payload.Register) => await request<API.API_TYPE<null>>('/api/user/sign', {
+  method: 'POST', data: payload
+})
+export default { login, getCurrentUser, register }

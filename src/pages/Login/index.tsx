@@ -1,10 +1,11 @@
 import Logo from '@/assets/shitijun.png';
 import Footer from '@/components/Footer';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { ProFormCaptcha } from '@ant-design/pro-components';
+import { sendMail } from '@/services/users';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { ProFormCaptcha, ProFormInstance, ProFormRadio } from '@ant-design/pro-components';
 import { LoginForm, ProFormText } from '@ant-design/pro-form';
 import { Image, message, Tabs } from 'antd';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SelectLang, useModel } from 'umi';
 import styles from './index.less';
 
@@ -13,7 +14,7 @@ type LoginType = 'login' | 'register';
 const Login = () => {
   const [loginType, setLoginType] = useState<LoginType>('login');
   const { login } = useModel('user');
-
+  const formRef = useRef<ProFormInstance>();
   const handleSubmit = async (values: any) => {
     await login(values);
   };
@@ -26,6 +27,7 @@ const Login = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<Image alt='logo' src={Logo} />}
+          formRef={formRef}
           title='试题君'
           subTitle={'欢迎登录'}
           initialValues={{
@@ -50,7 +52,7 @@ const Login = () => {
                 name='email'
                 fieldProps={{
                   size: 'large',
-                  prefix: <UserOutlined className={styles.prefixIcon} />,
+                  prefix: <MailOutlined className={styles.prefixIcon} />,
                 }}
                 placeholder={'请输入邮箱'}
                 rules={[
@@ -64,6 +66,7 @@ const Login = () => {
                   },
                 ]}
               />
+
               <ProFormText.Password
                 name='password'
                 fieldProps={{
@@ -83,12 +86,27 @@ const Login = () => {
           {loginType === 'register' && (
             <>
               <ProFormText
-                name='email'
+                name='nickname'
+                label='昵称'
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'邮箱:super@a.com'}
+                placeholder={'请输入昵称'}
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入昵称!',
+                  },
+                ]}
+              />
+              <ProFormText
+                name='email'
+                fieldProps={{
+                  size: 'large',
+                  prefix: <MailOutlined className={styles.prefixIcon} />,
+                }}
+                placeholder={'请输入邮箱'}
                 rules={[
                   {
                     required: true,
@@ -100,17 +118,60 @@ const Login = () => {
                   },
                 ]}
               />
+
               <ProFormText.Password
                 name='password'
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={'密码：123123'}
+                placeholder={'请输入密码'}
                 rules={[
                   {
                     required: true,
                     message: '请输入密码！',
+                  },
+                ]}
+              />
+              <ProFormText.Password
+                name='confirm'
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined className={styles.prefixIcon} />,
+                }}
+                // dependencies={['password']}
+                placeholder={'请确认密码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '请确认密码！',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('两次密码不一致'));
+                    },
+                  }),
+                ]}
+              />
+              <ProFormRadio.Group
+                name='gender'
+                options={[
+                  {
+                    label: '女',
+                    value: 1,
+                  },
+                  {
+                    label: '男',
+                    value: 0,
+                  },
+                ]}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择性别',
                   },
                 ]}
               />
@@ -138,7 +199,10 @@ const Login = () => {
                 ]}
                 countDown={60}
                 onGetCaptcha={async () => {
-                  message.success('获取验证码成功！验证码为：1234');
+                  const email = formRef?.current?.getFieldValue('email') as string;
+                  const state = await sendMail({ email });
+                  message.success('获取验证码成功！');
+                  console.log('state: ', state);
                 }}
               />
             </>

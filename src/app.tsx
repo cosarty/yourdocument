@@ -18,7 +18,7 @@ export async function getInitialState(): Promise<{
   const user = await getCurrentUser(false);
 
   return {
-    currentUser: user ?? null,
+    currentUser: user?.data ?? null,
     settings: defaultSettings,
   };
 }
@@ -47,24 +47,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     childrenRender: (children, props) => {
       if (initialState?.loading) return <PageLoading />;
-      return (
-        <>
-          {children}
-          {/*         {!props.location?.pathname?.includes('/login') && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
-              settings={initialState?.settings}
-              onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
-                  ...preInitialState,
-                  settings,
-                }));
-              }}
-            />
-          )} */}
-        </>
-      );
+      return <>{children}</>;
     },
     ...initialState?.settings,
   };

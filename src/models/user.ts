@@ -40,8 +40,9 @@ const useUser = () => {
   }
 
   // 注册
-  const register = () => {
-
+  const register = async (pra: Payload.Register) => {
+    const { code } = await users.register(pra)
+    return code === 200
   }
 
   return {

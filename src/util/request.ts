@@ -91,13 +91,13 @@ export const request: RequestConfig = {
   responseInterceptors: [
     (response: AxiosResponse) => {
       // 拦截响应数据，进行个性化处理
-      const { data } = response;
+      // const { data } = response;
 
       // if (!data.success) {
       //   message.error('请求失败！');
       // }
 
-      return data;
+      return response;
     },
   ],
 };
