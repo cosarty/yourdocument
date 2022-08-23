@@ -47,9 +47,6 @@ const Login = () => {
           formRef={formRef}
           title='试题君'
           subTitle={'欢迎登录'}
-          initialValues={{
-            autoLogin: true,
-          }}
           onFinish={async (values) => {
             await handleSubmit(values);
           }}

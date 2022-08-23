@@ -15,19 +15,18 @@
   },
   {
     path: '/account',
-    name: '个人中心',
-    icon: 'CodeOutlined',
+    name: '个人',
+    icon: 'UserOutlined',
     access: 'canLogin',
     routes: [
       {
         path: '/account',
         redirect: '/account/info',
-        icon: 'CodeOutlined',
       },
       {
         name: '个人资料',
         path: '/account/info',
-        component: './Welcome',
+        component: '@/pages/Account/Info',
         icon: 'CodeOutlined',
       },
       {
