@@ -20,7 +20,10 @@ module.exports = (auth, vi) => async (req, res, next) => {
       const data = await verifyToken(token);
       // 重新获取用户信息
       let user = await getUserInfo(data.user._id);
+
       user = user.toJSON();
+      // 组装图片路径
+      user.avtar_url = require('config')['site'] + user.avtar_url;
       delete user.password;
       if ((Array.isArray(auth) && !auth.includes(user.auth)) || user.is_ban) {
         res.status(403).send({ code: 403, messgae: '您不具备此权限!!!', data: null });

@@ -26,6 +26,8 @@ declare namespace API {
     update_time: Date,
     auth: string
   }>
+
+  type Upload = API_TYPE<{ fileURL: string }>
 }
 
 
@@ -45,5 +47,8 @@ declare namespace Payload {
     email,
     gender,
     captcha
+  }
+  type UploadAvatar = {
+    avatar: File
   }
 }

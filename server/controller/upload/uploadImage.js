@@ -13,7 +13,13 @@ const uploadImage = async (req, res, next) => {
     user.avtar_url = require('config')['assetsDir']['avatarDir'] + '/' + req.file.filename;
 
     await user.save();
-    res.status(202).send({ code: 202, message: '上传成功!!', data: user });
+    res
+      .status(202)
+      .send({
+        code: 202,
+        message: '上传成功!!',
+        data: { fileURL: require('config')['site'] + user.avtar_url },
+      });
   } catch {
     next({ code: 500, message: '上传失败!!', data: null });
   }
