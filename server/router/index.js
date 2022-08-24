@@ -30,6 +30,7 @@ router.use('/comment', require('./comment'));
 router.use('/reply', require('./reply'));
 
 // 上传路由
+router.use('/upload', require('./upload'));
 
 //TODO 错题本 等前端写的差不多再来写
 // 错题本路由// 错题本路由

@@ -20,8 +20,8 @@ app.use(morgan('dev'));
 // 托管静态资源
 // 访问前缀
 // 托管多个资源
-app.use('/public', express.static(path.join(__dirname, './image')));
-app.use('/config', express.static(path.join(__dirname, './config')));
+app.use('/image', express.static(path.join(__dirname, './assets/public/image')));
+// app.use('/config', express.static(path.join(__dirname, './config')));
 
 app.all('*', (req, res, next) => {
   // google需要配置，否则报错cors error

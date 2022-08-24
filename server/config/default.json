@@ -1,4 +1,9 @@
 {
   "dbUrl": "mongodb://localhost/shitijun",
-  "jwtSecret": "8fbff7aa-b69d-48e0-963b-6eaea1530211"
+  "jwtSecret": "8fbff7aa-b69d-48e0-963b-6eaea1530211",
+  "assetsDir": {
+    "base": "/assets/public",
+    "temp": "/assets/temp",
+    "avatarDir": "/image/avartar"
+  }
 }
