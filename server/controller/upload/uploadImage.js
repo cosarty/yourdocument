@@ -10,7 +10,7 @@ const uploadImage = async (req, res, next) => {
   try {
     const user = await getUserInfo(_id);
     // console.log('user: ', user);
-    user.avtar_url = req.fileUrl.split(path.sep).join('/') + req.file.filename;
+    user.avtar_url = require('config')['assetsDir']['avatarDir'] + '/' + req.file.filename;
 
     await user.save();
     res.status(202).send({ code: 202, message: '上传成功!!', data: user });

@@ -4,7 +4,7 @@ const path = require('path');
 
 const router = require('./router');
 const errorHandler = require('./middleware/errorHandler');
-
+const { base, avatarDir } = require('config')['assetsDir'];
 // 加载模型
 require('./model');
 
@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 // 托管静态资源
 // 访问前缀
 // 托管多个资源
-app.use('/image', express.static(path.join(__dirname, './assets/public/image')));
+app.use(avatarDir, express.static(path.join(process.cwd(), base, avatarDir)));
 // app.use('/config', express.static(path.join(__dirname, './config')));
 
 app.all('*', (req, res, next) => {
