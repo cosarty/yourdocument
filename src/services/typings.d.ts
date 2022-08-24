@@ -17,14 +17,13 @@ declare namespace API {
     _id: string,
     nickname: string,
     email: string,
-    gende: number,
+    gender: number,
     avtar_url: string,
     is_ban: boolean,
     profile: string,
-    aut: 'super' | 'admin' | 'user',
     create_time: Date,
     update_time: Date,
-    auth: string
+    auth: 'super' | 'admin' | 'user',
   }>
 
   type Upload = API_TYPE<{ fileURL: string }>

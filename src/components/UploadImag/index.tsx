@@ -18,7 +18,7 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
       ? [
           {
             uid: '-1',
-            name: 'image.png',
+            name: value.split('/').slice(-1)[0],
             status: 'done',
             url: value,
           },

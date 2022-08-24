@@ -1,11 +1,25 @@
 import UploadImag from '@/components/UploadImag';
-import { LockOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
-import { ModalForm, ProForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import {
+  ModalForm,
+  ProForm,
+  ProFormRadio,
+  ProFormText,
+  ProFormTextArea,
+} from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { Button, message } from 'antd';
 import { useRef } from 'react';
 import styles from './index.less';
+
+interface FormField {
+  avtar_url: string;
+  email: string;
+  nickname: string;
+  gender: number;
+  profile: string;
+}
 
 export default () => {
   const { initialState } = useModel('@@initialState');
@@ -17,11 +31,15 @@ export default () => {
   const setValue = (name: string, value: string | number) =>
     formRef.current?.setFieldsValue({ [name]: value });
 
+  const submit = async (values: FormField) => {
+    await getUser();
+    console.log(values);
+    message.success('编辑成功');
+    return true;
+  };
+
   return (
-    <ModalForm<{
-      name: string;
-      company: string;
-    }>
+    <ModalForm<FormField>
       formRef={formRef}
       title='编辑'
       trigger={
@@ -37,16 +55,15 @@ export default () => {
         width: 400,
       }}
       submitTimeout={2000}
-      onFinish={async () => {
-        await getUser();
-        // console.log(values.name);
-        message.success('编辑成功');
-        return true;
-      }}
+      onFinish={submit}
       initialValues={initialState?.currentUser ?? {}}
     >
-      <div className={styles['.form_position ']}>
-        <ProForm.Item rules={[{ required: true, message: '请上传图片' }]} name='avtar_url'>
+      <div className={styles['form_position']}>
+        <ProForm.Item
+          rules={[{ required: true, message: '请上传图片' }]}
+          name='avtar_url'
+          style={{ alignSelf: 'center' }}
+        >
           <UploadImag
             onChange={(v: string) => {
               setValue('avtar_url', v);
@@ -54,22 +71,8 @@ export default () => {
             value={initialState?.currentUser?.avtar_url}
           />
         </ProForm.Item>
-
         <ProFormText
-          name={'nickname'}
-          fieldProps={{
-            size: 'large',
-            prefix: <UserOutlined />,
-          }}
-          placeholder={'请输入昵称'}
-          rules={[
-            {
-              required: true,
-              message: '请输入昵称!',
-            },
-          ]}
-        />
-        <ProFormText
+          readonly
           name='email'
           fieldProps={{
             size: 'large',
@@ -87,18 +90,18 @@ export default () => {
             },
           ]}
         />
-
-        <ProFormText.Password
-          name='password'
+        <ProFormTextArea name='profile' placeholder='请输入简介' fieldProps={{ rows: 4 }} />
+        <ProFormText
+          name={'nickname'}
           fieldProps={{
             size: 'large',
-            prefix: <LockOutlined />,
+            prefix: <UserOutlined />,
           }}
-          placeholder={'请输入密码'}
+          placeholder={'请输入昵称'}
           rules={[
             {
               required: true,
-              message: '请输入密码！',
+              message: '请输入昵称!',
             },
           ]}
         />

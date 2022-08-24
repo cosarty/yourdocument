@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { request as requestConf } from '@/util/request';
 import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
-import { matchRoutes, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { history, matchRoutes, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 
 import defaultSettings from '../config/defaultSettings';
 
@@ -31,6 +31,7 @@ export async function getInitialState(): Promise<{
     if (getStorage(TOKEN_KEY)) {
       removeStorage(TOKEN_KEY);
     }
+    history.push('/');
     return {
       currentUser: null,
       settings: defaultSettings,

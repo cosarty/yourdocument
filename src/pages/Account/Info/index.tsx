@@ -1,26 +1,31 @@
 import defaultAvtar from '@/assets/shitijun.png';
+import { USER_AUTH_ENUM, USER_GENDER_ENUM } from '@/constant/user';
+import { useModel } from '@umijs/max';
 import { Avatar, Card, Descriptions, Space, Tag } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import styles from './style.less';
 import UploadUser from './UploadUser';
 const UserInfo = () => {
+  const { initialState } = useModel('@@initialState');
+  const currentUser = initialState?.currentUser;
+  console.log('USER_GENDER_ENUM[currentUser?.ge', currentUser?.gender);
   return (
     <div>
       <Card>
         <Card.Meta
           className={styles.cardMeta}
-          avatar={<Avatar src={defaultAvtar} size={96} />}
+          avatar={<Avatar src={currentUser?.avtar_url || defaultAvtar} size={96} />}
           title={
             <Space align='end'>
               <Title level={4} style={{ marginBottom: 0 }}>
-                {'dsad'}
+                {currentUser?.nickname}
               </Title>
-              <Tag color={'red'} style={{ marginRight: 0, marginBottom: 3 }}>
-                {'dadsa'}
-              </Tag>
 
-              <Tag color='red' style={{ marginBottom: 3 }}>
-                管理员
+              <Tag
+                color={USER_AUTH_ENUM[currentUser?.auth || 'user'].color}
+                style={{ marginBottom: 3 }}
+              >
+                {USER_AUTH_ENUM[currentUser?.auth || 'user'].text}
               </Tag>
             </Space>
           }
@@ -29,12 +34,13 @@ const UserInfo = () => {
       <div style={{ marginTop: 15 }}>
         <Card title='信息' extra={<UploadUser></UploadUser>}>
           <Descriptions column={1} labelStyle={{ width: 100, marginBottom: 8 }} colon={false}>
-            <Descriptions.Item label='积分'>{1}</Descriptions.Item>
-            <Descriptions.Item label='性别'>{'暂无'}</Descriptions.Item>
-            <Descriptions.Item label='简介'>{1 || '暂无'}</Descriptions.Item>
-            <Descriptions.Item label='邮箱'>{'暂无'}</Descriptions.Item>
+            <Descriptions.Item label='性别'>
+              {USER_GENDER_ENUM[currentUser?.gender ?? ''] || '暂无'}
+            </Descriptions.Item>
+            <Descriptions.Item label='简介'>{currentUser?.profile || '暂无'}</Descriptions.Item>
+            <Descriptions.Item label='邮箱'>{currentUser?.email}</Descriptions.Item>
             <Descriptions.Item label='注册时间'>
-              {/* {formatDateTimeStr(user._createTime)} */}
+              {new Date(currentUser?.create_time || '').toLocaleDateString()}
             </Descriptions.Item>
           </Descriptions>
         </Card>
