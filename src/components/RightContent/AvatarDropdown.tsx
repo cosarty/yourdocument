@@ -38,7 +38,11 @@ const AvatarDropdown: React.FC = () => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar className={styles.avatar} src={defaultAvtar} alt='avatar' />
+        <Avatar
+          className={styles.avatar}
+          src={initialState?.currentUser?.avtar_url || defaultAvtar}
+          alt='avatar'
+        />
         <span className={`${styles.name} anticon`}>{''}</span>
       </span>
     </HeaderDropdown>

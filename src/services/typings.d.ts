@@ -27,6 +27,8 @@ declare namespace API {
   }>
 
   type Upload = API_TYPE<{ fileURL: string }>
+
+  type UpdateUser = API_TYPE<null>
 }
 
 
@@ -50,4 +52,5 @@ declare namespace Payload {
   type UploadAvatar = {
     avatar: File
   }
+  type UpdateUser = { nickname: string, gender: number, profile: string }
 }

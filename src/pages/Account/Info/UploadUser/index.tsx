@@ -1,4 +1,7 @@
+/* eslint-disable no-param-reassign */
 import UploadImag from '@/components/UploadImag';
+import { updateUser } from '@/services/users';
+import { pick } from '@/util/utils';
 import { MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import {
@@ -12,10 +15,9 @@ import { useModel } from '@umijs/max';
 import { Button, message } from 'antd';
 import { useRef } from 'react';
 import styles from './index.less';
-
 interface FormField {
-  avtar_url: string;
-  email: string;
+  avtar_url?: string;
+  email?: string;
   nickname: string;
   gender: number;
   profile: string;
@@ -32,8 +34,9 @@ export default () => {
     formRef.current?.setFieldsValue({ [name]: value });
 
   const submit = async (values: FormField) => {
+    values = pick(values, ['email', 'avtar_url'], true);
+    await updateUser(values);
     await getUser();
-    console.log(values);
     message.success('编辑成功');
     return true;
   };

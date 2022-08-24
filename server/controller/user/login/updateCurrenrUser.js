@@ -19,8 +19,7 @@ const updateUserValidator = validator([
     })
     .bail()
     .toInt(),
-  body('avtar_url').isString().withMessage('请输入字符串类型!!'),
-  body('profile').isString().withMessage('请输入字符串类型!!'),
+  body('profile').isString().withMessage('请输入字符串类型!!').optional(),
 ]);
 
 const updateCurrenrUser = async (req, res, next) => {
@@ -29,7 +28,7 @@ const updateCurrenrUser = async (req, res, next) => {
     console.log('req.body: ', req.body);
     console.log('req.user._id,: ', req.user._id);
     const user = await userModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
-    res.status(200).send(user.toJSON());
+    res.status(202).send({ code: 200, message: '更新成功', data: null });
   } catch (err) {
     next({ code: 400, message: '更新失败', data: null });
   }

@@ -36,4 +36,12 @@ export const sendMail = async (payload: Payload.SendMail) => await request<API.A
 export const register = async (payload: Payload.Register) => await request<API.API_TYPE<null>>('/api/user/sign', {
   method: 'POST', data: payload
 })
-export default { login, getCurrentUser, register }
+
+
+// 更新用户
+export const updateUser = async (payload: Payload.UpdateUser) => await request<API.UpdateUser>('/api/user/updateCurrent', {
+  method: 'PUT', data: payload
+})
+
+
+export default { login, getCurrentUser, register, updateUser }
