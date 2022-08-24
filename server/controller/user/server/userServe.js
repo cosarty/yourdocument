@@ -7,6 +7,7 @@ const UserModel = require('../../../model/userSchema');
 exports.checkUser = async (userId) => {
   const user = await UserModel.findById(userId);
   if (!user || user.is_ban) return Promise.reject('用户不存在');
+  return user;
 };
 
 exports.getUserInfo = async (userId) => await UserModel.findById(userId).populate('favours');
