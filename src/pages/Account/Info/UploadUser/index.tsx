@@ -1,6 +1,8 @@
 import { LockOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import { useModel } from '@umijs/max';
 import { Button, message } from 'antd';
+
 import styles from './index.less';
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -11,6 +13,8 @@ const waitTime = (time: number = 100) => {
 };
 
 export default () => {
+  const { initialState } = useModel('@@initialState');
+  console.log('initialState: ', initialState?.currentUser);
   return (
     <ModalForm<{
       name: string;
