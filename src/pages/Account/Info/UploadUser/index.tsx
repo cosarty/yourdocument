@@ -1,25 +1,28 @@
+import UploadImag from '@/components/UploadImag';
 import { LockOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import type { ProFormInstance } from '@ant-design/pro-components';
+import { ModalForm, ProForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { Button, message } from 'antd';
-
+import { useRef } from 'react';
 import styles from './index.less';
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
 
 export default () => {
   const { initialState } = useModel('@@initialState');
-  console.log('initialState: ', initialState?.currentUser);
+  const { getUser } = useModel('user');
+
+  const formRef = useRef<ProFormInstance>();
+
+  // tslint:disable-next-line: no-non-null-assertion
+  const setValue = (name: string, value: string | number) =>
+    formRef.current?.setFieldsValue({ [name]: value });
+
   return (
     <ModalForm<{
       name: string;
       company: string;
     }>
+      formRef={formRef}
       title='编辑'
       trigger={
         <Button type='primary'>
@@ -34,14 +37,24 @@ export default () => {
         width: 400,
       }}
       submitTimeout={2000}
-      onFinish={async (values) => {
-        await waitTime(2000);
-        console.log(values.name);
-        message.success('提交成功');
+      onFinish={async () => {
+        await getUser();
+        // console.log(values.name);
+        message.success('编辑成功');
         return true;
       }}
+      initialValues={initialState?.currentUser ?? {}}
     >
       <div className={styles['.form_position ']}>
+        <ProForm.Item rules={[{ required: true, message: '请上传图片' }]} name='avtar_url'>
+          <UploadImag
+            onChange={(v: string) => {
+              setValue('avtar_url', v);
+            }}
+            value={initialState?.currentUser?.avtar_url}
+          />
+        </ProForm.Item>
+
         <ProFormText
           name={'nickname'}
           fieldProps={{

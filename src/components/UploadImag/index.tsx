@@ -26,11 +26,10 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
       : [],
   );
 
-  // ]
   const cusReq = async (fileObj: any) => {
     console.log('fileObj: ', fileObj);
 
-    const res = await uploadAvatar(fileObj.file);
+    const res = await uploadAvatar({ avatar: fileObj.file });
     if (res.code !== 202) return;
 
     const result = res?.data?.fileURL;
@@ -75,8 +74,12 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    if (newFileList.length === 0) {
+      onChange?.('');
+    }
     setFileList(newFileList);
+  };
 
   const handleCancel = () => setPreviewVisible(false);
 
@@ -84,7 +87,6 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
     <>
       <ImgCrop rotate>
         <Upload
-          action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
           listType='picture-card'
           fileList={fileList}
           onPreview={handlePreview}

@@ -20,16 +20,23 @@ const useUser = () => {
     historys.replace({ pathname: '/login', search: params.toString() })
 
   }
+
+  // 获取当前用户
+  const getUser = async () => {
+    const user = await users.getCurrentUser()
+    if (user) await setInitialState((s) => ({ ...s, currentUser: user.data }));
+    else await setInitialState((s) => ({ ...s, currentUser: null }));
+  }
+
+
   const login = async (pra: Payload.Login) => {
     const { search } = location
     const { data } = await users.login(pra)
     setStorage(TOKEN_KEY, data?.token)
     // 获取当前登录用户
     try {
-      const user = await users.getCurrentUser()
-
       // 保存用户信息
-      if (user) await setInitialState((s) => ({ ...s, currentUser: user.data }));
+      await getUser()
       const redirect = new URLSearchParams(search).get('redirect')
       // history.replace({ pathname: redirect ?? '/' })
       // 设置但是不跳转
@@ -40,6 +47,8 @@ const useUser = () => {
       message.error('登录失败！！')
     }
   }
+
+
 
   const logout = () => {
     if (getStorage(TOKEN_KEY)) {
@@ -58,7 +67,8 @@ const useUser = () => {
     gotoLogin,
     login,
     logout,
-    register
+    register,
+    getUser
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "dbUrl": "mongodb://localhost/shitijun",
   "jwtSecret": "8fbff7aa-b69d-48e0-963b-6eaea1530211",
-  "site": "localhost:3000",
+  "site": "http://localhost:3000",
   "assetsDir": {
     "base": "/assets/public",
     "temp": "/assets/temp",
