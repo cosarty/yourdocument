@@ -54,7 +54,8 @@ const useUser = () => {
     if (getStorage(TOKEN_KEY)) {
       removeStorage(TOKEN_KEY)
     }
-    window.location.href = '/'
+    // window.location.href = '/'
+    gotoLogin()
   }
 
   // 注册

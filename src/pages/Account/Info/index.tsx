@@ -8,7 +8,6 @@ import UploadUser from './UploadUser';
 const UserInfo = () => {
   const { initialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
-  console.log('USER_GENDER_ENUM[currentUser?.ge', currentUser?.gender);
   return (
     <div>
       <Card>

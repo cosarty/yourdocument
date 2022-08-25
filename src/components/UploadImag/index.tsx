@@ -51,7 +51,7 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
     }
     const isLt1M = file.size / 1024 / 1024 < 1;
     if (!isLt1M) {
-      message.error('图片必须小于 1MB!');
+      message.error('图片必须小于 2MB!');
     }
     return isFileTypeValid && isLt1M;
   };

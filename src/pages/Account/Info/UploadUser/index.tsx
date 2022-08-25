@@ -12,7 +12,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import { Button, message } from 'antd';
+import { Button, message, Skeleton } from 'antd';
 import { useRef } from 'react';
 import styles from './index.less';
 interface FormField {
@@ -41,8 +41,8 @@ export default () => {
     return true;
   };
 
-  return (
-    <ModalForm<FormField>
+  return initialState?.currentUser ? (
+    <ModalForm<any>
       formRef={formRef}
       title='编辑'
       trigger={
@@ -59,7 +59,9 @@ export default () => {
       }}
       submitTimeout={2000}
       onFinish={submit}
-      initialValues={initialState?.currentUser ?? {}}
+      request={async () => {
+        return initialState?.currentUser ?? undefined;
+      }}
     >
       <div className={styles['form_position']}>
         <ProForm.Item
@@ -130,5 +132,7 @@ export default () => {
         />
       </div>
     </ModalForm>
+  ) : (
+    <Skeleton />
   );
 };

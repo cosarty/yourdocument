@@ -3,7 +3,8 @@ import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { request as requestConf } from '@/util/request';
 import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
-import { history, matchRoutes, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { history, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { message } from 'antd';
 
 import defaultSettings from '../config/defaultSettings';
 
@@ -21,8 +22,14 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
 }> {
   try {
-    const user = await getCurrentUser();
+    let isThowrErr = false;
+    // 添加权限提示
 
+    if (history.location.pathname === '/login' || history.location.pathname === '/') {
+      isThowrErr = true;
+    }
+
+    const user = await getCurrentUser(isThowrErr);
     return {
       currentUser: user?.data ?? null,
       settings: defaultSettings,
@@ -39,13 +46,6 @@ export async function getInitialState(): Promise<{
   }
 }
 
-export function onRouteChange({ clientRoutes, location }: { clientRoutes: any; location: any }) {
-  const route = matchRoutes(clientRoutes, location.pathname)?.pop()?.route;
-  if (route) {
-    // document.title = route?.title || '首页';
-  }
-}
-
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
@@ -55,12 +55,18 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      // const { location } = history;
-      // console.log(history);
-      // // 如果没有登录，重定向到 login
-      // if (!initialState?.currentUser && location.pathname !== loginPath) {
-      //   history.push(loginPath);
-      // }
+      /**
+       * 路由跳转做两件事情
+       * 1、判断token是否存在
+       * 2、判断用户是否合法 然后强制跳转 可选 先不做 就是为了用户体验 问题不大
+       *
+       */
+
+      // 如果没有登录，重定向到 login
+      if (!getStorage(TOKEN_KEY) && location.pathname !== '/') {
+        location.href = '/';
+        message.error('登录失效!!!');
+      }
     },
     menuHeaderRender: undefined,
     // 自定义 403 页面
