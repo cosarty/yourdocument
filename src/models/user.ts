@@ -56,6 +56,7 @@ const useUser = () => {
     }
     // window.location.href = '/'
     gotoLogin()
+    setInitialState((s) => ({ ...s, currentUser: null }));
   }
 
   // 注册

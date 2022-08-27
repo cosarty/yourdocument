@@ -46,7 +46,7 @@ export async function getInitialState(): Promise<{
   }
 }
 
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
@@ -54,7 +54,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       content: '张江航-试题君',
     },
     footerRender: () => <Footer />,
-    onPageChange: () => {
+    onPageChange: async () => {
       /**
        * 路由跳转做两件事情
        * 1、判断token是否存在
@@ -64,8 +64,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 
       // 如果没有登录，重定向到 login
       if (!getStorage(TOKEN_KEY) && location.pathname !== '/') {
-        location.href = '/';
         message.error('登录失效!!!');
+        await setInitialState((s) => ({ ...s, currentUser: null }));
+        location.href = '/';
       }
     },
     menuHeaderRender: undefined,

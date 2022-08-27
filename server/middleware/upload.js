@@ -31,7 +31,8 @@ const uploadMiddleware =
         destination: function (req, file, cb) {
           const accessPath = path.join(process.cwd(), dirs);
           if (!fs.existsSync(accessPath)) {
-            fs.mkdirSync(accessPath);
+            // 递归创建目录
+            fs.mkdirSync(accessPath, { recursive: true });
           }
 
           cb(null, accessPath);
