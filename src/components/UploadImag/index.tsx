@@ -34,18 +34,17 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
 
     const result = res?.data?.fileURL;
     if (result && onChange) {
+      message.success('上传成功!!!');
       onChange(result);
 
       fileObj.onSuccess(res, fileObj.file);
     }
   };
 
-  const beforeUpload = (file: File) => {
-    const isFileTypeValid =
-      file.type === 'image/jpeg' ||
-      file.type === 'image/png' ||
-      file.type === 'image/svg+xml' ||
-      file.type === 'image/webp';
+  const fileType = ['image/jpeg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
+
+  const beforeUpload = async (file: File) => {
+    const isFileTypeValid = fileType.includes(file.type);
     if (!isFileTypeValid) {
       message.error('只能上传 JPG/PNG/SVG/WEBP 格式的文件!');
     }
@@ -74,18 +73,32 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    if (newFileList.length === 0) {
+  const handleChange: UploadProps['onChange'] = (newFileList) => {
+    console.log('newFileList: ', newFileList);
+    setFileList(newFileList.fileList);
+
+    if (
+      newFileList.fileList.length === 0 ||
+      !newFileList.file?.status ||
+      newFileList.file?.status === 'removed'
+    ) {
+      setFileList([]);
       onChange?.('');
     }
-    setFileList(newFileList);
   };
 
   const handleCancel = () => setPreviewVisible(false);
 
   return (
     <>
-      <ImgCrop rotate>
+      <ImgCrop
+        rotate
+        beforeCrop={(file: UploadFile) => {
+          const isAccess = fileType.includes(file.type || '');
+          !isAccess && message.error('只能上传 JPG/PNG/SVG/WEBP 格式的文件!');
+          return isAccess;
+        }}
+      >
         <Upload
           listType='picture-card'
           fileList={fileList}
@@ -93,6 +106,7 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
           onChange={handleChange}
           customRequest={cusReq}
           beforeUpload={beforeUpload}
+          multiple={false}
         >
           {fileList.length < 1 && '+ Upload'}
         </Upload>

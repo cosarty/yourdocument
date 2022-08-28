@@ -70,7 +70,8 @@ export default () => {
           style={{ alignSelf: 'center' }}
         >
           <UploadImag
-            onChange={(v: string) => {
+            onChange={async (v: string) => {
+              if (!!v) await getUser();
               setValue('avtar_url', v);
             }}
             value={initialState?.currentUser?.avtar_url}
