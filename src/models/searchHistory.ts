@@ -14,7 +14,7 @@ const useSearchHistory = () => {
   }, [searchList]);
 
   const addSearchHistory = (value: SEARCH_KEY_TYPE[number]) => {
-    setSearchList([...searchList, value]);
+    setSearchList([...new Set([...searchList, value].filter(s => !!s))]);
   };
 
   const clearhistory = () => setSearchList([]);

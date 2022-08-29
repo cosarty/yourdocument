@@ -91,7 +91,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         search: searchParams.toString(),
       });
     } else {
-      window.open(`/questions?q=${name}`);
+      window.open(`/?q=${name}`);
     }
     onSearch?.();
   };

@@ -1,19 +1,22 @@
 import SelectTag from '@/components/SelectTag';
-import { QUESTION_DIFFICULTY_ENUM, QUESTION_TYPE_ENUM } from '@/constant/question';
+import {
+  QUESTION_DIFFICULTY_ENUM,
+  QUESTION_TYPE_ENUM,
+  REVIEW_STATUS_ENUM,
+} from '@/constant/question';
+import { searchQuetions } from '@/services/question';
 import { AppstoreAddOutlined, OrderedListOutlined, TagsOutlined } from '@ant-design/icons';
 import { ProForm, ProFormInstance } from '@ant-design/pro-components';
+import { useSearchParams } from '@umijs/max';
 import { Card, Radio } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import styles from './index.less';
 
 const tabListNoTitle = [
   {
-    key: 'create_time',
+    key: 'update_time',
     tab: '最新',
   },
-  // {
-  //   key: 'viewNum',
-  //   tab: '最热',
-  // },
   {
     key: 'favourNum',
     tab: '收藏',
@@ -41,23 +44,31 @@ const formItemLayout = {
 
 const Home = () => {
   const formRef = useRef<ProFormInstance>();
-  const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({});
+  const [params] = useSearchParams();
 
-  // const initSearchParams: QuestionSearchParams = {
-  //   name: searchText ?? '',
-  //   pageSize: DEFAULT_PAGE_SIZE,
-  //   pageNum: 1,
-  //   orderKey: searchText ? '_score' : 'publishTime',
-  //   priority: undefined,
-  // };
+  const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({
+    orderKey: 'update_time',
+    pageSize: 11,
+    pageNum: 1,
+  });
 
-  const handleSearch = () => {};
+  useEffect(() => {
+    const q = params.get('q');
+    setSearchParams({ ...searchParams, title: !!q ? q.trim() : '' });
+  }, [params]);
+
+  const handleSearch = async () => {
+    const data = await searchQuetions({ ...searchParams, reviewStatus: REVIEW_STATUS_ENUM.PASS });
+    console.log('data: ', data);
+  };
 
   const valueChange = (changedValues: any) => {
     console.log('changedValues: ', changedValues);
     if (changedValues.name !== undefined) {
       return;
     }
+
+    setSearchParams({ ...searchParams, ...changedValues, pageNum: 1 });
   };
 
   useEffect(() => {
@@ -66,7 +77,7 @@ const Home = () => {
   }, [searchParams]);
 
   return (
-    <div>
+    <div className={styles['qutions_search_home']}>
       <Card bordered={false} bodyStyle={{ marginBottom: 0 }}>
         <ProForm
           formRef={formRef}
@@ -105,10 +116,10 @@ const Home = () => {
                         formRef.current?.setFieldsValue({
                           type: undefined,
                         });
-                        // setSearchParams({
-                        //   ...searchParams,
-                        //   type: undefined,
-                        // });
+                        setSearchParams({
+                          ...searchParams,
+                          type: undefined,
+                        });
                       }
                     }}
                   >
@@ -137,6 +148,10 @@ const Home = () => {
                         formRef.current?.setFieldsValue({
                           difficulty: undefined,
                         });
+                        setSearchParams({
+                          ...searchParams,
+                          difficulty: undefined,
+                        });
                       }
                     }}
                   >
@@ -151,22 +166,16 @@ const Home = () => {
       <br />
       <Card
         tabList={tabListNoTitle}
-        activeTabKey={'create_time'}
+        activeTabKey={searchParams.orderKey}
         bodyStyle={{
           paddingTop: 8,
         }}
-        // tabBarExtraContent={
-        //   <Checkbox.Group onChange={(value) => handleCheckboxChange(value)}>
-        //     <Checkbox value="priority">精选</Checkbox>
-        //     <Checkbox value="hasReference">有解</Checkbox>
-        //   </Checkbox.Group>
-        // }
         onTabChange={(key) => {
-          // setSearchParams({
-          //   ...searchParams,
-          //   pageNum: 1,
-          //   orderKey: key,
-          // });
+          setSearchParams({
+            ...searchParams,
+            pageNum: 1,
+            orderKey: key as 'update_time' | 'favourNum',
+          });
         }}
       >
         1

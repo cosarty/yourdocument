@@ -13,3 +13,16 @@ export const QUESTION_DIFFICULTY_COLOR_ENUM = {
   1: '#FFB800',
   2: '#FF2D55',
 };
+
+
+export const REVIEW_STATUS_ENUM = {
+  REVIEWING: 1,
+  PASS: 2,
+  REJECT: 3,
+};
+
+export const REVIEW_STATUS_MAP = {
+  0: '审核中',
+  1: '已发布',
+  2: '拒绝',
+};

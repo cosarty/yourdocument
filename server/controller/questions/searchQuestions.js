@@ -36,7 +36,7 @@ const searchQuestions = async (req, res, next) => {
     pageNum = 1,
   } = req.body;
 
-  title && (queryData.title = title);
+  title && (queryData.title = new RegExp(title));
   tags && tags.length > 0 && (queryData.tags = tags);
   type && (queryData.type = type);
   difficulty && (queryData.difficulty = difficulty);
