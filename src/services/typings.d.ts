@@ -29,6 +29,11 @@ declare namespace API {
   type Upload = API_TYPE<{ fileURL: string }>
 
   type UpdateUser = API_TYPE<null>
+
+  type TagAll = {
+    name: string,
+    tags: string[]
+  }[]
 }
 
 

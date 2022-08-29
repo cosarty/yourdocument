@@ -27,10 +27,10 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
   );
 
   const cusReq = async (fileObj: any) => {
-    console.log('fileObj: ', fileObj);
-
     const res = await uploadAvatar({ avatar: fileObj.file });
-    if (res.code !== 202) return;
+    if (res.code !== 202) {
+      return;
+    }
 
     const result = res?.data?.fileURL;
     if (result && onChange) {
@@ -70,6 +70,7 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
 
     setPreviewImage(file.url || (file.preview as string));
     setPreviewVisible(true);
+
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
 
@@ -93,9 +94,11 @@ const UploadImag: React.FC<PicUploaderProps> = ({ onChange, value }) => {
     <>
       <ImgCrop
         rotate
-        beforeCrop={(file: UploadFile) => {
+        beforeCrop={(file: File) => {
           const isAccess = fileType.includes(file.type || '');
-          !isAccess && message.error('只能上传 JPG/PNG/SVG/WEBP 格式的文件!');
+          if (!isAccess) {
+            message.error('只能上传 JPG/PNG/SVG/WEBP 格式的文件!');
+          }
           return isAccess;
         }}
       >

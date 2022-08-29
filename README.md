@@ -1,57 +1,29 @@
-# Ant Design Pro
+# 试题君
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+# 启动
 
-## Environment Prepare
+## 服务端
 
-Install `node_modules`:
+cd ./server npm run start
 
-```bash
-npm install
-```
+## web 端
 
-or
+yarn dev
 
-```bash
-yarn
-```
+# 补充
 
-## Provided Scripts
+## antd 的自定义表单组件
 
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
+两种实现方式
 
-Scripts provided in `package.json`. It's safe to modify or add additional script:
+- 第一种:实例组件 SelectTag
 
-### Start project
+> 自定义或第三方的表单控件，也可以与 Form 组件一起使用。只要该组件遵循以下的约定：
 
-```bash
-npm start
-```
+> 提供受控属性 value 或其它与 valuePropName 的值同名的属性。
 
-### Build project
+> 提供 onChange 事件或 trigger 的值同名的事件。
 
-```bash
-npm run build
-```
+- 第二种:实例组件 UploadImag
 
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+通过组件实例： formRef.current?.setFieldsValue({ [name]: value });

@@ -10,7 +10,7 @@
     path: '/',
     name: '题目',
     icon: 'smile',
-    component: './Welcome',
+    component: '@/pages/Home',
 
   },
   {
