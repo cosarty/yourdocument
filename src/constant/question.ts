@@ -1,9 +1,5 @@
 export const QUESTION_TYPE_ENUM = {
-  0: '简答',
-  1: '单选',
-  2: '不定项',
-  3: '填空',
-  4: '编程',
+  0: '判断题', 1: '单选题', 2: '多选题', 3: '简答题'
 };
 
 export const QUESTION_DIFFICULTY_ENUM = {

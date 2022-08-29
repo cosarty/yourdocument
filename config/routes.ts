@@ -64,25 +64,25 @@
       },
     ],
   },
-  {
-    path: '/organi',
-    name: '组织',
-    access: 'canLogin',
-    routes: [
-      {
-        name: '我的组织',
-        path: '/organi/my',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
-      {
-        name: '我的试卷',
-        path: '/organi/paper',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
-    ],
-  },
+  /*   {
+      path: '/organi',
+      name: '组织',
+      access: 'canLogin',
+      routes: [
+        {
+          name: '我的组织',
+          path: '/organi/my',
+          component: './Welcome',
+          icon: 'CodeOutlined',
+        },
+        {
+          name: '我的试卷',
+          path: '/organi/paper',
+          component: './Welcome',
+          icon: 'CodeOutlined',
+        },
+      ],
+    }, */
   {
     path: '/manage',
     access: 'canAdmin',

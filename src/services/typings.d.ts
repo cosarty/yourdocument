@@ -58,4 +58,18 @@ declare namespace Payload {
     avatar: File
   }
   type UpdateUser = { nickname: string, gender: number, profile: string }
+
+
+  type QuestionSearchParams = {
+    title?: string[];
+    type?: string;
+    difficulty?: string;
+    tags?: string[]; // 须包含全部标签才查出
+    orderKey?: number;
+    order?: number;
+    pageSize?: string;
+    pageNum?: string;
+    type?: number;
+
+  }
 }

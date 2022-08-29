@@ -47,19 +47,21 @@ const SelectTag: FC<SelectTagsProps> = (props) => {
     tagsAll &&
     tagsAll.map((groupTag) => {
       return (
-        <Tabs.TabPane tab={groupTag.name} key={groupTag.name}>
-          {groupTag.tags.map((tag) => {
-            return (
-              <Tag.CheckableTag
-                key={tag}
-                checked={value.indexOf(tag) > -1}
-                onChange={(checked) => handleChange(tag, checked)}
-              >
-                {tag}
-              </Tag.CheckableTag>
-            );
-          })}
-        </Tabs.TabPane>
+        groupTag.tags.length > 0 && (
+          <Tabs.TabPane tab={groupTag.name} key={groupTag.name}>
+            {groupTag.tags.map((tag) => {
+              return (
+                <Tag.CheckableTag
+                  key={tag}
+                  checked={value.indexOf(tag) > -1}
+                  onChange={(checked) => handleChange(tag, checked)}
+                >
+                  {tag}
+                </Tag.CheckableTag>
+              );
+            })}
+          </Tabs.TabPane>
+        )
       );
     });
 
