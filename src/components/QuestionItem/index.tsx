@@ -15,8 +15,8 @@ import {
 } from '@ant-design/icons';
 import { Link } from '@umijs/max';
 import { Button, Col, Divider, List, Popconfirm, Row, Space, Tag, Typography } from 'antd';
-import React, { FC, useState } from 'react';
-import RichTextViewer from '../RichTextViewer';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 import styles from './index.less';
 const { Title, Paragraph } = Typography;
 
@@ -26,7 +26,6 @@ interface QuestionItemProps {
   showEdit?: boolean; // 显示修改
   showActions?: boolean; // 展示操作栏
   onReload?: () => void;
-  showReference?: boolean; // 展示解析
   target?: string;
 }
 
@@ -36,11 +35,10 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const [favourNum, setFavourNum] = useState<number>(0);
   const {
     question = {} as QuestionsType,
-    showReview,
-    showEdit = true,
+    showReview = true,
+    showEdit,
     showActions = true,
     onReload,
-    showReference = true,
     target = '_blank',
   } = props;
 
@@ -72,15 +70,11 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
       <Paragraph ellipsis={{ rows: 2 }} style={{ color: 'rgba(0, 0, 0, 0.7)', fontSize: 15 }}>
         {getQuestionDetail(question)}
       </Paragraph>
-      {showReference && question.reference && (
-        <>
-          <p>解析：</p>
-          <div style={{ fontSize: 15 }}>
-            <RichTextViewer htmlContent={question.reference} />
-          </div>
-        </>
-      )}
-
+      <Space size={10} style={{ marginBottom: 10 }}>
+        {question.tags.map((tag: string) => {
+          return <Tag key={tag}>{tag}</Tag>;
+        })}
+      </Space>
       {showReview && (
         <p style={{ marginBottom: 12 }}>
           <Tag color={REVIEW_STATUS_MAP_INFO[question.reviewStatus].color}>
@@ -91,15 +85,17 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
       )}
       <div style={{ fontSize: 12, color: '#aaa', marginBottom: 8 }}>
         <Space split={<Divider type='vertical' />}>
-          <span>{QUESTION_TYPE_ENUM[question?.type ?? 0]}题</span>
+          <span>{QUESTION_TYPE_ENUM[question?.type ?? 0]}</span>
           <span>{QUESTION_DIFFICULTY_ENUM[question.difficulty ?? 0]}</span>
-          {question.update_time && <span>{new Date(question.update_time).toLocaleDateString}</span>}
+          {question.update_time && (
+            <span>{new Date(question.update_time).toLocaleDateString()}</span>
+          )}
         </Space>
       </div>
       {showActions && (
         <Row justify='space-between' align='middle'>
           <Col>
-            <Space size={16} className='base-btn-group'>
+            <Space size={16}>
               <a href={'/'} target='_blank' rel='noreferrer'>
                 <IconText icon={EyeOutlined} text={question.viewNum} />
               </a>
@@ -112,7 +108,10 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
               <a href={'/'} target='_blank' rel='noreferrer'>
                 <IconText icon={MessageOutlined} text={question.commentNum} />
               </a>
-
+            </Space>
+          </Col>
+          <Col>
+            <Space size={10}>
               {
                 // 没有人回答才允许修改
                 showEdit && !question.commentNum && (
