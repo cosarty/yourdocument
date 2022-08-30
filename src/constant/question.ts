@@ -26,3 +26,18 @@ export const REVIEW_STATUS_MAP = {
   1: '已发布',
   2: '拒绝',
 };
+
+export const REVIEW_STATUS_MAP_INFO = {
+  0: {
+    text: '审核中',
+    color: 'blue',
+  },
+  1: {
+    text: '已发布',
+    color: 'green',
+  },
+  2: {
+    text: '拒绝',
+    color: 'red',
+  },
+};

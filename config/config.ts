@@ -47,6 +47,7 @@ export default defineConfig({
   },
   // Fast Refresh 热更新
   fastRefresh: true,
+  headScripts: ['/highlight.min.js'],
   presets: ['umi-presets-pro'],
   openAPI: [
     {

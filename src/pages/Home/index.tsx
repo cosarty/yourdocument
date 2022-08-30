@@ -1,14 +1,17 @@
+import QuestionItem from '@/components/QuestionItem';
 import SelectTag from '@/components/SelectTag';
 import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
   REVIEW_STATUS_ENUM,
 } from '@/constant/question';
+import type { QuestionsType } from '@/services/question';
 import { searchQuetions } from '@/services/question';
 import { AppstoreAddOutlined, OrderedListOutlined, TagsOutlined } from '@ant-design/icons';
-import { ProForm, ProFormInstance } from '@ant-design/pro-components';
-import { useSearchParams } from '@umijs/max';
-import { Card, Radio } from 'antd';
+import type { ProFormInstance } from '@ant-design/pro-components';
+import { ProForm } from '@ant-design/pro-components';
+import { Link, useSearchParams } from '@umijs/max';
+import { Button, Card, Empty, List, Radio, Space } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 
@@ -45,6 +48,9 @@ const formItemLayout = {
 const Home = () => {
   const formRef = useRef<ProFormInstance>();
   const [params] = useSearchParams();
+  const [total, setTotal] = useState<number>(0);
+  const [questions, setQuestions] = useState<QuestionsType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({
     orderKey: 'update_time',
@@ -52,32 +58,29 @@ const Home = () => {
     pageNum: 1,
   });
 
-  useEffect(() => {
-    const q = params.get('q');
-    setSearchParams({ ...searchParams, title: !!q ? q.trim() : '' });
-  }, [params]);
-
-  const handleSearch = async () => {
-    const data = await searchQuetions({ ...searchParams, reviewStatus: REVIEW_STATUS_ENUM.PASS });
-    console.log('data: ', data);
+  const handleSearch = async (pas: any) => {
+    setLoading(true);
+    const { data } = await searchQuetions({ ...pas, reviewStatus: REVIEW_STATUS_ENUM.PASS });
+    setQuestions(data!.list);
+    setTotal(data!.total);
+    setLoading(false);
   };
 
   const valueChange = (changedValues: any) => {
-    console.log('changedValues: ', changedValues);
     if (changedValues.name !== undefined) {
       return;
     }
-
     setSearchParams({ ...searchParams, ...changedValues, pageNum: 1 });
   };
 
   useEffect(() => {
+    const q = params.get('q');
     // 搜索
-    handleSearch();
-  }, [searchParams]);
+    handleSearch({ ...searchParams, title: !!q ? q.trim() : '' });
+  }, [searchParams, params]);
 
   return (
-    <div className={styles['qutions_search_home']}>
+    <div className={styles.qutions_search_home}>
       <Card bordered={false} bodyStyle={{ marginBottom: 0 }}>
         <ProForm
           formRef={formRef}
@@ -178,7 +181,40 @@ const Home = () => {
           });
         }}
       >
-        1
+        <List<QuestionsType>
+          rowKey='_id'
+          itemLayout='vertical'
+          loading={loading}
+          dataSource={questions}
+          pagination={{
+            pageSize: searchParams.pageSize ?? 12,
+            current: searchParams.pageNum ?? 1,
+            showSizeChanger: false,
+            total,
+            showTotal() {
+              return `总数 ${total ?? 0}`;
+            },
+            onChange(pageNum, pageSize) {
+              setSearchParams({ ...searchParams, pageSize, pageNum });
+            },
+          }}
+          locale={{
+            emptyText: (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无题目'>
+                <Space size={24}>
+                  <Link to='/addQuestion'>
+                    <Button type='primary' size='large'>
+                      上传题目
+                    </Button>
+                  </Link>
+                </Space>
+              </Empty>
+            ),
+          }}
+          renderItem={(item, i) => {
+            return <QuestionItem question={item} key={i} />;
+          }}
+        />
       </Card>
     </div>
   );

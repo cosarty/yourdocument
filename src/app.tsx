@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { request as requestConf } from '@/util/request';
-import { PageLoading, Settings as LayoutSettings } from '@ant-design/pro-components';
-import { history, RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { PageLoading } from '@ant-design/pro-components';
+import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { history } from '@umijs/max';
 import { message } from 'antd';
 
 import defaultSettings from '../config/defaultSettings';
@@ -73,8 +74,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 自定义 404 页面
-    noFound: <div>noFoun</div>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    noFound: <div>noFound</div>,
     menuDataRender: (menuData: any) => {
       const { currentUser } = initialState ?? {};
       const access = {
@@ -86,7 +86,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       return menuData.filter((menuItem: any) => !menuItem.access || access[menuItem.access]);
     },
     childrenRender: (children) => {
-      if (initialState?.loading) return <PageLoading />;
+      if (initialState?.loading) {
+        return <PageLoading />;
+      }
       return <>{children}</>;
     },
     ...initialState?.settings,

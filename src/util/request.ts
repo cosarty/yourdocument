@@ -1,5 +1,6 @@
 import { TOKEN_KEY } from '@/constant/storKey';
-import { AxiosResponse, history, RequestConfig } from '@umijs/max';
+import type { AxiosResponse, RequestConfig } from '@umijs/max';
+import { history } from '@umijs/max';
 import { notification } from 'antd';
 import { getStorage } from './storage';
 
@@ -36,11 +37,11 @@ export const request: RequestConfig = {
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
 
-      // console.log('error: ', error);s
-      if (opts?.skipErrorHandler) throw error;
+      // console.log('error: ', error);
+      if (opts?.skipErrorHandler) { throw error; }
 
 
-      const response = error['response']
+      const response = error.response
       const errData = response?.data as API.API_TYPE<null>
       if (errData) {
         if (errData.code !== 400) {
@@ -68,8 +69,6 @@ export const request: RequestConfig = {
             });
           }
         }
-
-
         return
       }
       if (!response) {

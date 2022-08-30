@@ -62,8 +62,8 @@ exports.params = body('params')
 exports.reference = body('reference')
   .optional()
   .isString()
-  .withMessage('简答题的答案为字符串类型!!!')
-  .bail()
-  .custom(async (reference, { req }) => {
-    if (req.body.type != '3') return Promise.reject('题型填写错误！！');
-  });
+  .withMessage('解析为字符串类型!!!')
+  .bail();
+// .custom(async (reference, { req }) => {
+//   if (req.body.type != '3') return Promise.reject('题型填写错误！！');
+// });

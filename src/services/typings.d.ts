@@ -1,6 +1,11 @@
 // @ts-ignore
 /* eslint-disable */
 
+
+
+
+
+
 declare namespace API {
   type API_TYPE<T> = {
     message: string | { [k: string]: string };
@@ -33,36 +38,9 @@ declare namespace API {
     tags: string[];
   }[];
 
-  type QuestionList = API_TYPE<{
-    params?: {
-      options?: {
-        A?: string;
-        B?: string;
-        G?: string;
-        E?: string;
-        D?: string;
-        F?: string;
-        C?: string;
-      };
-      answer: 'C';
-    };
-    _id: String;
-    difficulty: number;
-    title: string;
-    commentNum: number;
-    detail: string;
-    favourNum: number;
-    isDelete?: boolean;
-    type: number;
-    reviewStatus?: number;
-    tags: string[];
-    userId: {
-      _id: string;
-      nickname: string;
-    };
-    viewNum: number;
-    create_time: Date;
-    update_time: Date;
+  type QuestionList<T> = API_TYPE<{
+    list: T[],
+    total: number
   }>;
 }
 
