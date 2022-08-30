@@ -3,7 +3,6 @@
     title: '登录',
     path: '/login',
     component: '@/pages/Login',
-    // menu: false,
     layout: false
   },
   {
@@ -11,7 +10,7 @@
     name: '题目',
     icon: 'smile',
     component: '@/pages/Home',
-
+    exact: true,
   },
   {
     path: '/account',
@@ -124,12 +123,15 @@
       },
     ],
   },
-  {
-    path: '/questions',
-    icon: 'CodeOutlined',
-    component: './Welcome',
-  },
+
   {
     component: './404',
+  },
+  {
+    path: '/addQuestion',
+    icon: 'CodeOutlined',
+    access: 'canLogin',
+    component: '@/pages/AddQuestion',
+    hideMenu: true
   },
 ];

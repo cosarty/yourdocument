@@ -48,7 +48,7 @@ const GlobalHeaderRight: React.FC = () => {
       </div>
       <div className={styles.user}>
         <Access accessible={canLogin} fallback={login}>
-          <Link to='/'>
+          <Link to='/addQuestion' target={'_blank'}>
             {!isMobile() && (
               <Button type='primary' size='large' className={styles.btn}>
                 上传题目

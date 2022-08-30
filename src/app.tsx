@@ -82,7 +82,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         canLogin: !!currentUser,
         canSuper: currentUser?.auth === 'super',
       };
-
       return menuData.filter((menuItem: any) => !menuItem.access || access[menuItem.access]);
     },
     childrenRender: (children) => {

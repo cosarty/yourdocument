@@ -35,7 +35,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const [favourNum, setFavourNum] = useState<number>(0);
   const {
     question = {} as QuestionsType,
-    showReview = true,
+    showReview,
     showEdit,
     showActions = true,
     onReload,
