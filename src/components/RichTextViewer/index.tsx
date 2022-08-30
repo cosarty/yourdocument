@@ -1,7 +1,7 @@
-import '@/assets/monokai-sublime.min.css';
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
+import '~@/assets/monokai-sublime.min.css';
 import './index.less';
 
 const modules = {
