@@ -14,6 +14,6 @@ exports.checkLimit = async (userId, count = 30) => {
     .where({ userId, isDelete: false })
     .gte('create_time', yesterday)
     .count();
-  if (limitCount <= count) return count - limitCount;
+  if (limitCount <= count) return count - limitCount - 1;
   return -1;
 };

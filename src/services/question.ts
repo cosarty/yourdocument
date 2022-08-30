@@ -39,6 +39,14 @@ export const searchQuetions = async (payload: Payload.QuestionSearchParams) => a
 })
 
 
+
+export const addQuestion = async (payload: any) => await request<API.API_TYPE<null>>('/api/questions/addQuestion', {
+  method: 'POST', data: payload
+})
+
+
+
 export default {
-  searchQuetions
+  searchQuetions,
+  addQuestion
 }

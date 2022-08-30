@@ -60,7 +60,10 @@ const Home = () => {
 
   const handleSearch = async (pas: any) => {
     setLoading(true);
-    const { data } = await searchQuetions({ ...pas, reviewStatus: REVIEW_STATUS_ENUM.PASS });
+    const { data } = await searchQuetions({
+      ...pas,
+      reviewStatus: REVIEW_STATUS_ENUM.REVIEWING + '',
+    });
     setQuestions(data!.list);
     setTotal(data!.total);
     setLoading(false);

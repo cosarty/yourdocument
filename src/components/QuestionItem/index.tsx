@@ -4,7 +4,7 @@ import {
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
 import type { QuestionsType } from '@/services/question';
-import { getQuestionDetail } from '@/util/businessUtils';
+import { getQuestionDetail, getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -18,6 +18,7 @@ import { Button, Col, Divider, List, Popconfirm, Row, Space, Tag, Typography } f
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import styles from './index.less';
+
 const { Title, Paragraph } = Typography;
 
 interface QuestionItemProps {
@@ -64,7 +65,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
           style={{ marginBottom: 16 }}
           className='question-item-title'
         >
-          {question.title}
+          {getQuestionTitle(question)}
         </Title>
       </Link>
       <Paragraph ellipsis={{ rows: 2 }} style={{ color: 'rgba(0, 0, 0, 0.7)', fontSize: 15 }}>

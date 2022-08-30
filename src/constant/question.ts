@@ -22,21 +22,21 @@ export const REVIEW_STATUS_ENUM = {
 };
 
 export const REVIEW_STATUS_MAP = {
-  0: '审核中',
-  1: '已发布',
-  2: '拒绝',
+  1: '审核中',
+  2: '已发布',
+  3: '拒绝',
 };
 
 export const REVIEW_STATUS_MAP_INFO = {
-  0: {
+  1: {
     text: '审核中',
     color: 'blue',
   },
-  1: {
+  2: {
     text: '已发布',
     color: 'green',
   },
-  2: {
+  3: {
     text: '拒绝',
     color: 'red',
   },

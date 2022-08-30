@@ -29,7 +29,7 @@ const addQuestion = async (req, res, next) => {
     });
     await question.save();
     await question.populate('userId');
-    res.status(200).send({ code: 200, message: `今日剩余可上传数${limit}`, data: question });
+    res.status(200).send({ code: 202, message: `今日剩余可上传数${limit}`, data: null });
   } catch (error) {
     console.log('error: ', error);
     next({ code: 500, message: '保存失败', data: null });

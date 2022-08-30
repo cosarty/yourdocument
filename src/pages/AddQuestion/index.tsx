@@ -4,14 +4,15 @@ import AddSingleOptions from '@/components/AddSingleOptions';
 import RichTextEditor from '@/components/RichTextEditor';
 import SelectTag from '@/components/SelectTag';
 import { QUESTION_DIFFICULTY_ENUM, QUESTION_TYPE_ENUM } from '@/constant/question';
+import { addQuestion } from '@/services/question';
 import { pick } from '@/util/utils';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProForm, ProFormDependency, ProFormRadio } from '@ant-design/pro-components';
-import { Button, Card, Col, Row } from 'antd';
+import { history } from '@umijs/max';
+import { Button, Card, Col, message, Row } from 'antd';
 import BraftEditor from 'braft-editor';
 import { useRef, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -62,11 +63,11 @@ const AddQuestion = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const doSubmit = async (values: Record<string, any>) => {
-    if (values.type === 2) {
+    if (values.type === '2') {
       values[`params${values.type}`].answer = values[`params${values.type}`].answer.join(',');
     }
 
-    if ([0, 1, 2].includes(values.type)) {
+    if (['0', '1', '2'].includes(values.type)) {
       values = pick(values, [
         'detail',
         'difficulty',
@@ -85,6 +86,17 @@ const AddQuestion = () => {
       values.params = values[`params${values.type}`];
     }
     Object.keys(values).map((k: string) => k.search(/params\d/) !== -1 && delete values[k]);
+
+    setSubmitting(true);
+    try {
+      const { message: msg } = await addQuestion(values);
+      message.success(msg);
+      history.replace({ pathname: '/' });
+      setSubmitting(false);
+    } catch (error) {
+      setSubmitting(false);
+      message.error('创建失败');
+    }
   };
 
   return (
@@ -114,7 +126,7 @@ const AddQuestion = () => {
                 name='type'
                 options={Object.keys(QUESTION_TYPE_ENUM).map((k) => ({
                   label: QUESTION_TYPE_ENUM[k],
-                  value: +k,
+                  value: k,
                 }))}
                 rules={[
                   {
@@ -134,7 +146,7 @@ const AddQuestion = () => {
                 name='difficulty'
                 options={Object.keys(QUESTION_DIFFICULTY_ENUM).map((k) => ({
                   label: QUESTION_DIFFICULTY_ENUM[k],
-                  value: +k,
+                  value: k,
                 }))}
               />
               <ProForm.Item
@@ -176,9 +188,9 @@ const AddQuestion = () => {
                 {({ type }) => {
                   return (
                     <>
-                      {[1, 2, 0].includes(type) && (
+                      {['1', '2', '0'].includes(type) && (
                         <>
-                          {type === 0 && (
+                          {type === '0' && (
                             <ProForm.Item
                               name='params0'
                               label={'题目选项'}
@@ -201,7 +213,7 @@ const AddQuestion = () => {
                               <AddSingleOptions min={2} max={2} />
                             </ProForm.Item>
                           )}
-                          {type === 1 && (
+                          {type === '1' && (
                             <ProForm.Item
                               name='params1'
                               label={'题目选项'}
@@ -224,7 +236,7 @@ const AddQuestion = () => {
                               <AddSingleOptions min={3} max={6} />
                             </ProForm.Item>
                           )}
-                          {type === 2 && (
+                          {type === '2' && (
                             <ProForm.Item
                               name='params2'
                               label={'题目选项'}
