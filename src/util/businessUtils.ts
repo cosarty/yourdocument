@@ -31,6 +31,11 @@ export const getQuestionTitle = (question: QuestionsType): string => {
   // 没标题，用描述代替
   return BraftEditor.createEditorState(question.title).toText().trim();
 };
+export const getQuestionreRerence = (question: QuestionsType): string => {
+
+  // 没标题，用描述代替
+  return BraftEditor.createEditorState(question.reference).toText().trim();
+};
 
 // /**
 //  * 分享题目

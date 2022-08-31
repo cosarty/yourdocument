@@ -72,7 +72,7 @@ declare namespace Payload {
     type?: number;
     difficulty?: string;
     tags?: string[]; // 须包含全部标签才查出
-    orderKey?: 'update_time' | 'favourNum';
+    orderKey?: 'create_time' | 'favourNum';
     order?: string;
     pageSize?: number;
     pageNum?: number;

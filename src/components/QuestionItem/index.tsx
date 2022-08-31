@@ -4,7 +4,7 @@ import {
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
 import { favourQuestion, QuestionsType } from '@/services/question';
-import { getQuestionDetail, getQuestionTitle } from '@/util/businessUtils';
+import { getQuestionreRerence, getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -76,7 +76,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     }
   }, [currentUser, question]);
 
-  const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }) => (
+  const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }: any) => (
     <Button
       className={styles['icon-text']}
       size='small'
@@ -102,7 +102,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
         </Title>
       </Link>
       <Paragraph ellipsis={{ rows: 2 }} style={{ color: 'rgba(0, 0, 0, 0.7)', fontSize: 15 }}>
-        {getQuestionDetail(question)}
+        {getQuestionreRerence(question)}
       </Paragraph>
       <Space size={10} style={{ marginBottom: 10 }}>
         {question.tags.map((tag: string) => {

@@ -17,7 +17,7 @@ const searchQuestionsValidator = validator([
     .isString()
     .withMessage('orderKey必须是字符串')
     .bail()
-    .isIn(['update_time', 'favourNum'])
+    .isIn(['create_time', 'favourNum'])
     .withMessage('目前只支持时间和收藏量的排序'),
   body('order').optional().isInt().withMessage('排序规则是-1 和 1').toInt(),
   body('pageSize').optional().isInt().withMessage('页面大小必须是整型的').toInt(),

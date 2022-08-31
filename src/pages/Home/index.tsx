@@ -17,7 +17,7 @@ import styles from './index.less';
 
 const tabListNoTitle = [
   {
-    key: 'update_time',
+    key: 'create_time',
     tab: '最新',
   },
   {
@@ -53,7 +53,7 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({
-    orderKey: 'update_time',
+    orderKey: 'create_time',
     pageSize: 11,
     pageNum: 1,
   });

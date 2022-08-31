@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+import QuestionDetailCard from '@/components/QuestionDetailCard';
 import {
   QUESTION_DIFFICULTY_COLOR_ENUM,
   QUESTION_DIFFICULTY_ENUM,
@@ -14,7 +15,7 @@ import {
 } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
 import { useAccess, useModel, useParams } from '@umijs/max';
-import { Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
+import { Button, Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -22,6 +23,7 @@ const QuestionDetail = () => {
   const [loading, setLoading] = useState(false);
   const [isFavour, setIsFavour] = useState<boolean>(false);
   const [favourLoading, setFavourLoading] = useState<boolean>(false);
+  const [showReference, setShowReference] = useState<boolean>(false);
   const { initialState } = useModel('@@initialState');
   const { getUser } = useModel('user');
   const { questionId } = useParams() as { questionId: string };
@@ -143,7 +145,31 @@ const QuestionDetail = () => {
                 </Space>
               }
             >
-              方式方式的
+              {qd?._id && (
+                <>
+                  <QuestionDetailCard question={qd} showReference={showReference} />
+                  <div style={{ marginBottom: 16 }} />
+                  {(qd?.reference || qd?.params?.answer) && (
+                    <Row justify='space-between'>
+                      <Space size='middle'>
+                        <Button
+                          type='primary'
+                          danger={showReference}
+                          onClick={() => {
+                            // 如果是隐藏解析，回到顶部
+                            if (showReference) {
+                              window.scrollTo(0, 0);
+                            }
+                            setShowReference(!showReference);
+                          }}
+                        >
+                          {showReference ? '隐藏解析' : '查看解析'}
+                        </Button>
+                      </Space>
+                    </Row>
+                  )}
+                </>
+              )}
             </Card>
           </Col>
           <Col xl={20} lg={24} xs={24}>
