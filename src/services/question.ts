@@ -44,9 +44,11 @@ export const addQuestion = async (payload: any) => await request<API.API_TYPE<nu
   method: 'POST', data: payload
 })
 
+// 获取题目详情
+export
 
 
-export default {
-  searchQuetions,
-  addQuestion
-}
+  export default {
+    searchQuetions,
+    addQuestion
+  }
