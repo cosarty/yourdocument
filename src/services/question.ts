@@ -13,7 +13,7 @@ export type QuestionsType = {
     };
     answer: 'C';
   };
-  _id: String;
+  _id: string;
   difficulty: number;
   title: string;
   commentNum: number;
@@ -49,10 +49,15 @@ export const getQuestions = async (qutionsId: string) => await request<API.API_T
   method: 'GET'
 })
 
+// 收藏题目
 
+export const favourQuestion = async (qutionsId: string) => await request<API.API_TYPE<{ mit: number }>>(`/api/questions/favour/${qutionsId}`, {
+  method: 'PUT'
+})
 
 export default {
   searchQuetions,
   addQuestion,
-  getQuestions
+  getQuestions,
+  favourQuestion
 }

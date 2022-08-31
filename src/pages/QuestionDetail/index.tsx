@@ -4,8 +4,7 @@ import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
-import type { QuestionsType } from '@/services/question';
-import { getQuestions } from '@/services/question';
+import { favourQuestion, getQuestions, QuestionsType } from '@/services/question';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -15,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
 import { useAccess, useModel, useParams } from '@umijs/max';
-import { Card, Col, Divider, Dropdown, Menu, Row, Space, Tag } from 'antd';
+import { Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -23,8 +22,8 @@ const QuestionDetail = () => {
   const [loading, setLoading] = useState(false);
   const [isFavour, setIsFavour] = useState<boolean>(false);
   const [favourLoading, setFavourLoading] = useState<boolean>(false);
-  const [favourNum, setFavourNum] = useState<number>(0);
   const { initialState } = useModel('@@initialState');
+  const { getUser } = useModel('user');
   const { questionId } = useParams() as { questionId: string };
   const { currentUser } = initialState || {};
   const [qd, setQd] = useState<QuestionsType>();
@@ -45,18 +44,43 @@ const QuestionDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (question) {
-      setIsFavour(currentUser?.?.includes(question._id) ?? false);
-      setFavourNum(question.favourNum ?? 0);
+    if (qd) {
+      setIsFavour(currentUser?.favours?.includes(qd?._id || '') ?? false);
     }
-  }, [currentUser, question]);
+  }, [currentUser, qd]);
+
+  /**
+   * 收藏
+   */
+  const doFavour = async () => {
+    if (!qd?._id || favourLoading) {
+      return;
+    }
+
+    setFavourLoading(true);
+    const res = await favourQuestion(qd?._id || '');
+    setFavourLoading(false);
+
+    if (res.code === 202) {
+      setIsFavour(true);
+      message.success(res.message);
+
+      await getUser();
+    } else {
+      message.error('操作失败');
+    }
+  };
 
   // 是否允许编辑题目
   const canEdit = canLogin || qd?.userId === currentUser?._id;
 
   const getAction = () => {
     const actions = [
-      <div onClick={() => {}}>
+      <div
+        onClick={() => {
+          doFavour();
+        }}
+      >
         <Space>
           {isFavour ? (
             <>

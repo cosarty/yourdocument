@@ -40,7 +40,7 @@ const favourQuestion = async (req, res, next) => {
     res.status(200).send({
       code: 202,
       message: isFavour ? '取消成功!!!' : '收藏成功!!!',
-      data: user,
+      data: { mit: isFavour ? -1 : 1 },
     });
   } catch (error) {
     next({ code: 500, message: '失败', data: null });

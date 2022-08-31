@@ -3,7 +3,7 @@ import {
   QUESTION_TYPE_ENUM,
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
-import type { QuestionsType } from '@/services/question';
+import { favourQuestion, QuestionsType } from '@/services/question';
 import { getQuestionDetail, getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
@@ -13,10 +13,9 @@ import {
   StarFilled,
   StarOutlined,
 } from '@ant-design/icons';
-import { Link, useAccess } from '@umijs/max';
-import { Button, Col, Divider, List, Popconfirm, Row, Space, Tag, Typography } from 'antd';
-import type { FC } from 'react';
-import React, { useState } from 'react';
+import { Link, useAccess, useModel } from '@umijs/max';
+import { Button, Col, Divider, List, message, Popconfirm, Row, Space, Tag, Typography } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './index.less';
 
 const { Title, Paragraph } = Typography;
@@ -34,6 +33,9 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const [favourLoading, setFavourLoading] = useState<boolean>(false);
   const [isFavour, setIsFavour] = useState<boolean>(false);
   const [favourNum, setFavourNum] = useState<number>(0);
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+  const { getUser } = useModel('user');
   const { canLogin } = useAccess();
   const {
     question = {} as QuestionsType,
@@ -42,6 +44,37 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     showActions = true,
     onReload,
   } = props;
+
+  /**
+   * 收藏
+   */
+  const doFavour = async () => {
+    if (!question?._id || favourLoading) {
+      return;
+    }
+
+    setFavourLoading(true);
+    const res = await favourQuestion(question?._id || '');
+    setFavourLoading(false);
+
+    if (res.code === 202) {
+      setFavourNum(favourNum + (res.data ? res!.data?.mit || 0 : 0));
+      setIsFavour(true);
+      message.success(res.message);
+
+      await getUser();
+    } else {
+      message.error('操作失败');
+    }
+  };
+
+  // 初始化收藏
+  useEffect(() => {
+    if (question) {
+      setIsFavour(currentUser?.favours?.includes(question?._id || '') ?? false);
+      setFavourNum(question.favourNum ?? 0);
+    }
+  }, [currentUser, question]);
 
   const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }) => (
     <Button
@@ -106,7 +139,9 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
                     icon={isFavour ? StarFilled : StarOutlined}
                     text={question.favourNum}
                     loading={favourLoading}
-                    onClick={() => {}}
+                    onClick={() => {
+                      doFavour();
+                    }}
                   />
                 )}
                 <a href={'/'} target='_blank' rel='noreferrer'>
