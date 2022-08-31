@@ -92,7 +92,6 @@ const AddQuestion = () => {
       const { message: msg } = await addQuestion(values);
       message.success(msg);
       history.replace({ pathname: '/' });
-      setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
       message.error('创建失败');

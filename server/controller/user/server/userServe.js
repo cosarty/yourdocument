@@ -10,4 +10,4 @@ exports.checkUser = async (userId) => {
   return user;
 };
 
-exports.getUserInfo = async (userId) => await UserModel.findById(userId).populate('favours');
+exports.getUserInfo = async (userId) => await UserModel.findById(userId);

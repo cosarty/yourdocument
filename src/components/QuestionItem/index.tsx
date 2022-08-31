@@ -13,7 +13,7 @@ import {
   StarFilled,
   StarOutlined,
 } from '@ant-design/icons';
-import { Link } from '@umijs/max';
+import { Link, useAccess } from '@umijs/max';
 import { Button, Col, Divider, List, Popconfirm, Row, Space, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -34,13 +34,13 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const [favourLoading, setFavourLoading] = useState<boolean>(false);
   const [isFavour, setIsFavour] = useState<boolean>(false);
   const [favourNum, setFavourNum] = useState<number>(0);
+  const { canLogin } = useAccess();
   const {
     question = {} as QuestionsType,
     showReview,
-    showEdit,
+    showEdit = true,
     showActions = true,
     onReload,
-    target = '_blank',
   } = props;
 
   const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }) => (
@@ -58,12 +58,12 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
 
   return (
     <List.Item>
-      <Link to={`/qd/${question._id}`} target={target}>
+      <Link to={`/qd/${question._id}`} target={'_blank'}>
         <Title
           level={5}
           ellipsis={{ rows: 2 }}
           style={{ marginBottom: 16 }}
-          className='question-item-title'
+          className={styles['question-item-title']}
         >
           {getQuestionTitle(question)}
         </Title>
@@ -93,44 +93,45 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
           )}
         </Space>
       </div>
-      {showActions && (
+      {
         <Row justify='space-between' align='middle'>
-          <Col>
-            <Space size={16}>
-              <a href={'/'} target='_blank' rel='noreferrer'>
-                <IconText icon={EyeOutlined} text={question.viewNum} />
-              </a>
-              <IconText
-                icon={isFavour ? StarFilled : StarOutlined}
-                text={question.favourNum}
-                loading={favourLoading}
-                onClick={() => {}}
-              />
-              <a href={'/'} target='_blank' rel='noreferrer'>
-                <IconText icon={MessageOutlined} text={question.commentNum} />
-              </a>
-            </Space>
-          </Col>
-          <Col>
-            <Space size={10}>
-              {
-                // 没有人回答才允许修改
-                showEdit && !question.commentNum && (
-                  <IconText icon={EditOutlined} text='修改' onClick={() => {}} />
-                )
-              }
-              {
-                // 没有人回答才允许删除
-                showEdit && !question.commentNum && (
-                  <Popconfirm title='确认删除么，操作无法撤销' onConfirm={() => {}}>
-                    <IconText icon={DeleteOutlined} danger={true} text='删除' onClick={() => {}} />
-                  </Popconfirm>
-                )
-              }
-            </Space>
-          </Col>
+          {showActions && question.reviewStatus === 2 && (
+            <Col>
+              <Space size={16}>
+                <a href={'/'} target='_blank' rel='noreferrer'>
+                  <IconText icon={EyeOutlined} text={question.viewNum} />
+                </a>
+                {canLogin && (
+                  <IconText
+                    icon={isFavour ? StarFilled : StarOutlined}
+                    text={question.favourNum}
+                    loading={favourLoading}
+                    onClick={() => {}}
+                  />
+                )}
+                <a href={'/'} target='_blank' rel='noreferrer'>
+                  <IconText icon={MessageOutlined} text={question.commentNum} />
+                </a>
+              </Space>
+            </Col>
+          )}
+          {showEdit && !question.commentNum && (
+            <Col>
+              <Space size={10}>
+                {/* // 没有人回答才允许修改 */}
+
+                <IconText icon={EditOutlined} text='修改' onClick={() => {}} />
+
+                {/* // 没有人回答才允许删除 */}
+
+                <Popconfirm title='确认删除么，操作无法撤销' onConfirm={() => {}}>
+                  <IconText icon={DeleteOutlined} danger={true} text='删除' onClick={() => {}} />
+                </Popconfirm>
+              </Space>
+            </Col>
+          )}
         </Row>
-      )}
+      }
     </List.Item>
   );
 };

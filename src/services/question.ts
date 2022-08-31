@@ -45,10 +45,14 @@ export const addQuestion = async (payload: any) => await request<API.API_TYPE<nu
 })
 
 // 获取题目详情
-export
+export const getQuestions = async (qutionsId: string) => await request<API.API_TYPE<QuestionsType>>(`/api/questions/get/${qutionsId}`, {
+  method: 'GET'
+})
 
 
-  export default {
-    searchQuetions,
-    addQuestion
-  }
+
+export default {
+  searchQuetions,
+  addQuestion,
+  getQuestions
+}

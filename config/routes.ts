@@ -129,9 +129,13 @@
   },
   {
     path: '/addQuestion',
-    icon: 'CodeOutlined',
     access: 'canLogin',
     component: '@/pages/AddQuestion',
+    hideMenu: true
+  },
+  {
+    path: '/qd/:questionId',
+    component: '@/pages/QuestionDetail',
     hideMenu: true
   },
 ];

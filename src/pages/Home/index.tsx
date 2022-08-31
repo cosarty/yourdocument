@@ -59,6 +59,9 @@ const Home = () => {
   });
 
   const handleSearch = async (pas: any) => {
+    if (pas?.tags?.length === 0) {
+      delete pas?.tags;
+    }
     setLoading(true);
     const { data } = await searchQuetions({
       ...pas,

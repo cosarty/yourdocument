@@ -41,6 +41,7 @@ const AvatarDropdown: React.FC = () => {
         <Avatar
           className={styles.avatar}
           src={initialState?.currentUser?.avtar_url || defaultAvtar}
+          onError={() => false}
           alt='avatar'
         />
         <span className={`${styles.name} anticon`}>{''}</span>

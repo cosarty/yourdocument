@@ -27,6 +27,7 @@ declare namespace API {
     create_time: Date;
     update_time: Date;
     auth: 'super' | 'admin' | 'user';
+    favours: string[]
   }>;
 
   type Upload = API_TYPE<{ fileURL: string }>;

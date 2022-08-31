@@ -70,6 +70,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props) => {
   const toggleFull = () => (fullScreen ? handle.exit() : handle.enter());
 
   const uploadImageAddInsert = async (file: File | undefined) => {
+    console.log(file);
     if (!file) {
       return;
     }
@@ -80,6 +81,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props) => {
     // @ts-ignore
     const quillEditor = quillRef.current.getEditor();
     // const res = await uploadFile(file);
+
     // 先不做后面做
     const res = { fileURL: null };
     if (!res || !res.fileURL) {
