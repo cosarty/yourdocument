@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-key */
 import defaultAvtar from '@/assets/shitijun.png';
+import CommentList from '@/components/CommentList';
 import QuestionDetailCard from '@/components/QuestionDetailCard';
 import {
   QUESTION_DIFFICULTY_COLOR_ENUM,
@@ -129,7 +130,7 @@ const QuestionDetail = () => {
 
   return (
     <HelmetProvider>
-      <Helmet>{qd && <title>{qd?.title.substring(0, 40)} - 面试鸭</title>}</Helmet>
+      <Helmet>{qd && <title>{qd?.title.substring(0, 40)} - 试题君</title>}</Helmet>
       <GridContent style={{ overflowX: 'hidden' }}>
         <Row gutter={[24, 24]}>
           <Col xl={16} lg={24} xs={24}>
@@ -182,8 +183,8 @@ const QuestionDetail = () => {
           <Col xl={8} lg={24} xs={24}>
             <Card title='题目信息' bodyStyle={{ paddingBottom: 8 }}>
               <p>浏览数：{(qd?.viewNum ?? 0) + 1}</p>
-              {qd?.create_time && <p>发布时间：{new Date(qd?.create_time).toLocaleDateString}</p>}
-              <p>
+              {qd?.create_time && <p>发布时间：{new Date(qd?.create_time).toLocaleDateString()}</p>}
+              <div>
                 上传者：
                 {
                   <Space size={10} align='center'>
@@ -197,9 +198,10 @@ const QuestionDetail = () => {
                   </UserInfoCardPopover>
                   <UserTitleBar user={user} />
                 </Space> */}
-              </p>
+              </div>
             </Card>
             <div style={{ marginBottom: 24 }} />
+            {qd && <CommentList question={qd} />}
           </Col>
         </Row>
       </GridContent>
