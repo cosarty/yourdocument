@@ -183,7 +183,7 @@ const Home = () => {
           setSearchParams({
             ...searchParams,
             pageNum: 1,
-            orderKey: key as 'update_time' | 'favourNum',
+            orderKey: key as 'create_time' | 'favourNum',
           });
         }}
       >
@@ -218,7 +218,7 @@ const Home = () => {
             ),
           }}
           renderItem={(item, i) => {
-            return <QuestionItem question={item} key={i} />;
+            return <QuestionItem question={item} key={i} showEdit={false} />;
           }}
         />
       </Card>

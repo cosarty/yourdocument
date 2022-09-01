@@ -1,15 +1,14 @@
 import { Button, Card, List, message, Space } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 // import { CommentSearchParams, searchComments } from '@/services/comment';
-
-import CommentItem from '@/components/CommentItem';
 
 import { EditOutlined } from '@ant-design/icons';
 
 import './index.less';
 // import { useModel } from '@umijs/max';
-import { QuestionsType } from '@/services/question';
+import type { CommentType } from '@/services/comment';
+import type { QuestionsType } from '@/services/question';
 
 interface CommentListProps {
   question: QuestionsType;
@@ -26,14 +25,13 @@ const CommentList: React.FC<CommentListProps> = (props) => {
   const { question } = props;
   const topRef = useRef<HTMLDivElement>(null);
 
-  const initSearchParams: CommentSearchParams = {
+  const initSearchParams = {
     pageSize: DEFAULT_PAGE_SIZE,
     pageNum: 1,
-    orderKey: 'thumbNum',
   };
 
-  const [searchParams, setSearchParams] = useState<CommentSearchParams>(initSearchParams);
-  const [list, setList] = useState<CommentUserType[]>([]);
+  const [searchParams, setSearchParams] = useState(initSearchParams);
+  const [list, setList] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
@@ -51,7 +49,6 @@ const CommentList: React.FC<CommentListProps> = (props) => {
     const res = await searchComments({
       questionId: question._id,
       getReplyList: true,
-      ...searchParams,
     });
     if (res) {
       setList(res.data);
@@ -62,11 +59,11 @@ const CommentList: React.FC<CommentListProps> = (props) => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (question?._id) {
-      loadData();
-    }
-  }, [searchParams, question]);
+  // useEffect(() => {
+  //   if (question?._id) {
+  //     loadData();
+  //   }
+  // }, [searchParams, question]);
 
   if (!question) {
     return <></>;
@@ -91,23 +88,24 @@ const CommentList: React.FC<CommentListProps> = (props) => {
           </Button>
         }
       >
-        <List<CommentUserType>
+        <List<CommentType>
           itemLayout='vertical'
           dataSource={list}
           loading={loading}
           renderItem={(comment) => {
             return (
-              <CommentItem
-                comment={comment}
-                key={comment._id}
-                onDelete={() => {
-                  const index = list.findIndex((item) => item._id === comment._id);
-                  if (index > -1) {
-                    list.splice(index, 1);
-                    setList([...list]);
-                  }
-                }}
-              />
+              // <CommentItem
+              //   comment={comment}
+              //   key={comment._id}
+              //   onDelete={() => {
+              //     const index = list.findIndex((item) => item._id === comment._id);
+              //     if (index > -1) {
+              //       list.splice(index, 1);
+              //       setList([...list]);
+              //     }
+              //   }}
+              // />
+              <div>1</div>
             );
           }}
           pagination={{

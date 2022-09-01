@@ -5,7 +5,6 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading } from '@ant-design/pro-components';
 import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import { message } from 'antd';
 
 import defaultSettings from '../config/defaultSettings';
 
@@ -26,6 +25,12 @@ export async function getInitialState(): Promise<{
     let isThowrErr = false;
     // 添加权限提示
 
+    if (!getStorage(TOKEN_KEY)) {
+      return {
+        currentUser: null,
+        settings: defaultSettings,
+      };
+    }
     if (history.location.pathname === '/login' || history.location.pathname === '/') {
       isThowrErr = true;
     }
@@ -39,7 +44,7 @@ export async function getInitialState(): Promise<{
     if (getStorage(TOKEN_KEY)) {
       removeStorage(TOKEN_KEY);
     }
-    history.push('/');
+
     return {
       currentUser: null,
       settings: defaultSettings,
@@ -64,10 +69,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
        */
 
       // 如果没有登录，重定向到 login
-      if (!getStorage(TOKEN_KEY) && location.pathname !== '/') {
-        message.error('登录失效!!!');
+      if (!getStorage(TOKEN_KEY) && location.pathname === '/') {
         await setInitialState((s) => ({ ...s, currentUser: null }));
-        location.href = '/';
+        // location.href = '/';
       }
     },
     menuHeaderRender: undefined,

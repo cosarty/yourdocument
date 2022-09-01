@@ -14,7 +14,7 @@ const getCommentValidator = [
         .where('user')
         .populate({
           path: 'user',
-          select: { nickname: 1 },
+          select: { nickname: 1, avtar_url: 1 },
         });
 
       if (!comment || comment.isget) return Promise.reject('评论不存在');

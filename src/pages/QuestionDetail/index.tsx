@@ -136,7 +136,7 @@ const QuestionDetail = () => {
           <Col xl={16} lg={24} xs={24}>
             <Card
               style={{ marginBottom: 24 }}
-              actions={getAction()}
+              actions={currentUser ? getAction() : undefined}
               loading={loading}
               title={
                 <Space split={<Divider type='vertical' />} wrap align='center'>
@@ -178,7 +178,7 @@ const QuestionDetail = () => {
                 </>
               )}
             </Card>
-            <Card title='评论区'>挂号费逗号分隔</Card>
+            <Card title='评论区'> {qd && <CommentList question={qd} />}</Card>
           </Col>
           <Col xl={8} lg={24} xs={24}>
             <Card title='题目信息' bodyStyle={{ paddingBottom: 8 }}>
@@ -201,7 +201,6 @@ const QuestionDetail = () => {
               </div>
             </Card>
             <div style={{ marginBottom: 24 }} />
-            {qd && <CommentList question={qd} />}
           </Col>
         </Row>
       </GridContent>
