@@ -12,13 +12,13 @@ export type CommentType = {
   isDelete: boolean,
 }
 
-export const searchQuetions = async (payload: Payload.QuestionSearchParams) => await request<API.QuestionList<null>>('/api/questions/search', {
-  method: 'POST', data: payload
+export const getComment = async (payload: { questionId: string }) => await request<API.API_TYPE<CommentType[]>>('/api/comment/get', {
+  method: 'GET', params: payload
 })
 
 
 
 export default {
-  searchQuetions,
+  getComment
 
 }

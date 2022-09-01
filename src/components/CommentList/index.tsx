@@ -1,20 +1,22 @@
-import { Button, Card, List, message, Space } from 'antd';
-import React, { useRef, useState } from 'react';
+import { Button, Card, List, Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 
 // import { CommentSearchParams, searchComments } from '@/services/comment';
+import { useAccess } from '@umijs/max';
 
 import { EditOutlined } from '@ant-design/icons';
 
 import './index.less';
 // import { useModel } from '@umijs/max';
-import type { CommentType } from '@/services/comment';
+import { CommentType, getComment } from '@/services/comment';
 import type { QuestionsType } from '@/services/question';
+import AddCommentModal from '../AddCommentModal';
 
 interface CommentListProps {
   question: QuestionsType;
 }
 
-const DEFAULT_PAGE_SIZE = 8;
+const DEFAULT_PAGE_SIZE = 2;
 
 /**
  * 回答列表
@@ -35,35 +37,35 @@ const CommentList: React.FC<CommentListProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
   const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
+
+  const { canLogin } = useAccess();
+
   // const { initialState } = useModel('@@initialState');
   // const { currentUser } = initialState || {};
 
   /**
-   * 加载数据
+   * 评论
    */
   const loadData = async () => {
     if (!question._id) {
       return;
     }
     setLoading(true);
-    const res = await searchComments({
+    const res = await getComment({
       questionId: question._id,
-      getReplyList: true,
     });
-    if (res) {
-      setList(res.data);
-      setTotal(res.total);
-    } else {
-      message.error('加载失败，请刷新重试');
+    if (res.code === 200) {
+      setList(res?.data ?? []);
+      setTotal(res?.data?.length ?? 0);
     }
     setLoading(false);
   };
 
-  // useEffect(() => {
-  //   if (question?._id) {
-  //     loadData();
-  //   }
-  // }, [searchParams, question]);
+  useEffect(() => {
+    if (question?._id) {
+      loadData();
+    }
+  }, [searchParams, question]);
 
   if (!question) {
     return <></>;
@@ -83,9 +85,11 @@ const CommentList: React.FC<CommentListProps> = (props) => {
         }
         bodyStyle={{ paddingTop: 8 }}
         extra={
-          <Button type='primary' icon={<EditOutlined />} onClick={() => setAddModalVisible(true)}>
-            写回答
-          </Button>
+          canLogin && (
+            <Button type='primary' icon={<EditOutlined />} onClick={() => setAddModalVisible(true)}>
+              写回答
+            </Button>
+          )
         }
       >
         <List<CommentType>
@@ -105,7 +109,7 @@ const CommentList: React.FC<CommentListProps> = (props) => {
               //     }
               //   }}
               // />
-              <div>1</div>
+              <div>{comment.content}</div>
             );
           }}
           pagination={{
@@ -131,17 +135,16 @@ const CommentList: React.FC<CommentListProps> = (props) => {
           }}
         />
         {/* 写新回答的模态框 */}
-        {/* {question && (
+        {question && (
           <AddCommentModal
             questionId={question._id}
-            visible={addModalVisible}
             onClose={() => setAddModalVisible(false)}
-            onReload={(comment) => {
-              const newCommentList = [comment, ...list];
-              setList(newCommentList);
+            onReload={() => {
+              // const newCommentList = [comment, ...list];
+              // setList(newCommentList);
             }}
           />
-        )} */}
+        )}
       </Card>
     </>
   );

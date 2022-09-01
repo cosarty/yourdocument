@@ -56,10 +56,18 @@ export const getQuestions = async (qutionsId: string) => await request<API.API_T
 export const favourQuestion = async (qutionsId: string) => await request<API.API_TYPE<{ mit: number }>>(`/api/questions/favour/${qutionsId}`, {
   method: 'PUT'
 })
+export const viewQuestion = async (qutionsId: string) => await request<API.API_TYPE<null>>(`/api/questions/view/${qutionsId}`, {
+  method: 'PUT'
+})
+
+// 埋点记录浏览数
+
+
 
 export default {
   searchQuetions,
   addQuestion,
   getQuestions,
-  favourQuestion
+  favourQuestion,
+  viewQuestion
 }

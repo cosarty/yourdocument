@@ -8,8 +8,7 @@ import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
-import type { QuestionsType } from '@/services/question';
-import { favourQuestion, getQuestions } from '@/services/question';
+import { favourQuestion, getQuestions, QuestionsType, viewQuestion } from '@/services/question';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -53,6 +52,7 @@ const QuestionDetail = () => {
   useEffect(() => {
     if (qd) {
       setIsFavour(currentUser?.favours?.includes(qd?._id || '') ?? false);
+      viewQuestion(qd?._id);
     }
   }, [currentUser, qd]);
 
@@ -181,8 +181,8 @@ const QuestionDetail = () => {
             <Card title='评论区'> {qd && <CommentList question={qd} />}</Card>
           </Col>
           <Col xl={8} lg={24} xs={24}>
-            <Card title='题目信息' bodyStyle={{ paddingBottom: 8 }}>
-              <p>浏览数：{(qd?.viewNum ?? 0) + 1}</p>
+            <Card title='题目信息' bodyStyle={{ paddingBottom: 8 }} loading={loading}>
+              <p>浏览数：{qd?.viewNum ?? 0}</p>
               {qd?.create_time && <p>发布时间：{new Date(qd?.create_time).toLocaleDateString()}</p>}
               <div>
                 上传者：
