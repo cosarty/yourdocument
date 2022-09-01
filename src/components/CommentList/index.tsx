@@ -102,6 +102,7 @@ const CommentList: React.FC<CommentListProps> = (props) => {
           renderItem={(comment) => {
             return (
               <CommentItem
+                questionId={question}
                 comment={comment}
                 key={comment._id}
                 onUpdate={() => {}}

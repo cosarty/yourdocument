@@ -6,7 +6,9 @@ import React, { useState } from 'react';
 
 import RichTextViewer from '@/components/RichTextViewer';
 
-import { CommentType, deleteComment, priorityComment } from '@/services/comment';
+import type { CommentType } from '@/services/comment';
+import { deleteComment, priorityComment } from '@/services/comment';
+import type { QuestionsType } from '@/services/question';
 import { useAccess, useModel } from '@umijs/max';
 import AddCommentModal from '../AddCommentModal';
 import './index.less';
@@ -15,10 +17,11 @@ interface CommentItemProps {
   comment: CommentType;
   onDelete: () => void;
   onUpdate: () => void;
+  questionId: QuestionsType;
 }
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
-  const { comment = {} as CommentType, onDelete } = props;
+  const { comment = {} as CommentType, onDelete, questionId } = props;
   // 用于修改回答后的视图更新
   const [commentState, setCommentState] = useState<CommentType>(comment);
   const { initialState } = useModel('@@initialState');
@@ -45,9 +48,9 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
   /**
    * 删除回答
    */
-  const doDelete = async (commentId: string) => {
-    await deleteComment(commentId);
-    message.success('操作成功');
+  const doDelete = async () => {
+    await deleteComment({ commentId: commentState._id, questionId: questionId._id });
+    message.success('删除成功!!');
     onDelete();
   };
 
@@ -55,14 +58,12 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     return (
       <Menu
         onClick={(items: any) => {
-          console.log('items: ', items);
-
           switch (items.key) {
             case 'delete':
               Modal.confirm({
                 content: '是否确认删除？不可找回',
                 onOk() {
-                  doDelete(comments._id);
+                  doDelete();
                 },
               });
               break;
@@ -78,11 +79,12 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
                   label: (
                     <>
                       <AddCommentModal
-                        content={comments.content}
+                        content={commentState.content}
                         commentId={comments?._id}
+                        questionId={questionId?._id}
                         edit
                         onReload={(com) => {
-                          setCommentState(com);
+                          setCommentState({ ...commentState, content: com.content });
                         }}
                       />
                       ;
@@ -115,9 +117,9 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
         }
         description={new Date(commentState.create_time).toLocaleDateString()}
       />
-      {commentState.content && (
-        <RichTextViewer key={commentState._id} htmlContent={commentState.content} />
-      )}
+
+      <RichTextViewer htmlContent={commentState.content} />
+
       <Row justify='space-between' align='middle' style={{ marginTop: 12 }}>
         <Col>
           {/* <Space>
@@ -146,7 +148,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
                 修改
               </Button>
             )} */}
-            {(comment?.user?._id === currentUser?._id || access.canAdmin) && (
+            {(questionId?.userId?._id === currentUser?._id || access.canAdmin) && (
               <>
                 <Button
                   size='small'
@@ -158,14 +160,18 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
                 >
                   {commentState.priority ? '取消' : ''}采纳
                 </Button>
-                <Dropdown
-                  trigger={['click']}
-                  overlay={() => commentOpMenu(comment)}
-                  placement='bottomRight'
-                >
-                  <MoreOutlined />
-                </Dropdown>
               </>
+            )}
+            {(questionId?.userId?._id === currentUser?._id ||
+              access.canAdmin ||
+              comment?.user?._id === currentUser?._id) && (
+              <Dropdown
+                trigger={['click']}
+                overlay={() => commentOpMenu(comment)}
+                placement='bottomRight'
+              >
+                <MoreOutlined />
+              </Dropdown>
             )}
           </Space>
         </Col>

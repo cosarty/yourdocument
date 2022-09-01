@@ -67,6 +67,7 @@ const RichTextViewer: React.FC<RichTextViewerProps> = (props) => {
         modules={modules}
         formats={formats}
         defaultValue={htmlContent}
+        value={htmlContent}
         readOnly
       />
     </div>

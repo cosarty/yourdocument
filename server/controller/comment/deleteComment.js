@@ -1,14 +1,14 @@
 const CommentModel = require('../../model/commentSchema');
 const validator = require('../../middleware/validator');
-const { param } = require('express-validator');
+const { body } = require('express-validator');
 const { checkQutionsId } = require('../questions/service/quetionsServe');
 const { questionId } = require('./service/commentValidate');
 // 校验参数
 const deleteCommentValidator = [
-  validator([validator.isValidObjectId(['params'], 'commentId')]),
+  validator([validator.isValidObjectId(['body'], 'commentId')]),
   validator([questionId]),
   validator([
-    param('commentId').custom(async (commentId, { req }) => {
+    body('commentId').custom(async (commentId, { req }) => {
       const { _id, auth } = req.user;
       const comment = await CommentModel.findById(commentId);
 
@@ -37,6 +37,7 @@ const deleteComment = async (req, res, next) => {
     await req.comment.update({ isDelete: true });
     // 评论减一
     req.question.commentNum -= 1;
+
     await req.question.save();
     res.status(200).send({ code: 202, message: '删除成功!!', data: null });
   } catch (err) {

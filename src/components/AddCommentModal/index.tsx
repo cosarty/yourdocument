@@ -44,7 +44,9 @@ const AddCommentModal: FC<AddCommentModalProps> = ({
         onCancel: () => console.log('run'),
         width: 500,
       }}
-      initialValues={{ content }}
+      request={async () => {
+        return { content } ?? undefined;
+      }}
       submitTimeout={2000}
       onFinish={async (values) => {
         let data: any;
