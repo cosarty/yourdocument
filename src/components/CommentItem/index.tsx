@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 
 import RichTextViewer from '@/components/RichTextViewer';
 
-import type { CommentType } from '@/services/comment';
+import { CommentType, deleteComment, priorityComment } from '@/services/comment';
 import { useAccess, useModel } from '@umijs/max';
 import AddCommentModal from '../AddCommentModal';
 import './index.less';
@@ -18,7 +18,7 @@ interface CommentItemProps {
 }
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
-  const { comment = {} as CommentType, onDelete, onUpdate } = props;
+  const { comment = {} as CommentType, onDelete } = props;
   // 用于修改回答后的视图更新
   const [commentState, setCommentState] = useState<CommentType>(comment);
   const { initialState } = useModel('@@initialState');
@@ -33,26 +33,22 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
     if (!comment) {
       return;
     }
-    const res = false;
-    if (res) {
-      onUpdate?.();
-      message.success('操作成功');
-    } else {
-      message.error('操作失败');
-    }
+
+    const data = await priorityComment({
+      commentId: comment?._id ?? '',
+      priority: !commentState?.priority,
+    });
+    setCommentState({ ...commentState, priority: !commentState?.priority });
+    message.success(data.message);
   };
 
   /**
    * 删除回答
    */
   const doDelete = async (commentId: string) => {
-    const res = false;
-    if (res) {
-      message.success('操作成功');
-      onDelete();
-    } else {
-      message.error('操作失败');
-    }
+    await deleteComment(commentId);
+    message.success('操作成功');
+    onDelete();
   };
 
   const commentOpMenu = (comments: CommentType) => {

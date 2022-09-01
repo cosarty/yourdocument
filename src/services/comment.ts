@@ -29,10 +29,10 @@ export const updateComment = async (payload: { questionId: string, content: stri
 })
 
 
-export const deleteComment = async (commentId: string) => await request<API.API_TYPE<CommentType>>(`/comment/delete/${commentId}`, {
+export const deleteComment = async (commentId: string) => await request<API.API_TYPE<CommentType>>(`/api/comment/delete/${commentId}`, {
   method: 'DELETE'
 })
-export const priorityComment = async (payload: { commentId: string, priority: string }) => await request<API.API_TYPE<CommentType>>(`/comment/update/priority`, {
+export const priorityComment = async (payload: { commentId: string, priority: boolean }) => await request<API.API_TYPE<CommentType>>(`/api/comment/update/priority`, {
   method: 'POST',
   data: payload
 })

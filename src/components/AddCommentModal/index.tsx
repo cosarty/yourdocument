@@ -1,4 +1,4 @@
-import { addComment, CommentType } from '@/services/comment';
+import { addComment, CommentType, updateComment } from '@/services/comment';
 import { EditOutlined } from '@ant-design/icons';
 import { ModalForm, ProForm, ProFormInstance } from '@ant-design/pro-components';
 import { Button, message } from 'antd';
@@ -19,6 +19,7 @@ const AddCommentModal: FC<AddCommentModalProps> = ({
   onReload,
   edit,
   content = '',
+  commentId,
 }) => {
   const formRef = useRef<ProFormInstance>();
   return (
@@ -46,13 +47,23 @@ const AddCommentModal: FC<AddCommentModalProps> = ({
       initialValues={{ content }}
       submitTimeout={2000}
       onFinish={async (values) => {
-        const data = await addComment({ questionId: questionId ?? '', content: values.content });
+        let data: any;
 
-        if (data.code) {
-          onReload?.(data?.data ?? ({} as any));
-          message.success('评论成功！！');
+        if (edit) {
+          data = await updateComment({
+            questionId: questionId ?? '',
+            content: values.content,
+            commentId: commentId ?? '',
+          });
         } else {
-          message.error('评论失败！！');
+          data = await addComment({ questionId: questionId ?? '', content: values.content });
+        }
+
+        if (data.code === 200 || data.code === 202) {
+          onReload?.(data?.data ?? ({} as any));
+          message.success(data?.message);
+        } else {
+          message.error('失败！！');
         }
         return true;
       }}
