@@ -9,14 +9,14 @@ const uploadImage = async (req, res, next) => {
 
   try {
     const user = await getUserInfo(_id);
-    // console.log('user: ', user);
+
     user.avtar_url = require('config')['assetsDir']['avatarDir'] + '/' + req.file.filename;
 
     await user.save();
     res.status(202).send({
       code: 202,
       message: '上传成功!!',
-      data: { fileURL: require('config')['site'] + user.avtar_url },
+      data: { fileURL: user.avtar_url },
     });
   } catch (err) {
     console.log('err: ', err);

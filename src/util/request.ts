@@ -64,7 +64,7 @@ export const request: RequestConfig = {
           } else {
             const text = JSON.stringify(Object.fromEntries(Object.entries(message).filter((_, idx) => idx === 0))).replace(/\{|\}/g, '')
             notification.error({
-              message: `请求错误 ${errData.code}`,
+              message: `请求错误 `,
               description: text
             });
           }

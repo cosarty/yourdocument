@@ -25,6 +25,7 @@ const userSchema = createShcema({
   avtar_url: {
     type: String,
     default: null,
+    get: (url) => require('config')['site'] + url,
   },
   is_ban: {
     type: Boolean,
@@ -42,5 +43,8 @@ const userSchema = createShcema({
   },
   favours: [{ type: Schema.Types.ObjectId, ref: 'Questions' }], //收藏夹
 });
+
+// 坑 必须这样子设置 get函数才能生效
+userSchema.set('toJSON', { getters: true });
 
 module.exports = model('User', userSchema);

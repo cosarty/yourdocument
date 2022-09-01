@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-key */
+import defaultAvtar from '@/assets/shitijun.png';
 import QuestionDetailCard from '@/components/QuestionDetailCard';
 import {
   QUESTION_DIFFICULTY_COLOR_ENUM,
@@ -17,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
 import { useAccess, useModel, useParams } from '@umijs/max';
-import { Button, Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
+import { Avatar, Button, Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -130,9 +131,10 @@ const QuestionDetail = () => {
     <HelmetProvider>
       <Helmet>{qd && <title>{qd?.title.substring(0, 40)} - 面试鸭</title>}</Helmet>
       <GridContent style={{ overflowX: 'hidden' }}>
-        <Row gutter={[0, 24]} justify={'center'}>
-          <Col xl={20} lg={24} xs={24}>
+        <Row gutter={[24, 24]}>
+          <Col xl={16} lg={24} xs={24}>
             <Card
+              style={{ marginBottom: 24 }}
               actions={getAction()}
               loading={loading}
               title={
@@ -175,9 +177,29 @@ const QuestionDetail = () => {
                 </>
               )}
             </Card>
-          </Col>
-          <Col xl={20} lg={24} xs={24}>
             <Card title='评论区'>挂号费逗号分隔</Card>
+          </Col>
+          <Col xl={8} lg={24} xs={24}>
+            <Card title='题目信息' bodyStyle={{ paddingBottom: 8 }}>
+              <p>浏览数：{(qd?.viewNum ?? 0) + 1}</p>
+              {qd?.create_time && <p>发布时间：{new Date(qd?.create_time).toLocaleDateString}</p>}
+              <p>
+                上传者：
+                {
+                  <Space size={10} align='center'>
+                    <Avatar src={qd?.userId?.avtar_url || defaultAvtar} />
+                    <span>{qd?.userId?.nickname}</span>
+                  </Space>
+                }
+                {/* <Space>
+                  <UserInfoCardPopover user={user}>
+                    <Avatar src={user?.avatarUrl || DEFAULT_AVATAR} />
+                  </UserInfoCardPopover>
+                  <UserTitleBar user={user} />
+                </Space> */}
+              </p>
+            </Card>
+            <div style={{ marginBottom: 24 }} />
           </Col>
         </Row>
       </GridContent>

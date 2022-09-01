@@ -26,6 +26,7 @@ export type QuestionsType = {
   userId: {
     _id: string;
     nickname: string;
+    avtar_url: string
   };
   viewNum: number;
   create_time: Date;
