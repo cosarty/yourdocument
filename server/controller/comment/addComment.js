@@ -28,10 +28,12 @@ const addComment = async (req, res, next) => {
     req.question.commentNum += 1;
     req.question.save();
     await comment.save();
-    res.status(200).send({ code: 200, message: '保存成功!!', data: comment });
+    res
+      .status(200)
+      .send({ code: 200, message: '评论成功!!', data: await comment.populate('user') });
   } catch (err) {
     console.log(err);
-    next({ code: 500, message: '保存失败', data: null });
+    next({ code: 500, message: '评论失败', data: null });
   }
 };
 

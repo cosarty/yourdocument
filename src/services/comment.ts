@@ -24,9 +24,27 @@ export const addComment = async (payload: { questionId: string, content: string 
   })
 
 
+export const updateComment = async (payload: { questionId: string, content: string, commentId: string }) => await request<API.API_TYPE<CommentType>>('/api/comment/update', {
+  method: 'PUT', data: payload
+})
+
+
+export const deleteComment = async (commentId: string) => await request<API.API_TYPE<CommentType>>(`/comment/delete/${commentId}`, {
+  method: 'DELETE'
+})
+export const priorityComment = async (payload: { commentId: string, priority: string }) => await request<API.API_TYPE<CommentType>>(`/comment/update/priority`, {
+  method: 'POST',
+  data: payload
+})
+
+
+
 
 export default {
   getComment,
-  addComment
+  addComment,
+  updateComment,
+  deleteComment,
+  priorityComment
 
 }

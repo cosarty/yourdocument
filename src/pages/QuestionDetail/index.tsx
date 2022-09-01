@@ -9,6 +9,7 @@ import {
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
 import { favourQuestion, getQuestions, QuestionsType, viewQuestion } from '@/services/question';
+import { getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -130,7 +131,7 @@ const QuestionDetail = () => {
 
   return (
     <HelmetProvider>
-      <Helmet>{qd && <title>{qd?.title.substring(0, 40)} - 试题君</title>}</Helmet>
+      <Helmet>{qd && <title>{getQuestionTitle(qd)} - 试题君</title>}</Helmet>
       <GridContent style={{ overflowX: 'hidden' }}>
         <Row gutter={[24, 24]}>
           <Col xl={16} lg={24} xs={24}>

@@ -14,7 +14,11 @@ const deleteCommentValidator = [
 
       if (!comment || comment.isDelete) return Promise.reject('评论不存在');
       // 仅评论所有者和管理员可操作
-      if (!['admin', 'super'].includes(auth) || req.question.userId.toString() !== _id.toString())
+      if (
+        !['admin', 'super'].includes(auth) &&
+        req.question.userId.toString() !== _id.toString() &&
+        comment.user.toString() !== _id.toString()
+      )
         return Promise.reject('您没有此权限');
       try {
         const question = await checkQutionsId(comment.questionId);

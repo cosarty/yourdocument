@@ -1,4 +1,4 @@
-import { Card, List, Space } from 'antd';
+import { Card, Empty, List, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 // import { CommentSearchParams, searchComments } from '@/services/comment';
@@ -63,7 +63,7 @@ const CommentList: React.FC<CommentListProps> = (props) => {
     if (question?._id) {
       loadData();
     }
-  }, [searchParams, question]);
+  }, [question]);
 
   if (!question) {
     return <></>;
@@ -104,10 +104,20 @@ const CommentList: React.FC<CommentListProps> = (props) => {
               <CommentItem
                 comment={comment}
                 key={comment._id}
+                onUpdate={() => {}}
                 onDelete={() => {
                   const index = list.findIndex((item) => item._id === comment._id);
                   if (index > -1) {
                     list.splice(index, 1);
+                    if (
+                      list.length > 0 &&
+                      Math.ceil(list.length / searchParams.pageSize) < searchParams.pageNum
+                    ) {
+                      setSearchParams((pre) => ({
+                        ...pre,
+                        pageNum: Math.ceil(list.length / searchParams.pageSize),
+                      }));
+                    }
                     setList([...list]);
                   }
                 }}
@@ -134,6 +144,9 @@ const CommentList: React.FC<CommentListProps> = (props) => {
                 window.scrollTo(0, topRef.current.offsetTop);
               }
             },
+          }}
+          locale={{
+            emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无评论' />,
           }}
         />
       </Card>

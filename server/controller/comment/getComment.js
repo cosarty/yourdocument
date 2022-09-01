@@ -17,7 +17,7 @@ const getCommentValidator = [
           path: 'user',
           select: { nickname: 1, avtar_url: 1 },
         })
-        .sort({ create_time: -1 });
+        .sort({ create_time: -1, priority: -1 });
 
       if (!comment || comment.isget) return Promise.reject('评论不存在');
       // 仅评论所有者和管理员可操作

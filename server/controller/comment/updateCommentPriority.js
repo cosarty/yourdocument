@@ -32,7 +32,7 @@ const updateCommentPriority = async (req, res, next) => {
   try {
     await req.comment.update({ priority });
 
-    res.status(200).send({ code: 202, message: '采纳成功!!', data: null });
+    res.status(200).send({ code: 202, message: priority ? '采纳成功!!' : '取消采纳', data: null });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '采纳失败!!', data: null });
