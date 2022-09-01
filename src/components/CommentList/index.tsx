@@ -1,22 +1,21 @@
-import { Button, Card, List, Space } from 'antd';
+import { Card, List, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 // import { CommentSearchParams, searchComments } from '@/services/comment';
 import { useAccess } from '@umijs/max';
-
-import { EditOutlined } from '@ant-design/icons';
 
 import './index.less';
 // import { useModel } from '@umijs/max';
 import { CommentType, getComment } from '@/services/comment';
 import type { QuestionsType } from '@/services/question';
 import AddCommentModal from '../AddCommentModal';
+import CommentItem from '../CommentItem';
 
 interface CommentListProps {
   question: QuestionsType;
 }
 
-const DEFAULT_PAGE_SIZE = 2;
+const DEFAULT_PAGE_SIZE = 8;
 
 /**
  * 回答列表
@@ -36,7 +35,6 @@ const CommentList: React.FC<CommentListProps> = (props) => {
   const [list, setList] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
-  const [addModalVisible, setAddModalVisible] = useState<boolean>(false);
 
   const { canLogin } = useAccess();
 
@@ -85,10 +83,15 @@ const CommentList: React.FC<CommentListProps> = (props) => {
         }
         bodyStyle={{ paddingTop: 8 }}
         extra={
-          canLogin && (
-            <Button type='primary' icon={<EditOutlined />} onClick={() => setAddModalVisible(true)}>
-              写回答
-            </Button>
+          canLogin &&
+          question && (
+            <AddCommentModal
+              questionId={question._id}
+              onReload={(comment) => {
+                const newCommentList = [comment, ...list];
+                setList(newCommentList);
+              }}
+            />
           )
         }
       >
@@ -98,18 +101,17 @@ const CommentList: React.FC<CommentListProps> = (props) => {
           loading={loading}
           renderItem={(comment) => {
             return (
-              // <CommentItem
-              //   comment={comment}
-              //   key={comment._id}
-              //   onDelete={() => {
-              //     const index = list.findIndex((item) => item._id === comment._id);
-              //     if (index > -1) {
-              //       list.splice(index, 1);
-              //       setList([...list]);
-              //     }
-              //   }}
-              // />
-              <div>{comment.content}</div>
+              <CommentItem
+                comment={comment}
+                key={comment._id}
+                onDelete={() => {
+                  const index = list.findIndex((item) => item._id === comment._id);
+                  if (index > -1) {
+                    list.splice(index, 1);
+                    setList([...list]);
+                  }
+                }}
+              />
             );
           }}
           pagination={{
@@ -134,17 +136,6 @@ const CommentList: React.FC<CommentListProps> = (props) => {
             },
           }}
         />
-        {/* 写新回答的模态框 */}
-        {question && (
-          <AddCommentModal
-            questionId={question._id}
-            onClose={() => setAddModalVisible(false)}
-            onReload={() => {
-              // const newCommentList = [comment, ...list];
-              // setList(newCommentList);
-            }}
-          />
-        )}
       </Card>
     </>
   );
