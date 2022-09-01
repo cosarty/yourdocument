@@ -5,7 +5,7 @@ const auth = require('../middleware/authorization');
 
 router.post('/add', auth(), require('../controller/comment/addComment'));
 router.delete('/delete/:commentId', auth(), require('../controller/comment/deleteComment'));
-router.get('/get', auth(), require('../controller/comment/getComment'));
+router.get('/get', require('../controller/comment/getComment'));
 router.post('/update/priority', auth(), require('../controller/comment/updateCommentPriority'));
 
 //TODO 搜索评论

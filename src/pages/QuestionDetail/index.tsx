@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react/jsx-key */
 import QuestionDetailCard from '@/components/QuestionDetailCard';
 import {
@@ -5,7 +6,8 @@ import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
-import { favourQuestion, getQuestions, QuestionsType } from '@/services/question';
+import type { QuestionsType } from '@/services/question';
+import { favourQuestion, getQuestions } from '@/services/question';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -34,6 +36,7 @@ const QuestionDetail = () => {
   const getQuestion = async (id: string) => {
     const q = await getQuestions(id);
     if (q.code === 200) {
+      // tslint:disable-next-line: no-non-null-assertion
       setQd(q.data!);
     }
   };
@@ -64,7 +67,8 @@ const QuestionDetail = () => {
     setFavourLoading(false);
 
     if (res.code === 202) {
-      setIsFavour(true);
+      (res?.data?.mit as number) < 0 ? setIsFavour(false) : setIsFavour(true);
+
       message.success(res.message);
 
       await getUser();

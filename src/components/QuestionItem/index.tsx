@@ -58,7 +58,9 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     setFavourLoading(false);
 
     if (res.code === 202) {
-      setFavourNum(favourNum + (res.data ? res!.data?.mit || 0 : 0));
+      const mit = res!.data?.mit || 0;
+      setFavourNum(favourNum + mit);
+
       setIsFavour(true);
       message.success(res.message);
 
@@ -72,9 +74,14 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   useEffect(() => {
     if (question) {
       setIsFavour(currentUser?.favours?.includes(question?._id || '') ?? false);
-      setFavourNum(question.favourNum ?? 0);
     }
   }, [currentUser, question]);
+  // 初始化收藏
+  useEffect(() => {
+    if (question) {
+      setFavourNum(question.favourNum ?? 0);
+    }
+  }, [question]);
 
   const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }: any) => (
     <Button
@@ -137,7 +144,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
                 {canLogin && (
                   <IconText
                     icon={isFavour ? StarFilled : StarOutlined}
-                    text={question.favourNum}
+                    text={favourNum}
                     loading={favourLoading}
                     onClick={() => {
                       doFavour();

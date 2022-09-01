@@ -51,6 +51,7 @@ export const getQuestions = async (qutionsId: string) => await request<API.API_T
 
 // 收藏题目
 
+// tslint:disable-next-line: max-line-length
 export const favourQuestion = async (qutionsId: string) => await request<API.API_TYPE<{ mit: number }>>(`/api/questions/favour/${qutionsId}`, {
   method: 'PUT'
 })
