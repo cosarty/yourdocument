@@ -1,4 +1,5 @@
 const CommentModel = require('../../model/commentSchema');
+const ReplyModel = require('../../model/replySchema');
 const validator = require('../../middleware/validator');
 const { query } = require('express-validator');
 const { checkQutionsId } = require('../questions/service/quetionsServe');
@@ -30,7 +31,16 @@ const getCommentValidator = [
 // 获取评论
 const getComment = async (req, res, next) => {
   try {
-    res.status(200).send({ code: 200, message: '获取成功!!', data: req.comment });
+    let { comment } = req;
+
+    comment = await Promise.all(
+      comment.map(async (c) => {
+        const replyList = await ReplyModel.find({ commentId: c, isDelete: false });
+        comment.replyList = replyList;
+        return { ...c.toJSON(), replyList };
+      }),
+    );
+    res.status(200).send({ code: 200, message: '获取成功!!', data: comment });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败', data: null });

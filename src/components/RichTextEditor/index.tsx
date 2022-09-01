@@ -1,6 +1,6 @@
+import '@/assets/monokai-sublime.min.css';
 import { ExpandOutlined } from '@ant-design/icons';
 import { message, Tooltip } from 'antd';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import type { Range, UnprivilegedEditor } from 'react-quill';
