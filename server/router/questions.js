@@ -19,7 +19,7 @@ router.get('/get/:qutionsId', require('../controller/questions/getQuestions'));
 // 删除题目 -> 发送消息  1、组织的创建者 2、自己上传的题目 3、管理员
 router.delete(
   '/delete/:qutionsId',
-  auth(['super', 'admin']),
+  auth(),
   require('../controller/questions/deleteQuestions'),
 );
 

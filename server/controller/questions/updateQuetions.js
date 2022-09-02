@@ -13,7 +13,6 @@ const {
 const updateQurstionsValidator = [
   validator([validator.isValidObjectId(['params'], 'qutionsId')]),
   async (req, res, next) => {
-    console.log('qutionsId: ', req.params.qutionsId);
     const qutionsId = req.params.qutionsId;
 
     const question = await QuestionsModel.findById(qutionsId);

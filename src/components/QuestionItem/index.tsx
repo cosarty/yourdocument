@@ -3,7 +3,7 @@ import {
   QUESTION_TYPE_ENUM,
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
-import { favourQuestion, QuestionsType } from '@/services/question';
+import { deleteQuestion, favourQuestion, QuestionsType } from '@/services/question';
 import { getQuestionreRerence, getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
@@ -73,6 +73,18 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
       setFavourNum(question.favourNum ?? 0);
     }
   }, [question]);
+
+  const doDelete = async () => {
+    const res = await deleteQuestion(question._id);
+    if (res) {
+      message.success('删除成功');
+      if (onReload) {
+        onReload();
+      }
+    } else {
+      message.error('删除失败');
+    }
+  };
 
   const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }: any) => (
     <Button
@@ -154,8 +166,13 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
                 <Link to={`/editQuestion/${question._id}`} state={{ auth: true }}>
                   <IconText icon={EditOutlined} text='修改' />
                 </Link>
-                <Popconfirm title='确认删除么，操作无法撤销' onConfirm={() => {}}>
-                  <IconText icon={DeleteOutlined} danger={true} text='删除' onClick={() => {}} />
+                <Popconfirm
+                  title='确认删除么，操作无法撤销'
+                  onConfirm={() => {
+                    doDelete();
+                  }}
+                >
+                  <IconText icon={DeleteOutlined} danger={true} text='删除' />
                 </Popconfirm>
               </Space>
             </Col>

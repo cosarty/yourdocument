@@ -62,7 +62,9 @@ export const viewQuestion = async (qutionsId: string) => await request<API.API_T
 
 
 
-
+export const deleteQuestion = async (qutionsId: string) => await request<API.API_TYPE<null>>(`/api/questions/delete/${qutionsId}`, {
+  method: 'DELETE'
+})
 
 export const updateQuestion = async (qutionsId: string, payload: any) => await request<API.API_TYPE<QuestionsType>>(`/api/questions/updateQuestion/${qutionsId}`, {
   method: 'PUT', data: payload

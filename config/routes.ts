@@ -111,13 +111,6 @@
         component: './Welcome',
         icon: 'CodeOutlined',
       },
-
-      {
-        name: '审核',
-        path: '/manage/checkquestion',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
       {
         component: './404',
       },

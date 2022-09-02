@@ -7,6 +7,12 @@ const deleteQuestionsValidator = [
   async (req, res, next) => {
     try {
       const question = await checkQutionsId(req.params.qutionsId);
+      if (question.isDelete) return next({ code: 400, message: '文章不存在', data: null });
+      if (
+        req.user._id.toString() !== question.userId.toString() &&
+        !['admin', 'super'].includes(req.user.auth)
+      )
+        return next({ code: 403, message: '您不是文章作者无权修改', data: null });
       req.question = question;
       next();
     } catch (err) {
