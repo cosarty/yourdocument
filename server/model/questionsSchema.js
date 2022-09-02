@@ -24,11 +24,10 @@ const questionsSchema = createShcema({
   params: {
     answer: {
       type: String,
-      required: true,
     },
     options: {
-      A: { type: String, required: true },
-      B: { type: String, required: true },
+      A: { type: String },
+      B: { type: String },
       C: { type: String },
       D: { type: String },
       E: { type: String },

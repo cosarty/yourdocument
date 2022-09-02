@@ -36,18 +36,9 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const { getUser } = useModel('user');
-  const { canLogin } = useAccess();
-  const {
-    question = {} as QuestionsType,
-    showReview,
-    showEdit = true,
-    showActions = true,
-    onReload,
-  } = props;
+  const { canLogin, canAdmin } = useAccess();
+  const { question = {} as QuestionsType, showReview, showActions = true, onReload } = props;
 
-  /**
-   * 收藏
-   */
   const doFavour = async () => {
     if (!question?._id || favourLoading) {
       return;
@@ -138,9 +129,9 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
           {showActions && question.reviewStatus === 2 && (
             <Col>
               <Space size={16}>
-                <a href={'/'} target='_blank' rel='noreferrer'>
+                <Link to={`/qd/${question._id}`} target={'_blank'}>
                   <IconText icon={EyeOutlined} text={question.viewNum} />
-                </a>
+                </Link>
                 {canLogin && (
                   <IconText
                     icon={isFavour ? StarFilled : StarOutlined}
@@ -157,15 +148,12 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
               </Space>
             </Col>
           )}
-          {showEdit && !question.commentNum && (
+          {(question.userId._id === currentUser?._id || canAdmin) && (
             <Col>
               <Space size={10}>
-                {/* // 没有人回答才允许修改 */}
-
-                <IconText icon={EditOutlined} text='修改' onClick={() => {}} />
-
-                {/* // 没有人回答才允许删除 */}
-
+                <Link to={`/editQuestion/${question._id}`} state={{ auth: true }}>
+                  <IconText icon={EditOutlined} text='修改' />
+                </Link>
                 <Popconfirm title='确认删除么，操作无法撤销' onConfirm={() => {}}>
                   <IconText icon={DeleteOutlined} danger={true} text='删除' onClick={() => {}} />
                 </Popconfirm>

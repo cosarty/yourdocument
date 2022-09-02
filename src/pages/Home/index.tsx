@@ -218,7 +218,7 @@ const Home = () => {
             ),
           }}
           renderItem={(item, i) => {
-            return <QuestionItem question={item} key={i} showEdit={false} />;
+            return <QuestionItem question={item} key={i} />;
           }}
         />
       </Card>

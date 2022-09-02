@@ -1,7 +1,7 @@
 import RichTextViewer from '@/components/RichTextViewer';
 import { QUESTION_TYPE_ENUM } from '@/constant/question';
 import type { QuestionsType } from '@/services/question';
-import { getQuestionDetail, getQuestionTitle } from '@/util/businessUtils';
+import { getQuestionDetail, getQuestionreRerence, getQuestionTitle } from '@/util/businessUtils';
 import { Typography } from 'antd';
 import BraftEditor from 'braft-editor';
 import React from 'react';
@@ -50,7 +50,9 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = (props) => {
         </div>
       )}
       <div style={{ marginTop: 16, display: showReference ? 'initial' : 'none' }}>
-        <p style={{ fontSize: 15 }}>解析：{question.params?.answer}</p>
+        <p style={{ fontSize: 15 }}>
+          解析：{question.params?.answer || getQuestionreRerence(question)}
+        </p>
         {getQuestionDetail(question) && <RichTextViewer htmlContent={question.detail} />}
       </div>
     </div>

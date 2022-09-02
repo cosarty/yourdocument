@@ -8,7 +8,7 @@ import { addQuestion } from '@/services/question';
 import { pick } from '@/util/utils';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProForm, ProFormDependency, ProFormRadio } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
+import { history, useOutletContext } from '@umijs/max';
 import { Button, Card, Col, message, Row } from 'antd';
 import BraftEditor from 'braft-editor';
 import { useRef, useState } from 'react';
@@ -59,6 +59,10 @@ const submitFormLayout = {
 };
 
 const AddQuestion = () => {
+  const cont = useOutletContext<{ edit?: boolean }>() ?? {};
+
+  const { edit } = cont;
+
   const formRef = useRef<ProFormInstance>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -100,9 +104,9 @@ const AddQuestion = () => {
 
   return (
     <HelmetProvider>
-      <Helmet>{<title>{'添加题目'} - 试题君</title>}</Helmet>
+      <Helmet>{<title>{edit ? '编辑题目' : '添加题目'} - 试题君</title>}</Helmet>
 
-      <Card title={'添加题目'}>
+      <Card title={edit ? '编辑题目' : '添加题目'}>
         <Row gutter={[24, 24]}>
           <Col lg={16} sm={24}>
             <ProForm
@@ -127,6 +131,7 @@ const AddQuestion = () => {
                   label: QUESTION_TYPE_ENUM[k],
                   value: k,
                 }))}
+                // readonly={edit}
                 rules={[
                   {
                     required: true,
@@ -263,7 +268,7 @@ const AddQuestion = () => {
                           )}
                         </>
                       )}
-                      {type === 3 && (
+                      {type === '3' && (
                         <ProForm.Item
                           label='答案'
                           name='reference'

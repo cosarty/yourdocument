@@ -134,6 +134,14 @@
     hideMenu: true
   },
   {
+    path: '/editQuestion/:questionId',
+    wrappers: [
+      '@/wrappers/authEditQuestion',
+    ],
+    component: '@/pages/AddQuestion',
+    hideMenu: true
+  },
+  {
     path: '/qd/:questionId',
     component: '@/pages/QuestionDetail',
     hideMenu: true

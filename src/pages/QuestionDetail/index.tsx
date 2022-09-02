@@ -33,7 +33,7 @@ const QuestionDetail = () => {
   const { questionId } = useParams() as { questionId: string };
   const { currentUser } = initialState || {};
   const [qd, setQd] = useState<QuestionsType>();
-  const { canLogin } = useAccess();
+  const { canAdmin } = useAccess();
 
   const getQuestion = async (id: string) => {
     const q = await getQuestions(id);
@@ -81,7 +81,7 @@ const QuestionDetail = () => {
   };
 
   // 是否允许编辑题目
-  const canEdit = canLogin || qd?.userId === currentUser?._id;
+  const canEdit = canAdmin || qd?.userId?._id === currentUser?._id;
 
   const getAction = () => {
     const actions = [
