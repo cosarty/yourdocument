@@ -10,17 +10,17 @@ export type QuestionsType = {
       D?: string;
       F?: string;
       C?: string;
-    };
-    answer: 'C';
+    } | string[];
+    answer: string | string[];
   };
   _id: string;
-  difficulty: number;
+  difficulty: number | string;
   title: string;
   commentNum: number;
   detail: string;
   favourNum: number;
   isDelete?: boolean;
-  type: number;
+  type: number | string;
   reviewStatus: number;
   tags: string[];
   userId: {
@@ -33,6 +33,7 @@ export type QuestionsType = {
   update_time: Date;
   reference?: string;
   reviewMessage?: string;
+  [key: string]: any
 }
 
 export const searchQuetions = async (payload: Payload.QuestionSearchParams) => await request<API.QuestionList<QuestionsType>>('/api/questions/search', {
@@ -51,7 +52,6 @@ export const getQuestions = async (qutionsId: string) => await request<API.API_T
 })
 
 // 收藏题目
-
 // tslint:disable-next-line: max-line-length
 export const favourQuestion = async (qutionsId: string) => await request<API.API_TYPE<{ mit: number }>>(`/api/questions/favour/${qutionsId}`, {
   method: 'PUT'
@@ -59,6 +59,15 @@ export const favourQuestion = async (qutionsId: string) => await request<API.API
 export const viewQuestion = async (qutionsId: string) => await request<API.API_TYPE<null>>(`/api/questions/view/${qutionsId}`, {
   method: 'PUT'
 })
+
+
+
+
+
+export const updateQuestion = async (qutionsId: string, payload: any) => await request<API.API_TYPE<QuestionsType>>(`/api/questions/updateQuestion/${qutionsId}`, {
+  method: 'PUT', data: payload
+})
+
 
 // 埋点记录浏览数
 

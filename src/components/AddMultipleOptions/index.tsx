@@ -1,5 +1,6 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Input, Space } from 'antd';
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React, { useEffect, useRef, useState } from 'react';
 import './index.less';
 
@@ -19,8 +20,7 @@ const EditableCell = ({ changeOption, value, index }: any) => {
     changeOption(index, editValue);
   };
 
-  const save = async (e) => {
-    console.log(e);
+  const save = async () => {
     try {
       toggleEdit();
     } catch (errInfo) {
@@ -79,8 +79,8 @@ const AddMultipleOptions: React.FC<AddOptionsProps> = ({
     });
   }, [answer, options]);
 
-  const onRadioChange = (checkedValues) => {
-    setAnswer(checkedValues);
+  const onRadioChange = (checkedValues: CheckboxValueType[]) => {
+    setAnswer(checkedValues as string[]);
   };
 
   const addOption = () => {
@@ -89,13 +89,16 @@ const AddMultipleOptions: React.FC<AddOptionsProps> = ({
 
   const removeOption = (index: number) => {
     const newOptions = options;
+
     newOptions.splice(index, 1);
     setOptions([...newOptions]);
+
+    setAnswer(answer.filter((_) => String.fromCharCode(65 + index) !== _));
   };
 
-  const changeOption = (index: number, value: string) => {
+  const changeOption = (index: number, v: string) => {
     const newOptions = options;
-    newOptions[index] = value;
+    newOptions[index] = v;
     setOptions([...newOptions]);
   };
   return (

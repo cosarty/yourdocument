@@ -4,7 +4,7 @@ import AddSingleOptions from '@/components/AddSingleOptions';
 import RichTextEditor from '@/components/RichTextEditor';
 import SelectTag from '@/components/SelectTag';
 import { QUESTION_DIFFICULTY_ENUM, QUESTION_TYPE_ENUM } from '@/constant/question';
-import { addQuestion } from '@/services/question';
+import { addQuestion, getQuestions, updateQuestion } from '@/services/question';
 import { pick } from '@/util/utils';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProForm, ProFormDependency, ProFormRadio } from '@ant-design/pro-components';
@@ -59,9 +59,9 @@ const submitFormLayout = {
 };
 
 const AddQuestion = () => {
-  const cont = useOutletContext<{ edit?: boolean }>() ?? {};
+  const cont = useOutletContext<{ edit?: boolean; questionId: string }>() ?? {};
 
-  const { edit } = cont;
+  const { edit = false, questionId } = cont;
 
   const formRef = useRef<ProFormInstance>();
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -93,9 +93,18 @@ const AddQuestion = () => {
 
     setSubmitting(true);
     try {
-      const { message: msg } = await addQuestion(values);
-      message.success(msg);
-      history.replace({ pathname: '/' });
+      if (!edit) {
+        const { message: msg } = await addQuestion(values);
+        history.replace({ pathname: '/' });
+        message.success(msg);
+      } else {
+        values = pick(values, ['type'], true);
+        const { data, message: msg } = await updateQuestion(questionId, values);
+
+        history.replace(`/qd/${data?._id}`);
+        message.success(msg);
+      }
+      setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
       message.error('创建失败');
@@ -114,14 +123,27 @@ const AddQuestion = () => {
               {...formItemLayout}
               labelAlign='left'
               scrollToFirstError
-              initialValues={{
-                type: 0,
-                difficulty: 0,
-              }}
               submitter={false}
-              // onValuesChange={(value, allValue) => {
-              //   console.log('value, allValue: ', value, allValue);
-              // }}
+              request={async () => {
+                if (edit && questionId) {
+                  const { data, code } = await getQuestions(questionId);
+
+                  data!.type += '';
+                  data!.difficulty += '';
+                  if (['0', '1', '2'].includes((data?.type as string) ?? '')) {
+                    if ((data?.type as string) === '2')
+                      data!.params!.answer = (data!.params!.answer as string).split(',');
+                    data!.params!.options = Object.values(data!.params!.options ?? {});
+                    data!['params' + data!.type] = data!.params;
+                  }
+                  if (code === 200) {
+                    return data ?? {};
+                  }
+
+                  return {};
+                }
+                return { type: '0', difficulty: '0' };
+              }}
               onFinish={doSubmit}
             >
               <ProFormRadio.Group
@@ -131,7 +153,7 @@ const AddQuestion = () => {
                   label: QUESTION_TYPE_ENUM[k],
                   value: k,
                 }))}
-                // readonly={edit}
+                readonly={edit}
                 rules={[
                   {
                     required: true,
