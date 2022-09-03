@@ -181,9 +181,12 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
           {(question.userId._id === currentUser?._id || canAdmin) && showEdit && (
             <Col>
               <Space size={10}>
-                <Link to={`/editQuestion/${question._id}`} state={{ auth: true }}>
-                  <IconText icon={EditOutlined} text='修改' />
-                </Link>
+                {question.reviewStatus !== 3 && (
+                  <Link to={`/editQuestion/${question._id}`} state={{ auth: true }}>
+                    <IconText icon={EditOutlined} text='修改' />
+                  </Link>
+                )}
+
                 <Popconfirm
                   title='确认删除么，操作无法撤销'
                   onConfirm={() => {

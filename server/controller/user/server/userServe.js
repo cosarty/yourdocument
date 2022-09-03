@@ -6,7 +6,7 @@ const UserModel = require('../../../model/userSchema');
  */
 exports.checkUser = async (userId) => {
   const user = await UserModel.findById(userId);
-  if (!user || user.is_ban) return Promise.reject('用户不存在');
+  if (!user || user.is_ban || user.isDelete) return Promise.reject('用户不存在');
   return user;
 };
 

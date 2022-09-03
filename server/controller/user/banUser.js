@@ -9,11 +9,11 @@ const banUserValid = [
     const curAuth = req.user.auth;
     if (curAuth === 'admin' && user.auth !== 'user')
       return res.status(403).send({ code: 403, message: '您只能ban普通用户', data: null });
+    req.user = user;
     next();
   },
 ];
 
-//TODO解封到时候看情况做
 /**
  * 设置权限
  * @param {} req
@@ -23,15 +23,15 @@ const banUserValid = [
 const banUser = async (req, res, next) => {
   try {
     const { userId } = req.body;
-
-    await UserModel.findByIdAndUpdate(userId, { is_ban: true }, { new: true });
+    const is_ban = !req.user.is_ban;
+    await UserModel.findByIdAndUpdate(userId, { is_ban }, { new: true });
     res.status(202).json({
       code: 202,
-      message: '封号成功!!',
+      message: is_ban ? '封号成功!!' : '解封成功!!',
       data: null,
     });
   } catch (err) {
-    next(err);
+    next({ code: 500, message: '服务器错误', data: null });
   }
 };
 

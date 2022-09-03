@@ -3,7 +3,7 @@
  * */
 export default function access(initialState: { currentUser?: API.CurrentUser['data'] } | undefined) {
   const { currentUser } = initialState ?? {};
-  console.log('currentUser?.auth: ', currentUser?.auth);
+
   return {
     canAdmin: ['admin', 'super'].includes(currentUser?.auth ?? ''),
     canLogin: !!currentUser,

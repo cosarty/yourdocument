@@ -33,7 +33,6 @@ const Questions = () => {
     const res = await searchOriginQuestion(searchParams);
 
     if (res.code === 200) {
-      console.log('res: ', res);
       setTotal(res?.data?.total ?? 0);
       setList(res?.data?.list ?? []);
     } else {

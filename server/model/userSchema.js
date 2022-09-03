@@ -41,6 +41,10 @@ const userSchema = createShcema({
     default: 'user',
     required: true,
   },
+  isDelete: {
+    type: Boolean,
+    default: false,
+  },
   favours: [{ type: Schema.Types.ObjectId, ref: 'Questions' }], //收藏夹
 });
 

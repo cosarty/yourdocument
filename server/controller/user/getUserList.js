@@ -22,10 +22,20 @@ const getUserList = async (req, res, next) => {
     if (currenAuth === 'admin') auth = 'user';
     if (currenAuth === 'super') auth = ['admin', 'user'];
 
-    const queryUser = () => UserModel.find().where({ auth, is_ban });
+    const queryUser = (auth) => UserModel.find().where({ auth, isDelete: false });
 
-    const userList = await queryUser();
-    const total = await queryUser().count();
+    const userList = [];
+    // 自定义排序
+    await ['admin', , 'user'].reduce(
+      (pr, au) =>
+        pr.then(async () => {
+          const res = await queryUser(au);
+          userList.push(...res);
+          return res;
+        }),
+      Promise.resolve(),
+    );
+    const total = userList.length;
 
     res.status(202).json({
       code: 202,
@@ -33,6 +43,7 @@ const getUserList = async (req, res, next) => {
       data: { userList, total },
     });
   } catch (err) {
+    console.log('err: ', err);
     next(err);
   }
 };
