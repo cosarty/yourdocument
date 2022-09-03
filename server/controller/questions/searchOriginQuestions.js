@@ -40,11 +40,12 @@ const searchOriginQuestions = async (req, res, next) => {
   const queryQuestion = () =>
     QuestionsModel.find()
       .populate('userId')
-      .where({ ...queryData, isDelete: false, userId: req.user._id })
-      .skip(skip)
-      .limit(pageSize || null);
+      .where({ ...queryData, isDelete: false, userId: req.user._id });
+
   // 搜索
-  const questionslist = await queryQuestion();
+  const questionslist = await queryQuestion()
+    .skip(skip)
+    .limit(pageSize || null);
   const total = await queryQuestion().count();
   try {
     res.status(200).send({

@@ -9,7 +9,7 @@ router.get('/get', require('../controller/comment/getComment'));
 router.put('/update', auth(), require('../controller/comment/updateComment'));
 router.post('/update/priority', auth(), require('../controller/comment/updateCommentPriority'));
 
-//TODO 搜索评论
-router.post('/search', auth(), require('../controller/comment/addComment'));
+// 获取自己的评论
+router.get('/search', auth(), require('../controller/comment/searchComment'));
 
 module.exports = router;

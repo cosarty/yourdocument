@@ -29,8 +29,8 @@ const Questions = () => {
    */
   const doSearch = async () => {
     setLoading(true);
-    const queryParams = { ...searchParams };
-    const res = await searchOriginQuestion(queryParams);
+
+    const res = await searchOriginQuestion(searchParams);
 
     if (res.code === 200) {
       console.log('res: ', res);

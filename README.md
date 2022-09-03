@@ -33,4 +33,9 @@ yarn dev
   > .aggregate()
       .match({ _id: mongoose.Types.ObjectId(req.query.paperId) })
 - 使用 Schema 的 getter 的使用必须这样子设置才能生效
+
   > userSchema.set('toJSON', { getters: true });
+
+- 判断数据不为 null
+  - questionId: { $ne: null },
+  - .where('questionId') .ne(null)

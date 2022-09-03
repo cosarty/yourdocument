@@ -1,7 +1,20 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import defaultAvtar from '@/assets/shitijun.png';
 import { DeleteOutlined, EditOutlined, MoreOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Dropdown, List, Menu, message, Modal, Row, Space, Tag } from 'antd';
+import {
+  Avatar,
+  Button,
+  Col,
+  Dropdown,
+  List,
+  Menu,
+  message,
+  Modal,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from 'antd';
 import React, { useState } from 'react';
 
 import RichTextViewer from '@/components/RichTextViewer';
@@ -9,7 +22,8 @@ import RichTextViewer from '@/components/RichTextViewer';
 import type { CommentType } from '@/services/comment';
 import { deleteComment, priorityComment } from '@/services/comment';
 import type { QuestionsType } from '@/services/question';
-import { useAccess, useModel } from '@umijs/max';
+import { getQuestionTitle } from '@/util/businessUtils';
+import { Link, useAccess, useModel } from '@umijs/max';
 import AddCommentModal from '../AddCommentModal';
 import './index.less';
 
@@ -18,10 +32,11 @@ interface CommentItemProps {
   onDelete: () => void;
   onUpdate: () => void;
   questionId: QuestionsType;
+  showQuestion?: boolean;
 }
 
 const CommentItem: React.FC<CommentItemProps> = (props) => {
-  const { comment = {} as CommentType, onDelete, questionId } = props;
+  const { comment = {} as CommentType, onDelete, questionId, showQuestion } = props;
   // 用于修改回答后的视图更新
   const [commentState, setCommentState] = useState<CommentType>(comment);
   const { initialState } = useModel('@@initialState');
@@ -101,6 +116,20 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
   // @ts-ignore
   return (
     <List.Item className='comment-item'>
+      {showQuestion && (
+        <Typography.Title
+          level={5}
+          ellipsis={{ rows: 2 }}
+          style={{ fontSize: 18, marginBottom: 16 }}
+        >
+          <Link
+            to={`/qd/${questionId?._id}/c/${comment?._id}`}
+            style={{ color: 'rgba(0, 0, 0, 0.85)' }}
+          >
+            {getQuestionTitle(questionId)}
+          </Link>
+        </Typography.Title>
+      )}
       <List.Item.Meta
         avatar={<Avatar src={commentState?.user?.avtar_url || defaultAvtar} />}
         title={
