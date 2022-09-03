@@ -27,3 +27,10 @@ yarn dev
 - 第二种:实例组件 UploadImag
 
 通过组件实例： formRef.current?.setFieldsValue({ [name]: value });
+
+- 使用 mongose 过程中碰到的一些小坑
+- aggregate 的 match 搜索 id 的时候必须先转换
+  > .aggregate()
+      .match({ _id: mongoose.Types.ObjectId(req.query.paperId) })
+- 使用 Schema 的 getter 的使用必须这样子设置才能生效
+  > userSchema.set('toJSON', { getters: true });

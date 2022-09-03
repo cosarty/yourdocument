@@ -23,7 +23,7 @@ const Favour = () => {
   const doSearch = async (val?: any) => {
     setLoading(true);
     const res = await getfavourQuestion(val ?? {});
-    console.log('res: ', res);
+
     if (res.code === 200) {
       setTotal(res.data?.length ?? 0);
       setQuestions(res.data ?? []);

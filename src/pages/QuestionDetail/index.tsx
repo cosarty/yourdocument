@@ -8,13 +8,8 @@ import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
-import {
-  deleteQuestion,
-  favourQuestion,
-  getQuestions,
-  QuestionsType,
-  viewQuestion,
-} from '@/services/question';
+import type { QuestionsType } from '@/services/question';
+import { deleteQuestion, favourQuestion, getQuestions, viewQuestion } from '@/services/question';
 import { getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
@@ -46,6 +41,10 @@ const QuestionDetail = () => {
     if (q.code === 200) {
       // tslint:disable-next-line: no-non-null-assertion
       setQd(q.data!);
+    }
+    if (q.data?.reviewStatus !== 2) {
+      history.push('/');
+      message.warn('题目不存在或审核为通过');
     }
   };
 

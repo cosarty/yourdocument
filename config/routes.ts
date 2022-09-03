@@ -37,7 +37,7 @@
       {
         name: '我的题目',
         path: '/account/question',
-        component: './Welcome',
+        component: '@/pages/Account/Questions',
         icon: 'CodeOutlined',
       },
       {
@@ -137,6 +137,7 @@
   {
     path: '/qd/:questionId',
     component: '@/pages/QuestionDetail',
-    hideMenu: true
+    hideMenu: true,
+    target: '_blank'
   },
 ];

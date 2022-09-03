@@ -32,13 +32,17 @@ const delteteQuestions = async (req, res, next) => {
 
     // 这边到时候要加一个删除原因
     await req.question.update({ isDelete: true });
-    await addMessage({
-      toUserId: req.question.userId,
-      title: '问题下架!!',
-      content: `你的文章存在违规问题！！！【${req.question.title}】`,
-      sendEmail: true,
-      type: 1,
-    });
+    // 如果是文章作者删除的话就不发送通知
+    if (req.user._id.toString() !== req.question.userId.toString()) {
+      await addMessage({
+        toUserId: req.question.userId,
+        title: '问题下架!!',
+        content: `你的文章存在违规问题！！！【${req.question.title}】`,
+        sendEmail: true,
+        type: 1,
+      });
+    }
+
     res.status(200).send({
       code: 202,
       message: '删除成功!!!',

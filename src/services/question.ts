@@ -75,7 +75,10 @@ export const getfavourQuestion = async (payload?: { tags?: string[] }) => await 
   method: 'POST', data: payload
 })
 
-
+// 获取自己上传的题目
+export const searchOriginQuestion = async (payload?: Payload.QuestionSearchParams) => await request<API.QuestionList<QuestionsType>>(`/api/questions/search/origin`, {
+  method: 'POST', data: payload
+})
 
 
 export default {

@@ -3,7 +3,8 @@ import {
   QUESTION_TYPE_ENUM,
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
-import { deleteQuestion, favourQuestion, QuestionsType } from '@/services/question';
+import type { QuestionsType } from '@/services/question';
+import { deleteQuestion, favourQuestion } from '@/services/question';
 import { getQuestionreRerence, getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
@@ -13,9 +14,10 @@ import {
   StarFilled,
   StarOutlined,
 } from '@ant-design/icons';
-import { Link, useAccess, useModel } from '@umijs/max';
+import { history, Link, useAccess, useModel } from '@umijs/max';
 import { Button, Col, Divider, List, message, Popconfirm, Row, Space, Tag, Typography } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 
 const { Title, Paragraph } = Typography;
@@ -55,6 +57,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     setFavourLoading(false);
 
     if (res.code === 202) {
+      // tslint:disable-next-line: no-non-null-assertion
       const mit = res!.data?.mit || 0;
       setFavourNum(favourNum + mit);
 
@@ -107,16 +110,22 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
 
   return (
     <List.Item>
-      <Link to={`/qd/${question._id}`} target={'_blank'}>
-        <Title
-          level={5}
-          ellipsis={{ rows: 2 }}
-          style={{ marginBottom: 16 }}
-          className={styles['question-item-title']}
-        >
-          {getQuestionTitle(question)}
-        </Title>
-      </Link>
+      <Title
+        level={5}
+        ellipsis={{ rows: 2 }}
+        style={{ marginBottom: 16 }}
+        className={styles['question-item-title']}
+        onClick={() => {
+          if (question.reviewStatus !== 2) {
+            message.warn('题目未审核通过');
+            return;
+          }
+          history.push(`/qd/${question._id}`);
+        }}
+      >
+        {getQuestionTitle(question)}
+      </Title>
+
       <Paragraph ellipsis={{ rows: 2 }} style={{ color: 'rgba(0, 0, 0, 0.7)', fontSize: 15 }}>
         {getQuestionreRerence(question)}
       </Paragraph>
@@ -143,7 +152,10 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
         </Space>
       </div>
       {
-        <Row justify='space-between' align='middle'>
+        <Row
+          justify={showActions && question.reviewStatus === 2 ? 'space-between' : 'end'}
+          align='middle'
+        >
           {showActions && question.reviewStatus === 2 && (
             <Col>
               <Space size={16}>

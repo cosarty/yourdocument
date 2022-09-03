@@ -1,7 +1,7 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-
+const { difficulty } = require('./service/questionsValidate');
 const searchOriginQuestionsValidator = validator([
   body('title').optional().isString().withMessage('title是字符串类型!!!'),
   body('type')
@@ -12,11 +12,13 @@ const searchOriginQuestionsValidator = validator([
   body('pageSize').optional().isInt().withMessage('页面大小必须是整型的').toInt(),
   body('pageNum').optional().isInt().withMessage('页数必须是整型的').toInt(),
   body('reviewStatus')
+    .optional()
     .isString()
     .withMessage('审核状态只能是1,2,3')
     .isIn(['1', '2', '3'])
     .withMessage('审核状态只能是1,2,3')
     .toInt(),
+  difficulty,
 ]);
 
 /**
@@ -27,11 +29,13 @@ const searchOriginQuestionsValidator = validator([
  */
 const searchOriginQuestions = async (req, res, next) => {
   const queryData = {};
-  const { title, type, pageSize, reviewStatus, pageNum } = req.body;
-  const skip = (pageSize ?? pageSize * pageNum) || null;
+  const { title, type, pageSize, reviewStatus, pageNum, difficulty } = req.body;
+  const skip = pageSize * (pageNum - 1);
   title && (queryData.title = title);
   type && (queryData.type = type);
   reviewStatus && (queryData.reviewStatus = reviewStatus);
+  difficulty && (queryData.difficulty = difficulty);
+  console.log('queryData: ', queryData);
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()
@@ -45,7 +49,7 @@ const searchOriginQuestions = async (req, res, next) => {
   try {
     res.status(200).send({
       code: 200,
-      message: '创建成功!!!',
+      message: '搜索成功!!!',
       data: { list: questionslist, total },
     });
   } catch (error) {
