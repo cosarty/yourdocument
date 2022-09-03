@@ -7,7 +7,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser['da
   return {
     canAdmin: ['admin', 'super'].includes(currentUser?.auth ?? ''),
     canLogin: !!currentUser,
-    canSuper: currentUser?.auth === 'super'
+    canSuper: currentUser?.auth === 'super',
+    canIsAdmin: currentUser?.auth === 'admin'
   };
 }
 export interface AccessType {

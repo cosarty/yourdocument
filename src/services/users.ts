@@ -62,8 +62,9 @@ export const banUser = async (payload: { userId: string }) => await request<API.
 })
 
 // 获取用户列表 /api/user/getUserList
-export const getUserList = async () => await request<API.API_TYPE<{ userList: CurrentUser[], total: number }>>('/api/user/getUserList', {
+export const getUserList = async (payload: any) => await request<API.API_TYPE<{ userList: CurrentUser[], total: number }>>('/api/user/getUserList', {
   method: 'GET',
+  params: payload
 })
 
 // 删除用户

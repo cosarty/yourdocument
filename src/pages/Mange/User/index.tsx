@@ -9,7 +9,7 @@ import { useRef } from 'react';
 
 const MangeUser = () => {
   const actionRef = useRef<ActionType>();
-  const { canSuper } = useAccess();
+  const { canSuper, canIsAdmin } = useAccess();
 
   const columns: ProColumns<CurrentUser>[] = [
     {
@@ -18,6 +18,7 @@ const MangeUser = () => {
       // copyable: true,
       ellipsis: true,
       width: 100,
+      hideInSearch: true,
     },
     {
       title: '名称',
@@ -29,6 +30,7 @@ const MangeUser = () => {
       title: '头像',
       dataIndex: 'avtar_url',
       width: 80,
+      hideInSearch: true,
       render: (text, record) => {
         return <Image width={60} src={record?.avtar_url || defaultAvtar} />;
       },
@@ -42,6 +44,12 @@ const MangeUser = () => {
     {
       title: '权限',
       dataIndex: 'auth',
+      valueType: 'radioButton',
+      hideInSearch: canIsAdmin,
+      valueEnum: {
+        admin: { text: '管理员' },
+        user: { text: ' 用户' },
+      },
     },
 
     {
@@ -102,8 +110,9 @@ const MangeUser = () => {
       search={{
         filterType: 'light',
       }}
-      request={async () => {
-        const res = await getUserList();
+      request={async (params) => {
+        console.log('params: ', params);
+        const res = await getUserList(params);
         if (res.code === 202) {
           return {
             data: res?.data?.userList,

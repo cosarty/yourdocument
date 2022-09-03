@@ -103,7 +103,6 @@
         path: '/manage/users',
         component: '@/pages/Mange/User',
         icon: 'CodeOutlined',
-        access: 'canSuper'
       },
       {
         name: '分类管理',

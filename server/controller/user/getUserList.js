@@ -1,9 +1,14 @@
 const UserModel = require('../../model/userSchema');
 const validator = require('../../middleware/validator');
-const { body } = require('express-validator');
+const { query } = require('express-validator');
 
 const getUserListValid = [
-  validator([body('is_ban').optional().isBoolean().withMessage('is_ban 是布尔值')]),
+  validator([
+    query('current').isInt().withMessage('页数必须是整型的').toInt(),
+    query('pageSize').isInt().withMessage(' 页面大小必须是整型的').toInt(),
+    query('auth').optional().isString().withMessage('title是字符串类型!!!'),
+    query('nickname').optional().isString().withMessage('名称是字符串类型!!!'),
+  ]),
 ];
 
 /**
@@ -15,26 +20,43 @@ const getUserListValid = [
 const getUserList = async (req, res, next) => {
   try {
     const { auth: currenAuth } = req.user;
-    const { is_ban = false } = req.body;
-    let auth;
+    // req.params;
+    const { current, pageSize, auth, nickname } = req.query;
+
+    let au;
 
     // 不同用户只能查看不同权限的用户
-    if (currenAuth === 'admin') auth = 'user';
-    if (currenAuth === 'super') auth = ['admin', 'user'];
+    if (currenAuth === 'admin') au = ['user'];
 
-    const queryUser = (auth) => UserModel.find().where({ auth, isDelete: false });
+    if (currenAuth === 'super') au = ['admin', 'user'];
+
+    const queryData = {};
+
+    nickname && (queryData.nickname = new RegExp(nickname));
+
+    const skip = pageSize * (current - 1);
+    console.log('queryData: ', queryData);
+    const queryUser = (auth) =>
+      UserModel.find(queryData)
+        .where({ isDelete: false, auth })
+        .skip(skip)
+        .limit(pageSize || null);
 
     const userList = [];
     // 自定义排序
-    await ['admin', , 'user'].reduce(
-      (pr, au) =>
-        pr.then(async () => {
-          const res = await queryUser(au);
+    for (a of au) {
+      let res = [];
+      if (auth) {
+        if (auth === a) {
+          res = await queryUser(a);
           userList.push(...res);
-          return res;
-        }),
-      Promise.resolve(),
-    );
+          break;
+        }
+        continue;
+      }
+      res = await queryUser(a);
+      userList.push(...res);
+    }
     const total = userList.length;
 
     res.status(202).json({
