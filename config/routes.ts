@@ -49,7 +49,7 @@
       {
         name: '消息通知',
         path: '/account/message',
-        component: './Welcome',
+        component: '@/pages/Account/Message',
         icon: 'CodeOutlined',
       },
       // {

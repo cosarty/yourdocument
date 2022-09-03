@@ -17,7 +17,7 @@ const addMessage = async (contexnt) => {
   try {
     let message = await new MessageModle(op);
     message = await message.populate('toUserId');
-
+    await message.save();
     // 是否发送邮件
     if (
       (sendEmail && message.toUserId.email && !message.toUserId.is_ban) ||
