@@ -37,13 +37,13 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = (props) => {
           <RichTextViewer htmlContent={question.detail} />
         </div>
       )}
-      {[1, 2].includes(question.type) && (
+      {[0, 1, 2].includes(question.type) && (
         <div style={{ fontSize: 15, marginTop: 16 }}>
           {Object.keys(question?.params?.options ?? {}).map((option, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
               <p key={i} style={{ wordBreak: 'break-all' }}>
-                {String.fromCharCode(65 + i)}：{option}
+                {String.fromCharCode(65 + i)}：{Object.values(question?.params?.options ?? {})[i]}
               </p>
             );
           })}

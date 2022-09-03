@@ -8,7 +8,13 @@ import {
   QUESTION_DIFFICULTY_ENUM,
   QUESTION_TYPE_ENUM,
 } from '@/constant/question';
-import { favourQuestion, getQuestions, QuestionsType, viewQuestion } from '@/services/question';
+import {
+  deleteQuestion,
+  favourQuestion,
+  getQuestions,
+  QuestionsType,
+  viewQuestion,
+} from '@/services/question';
 import { getQuestionTitle } from '@/util/businessUtils';
 import {
   DeleteOutlined,
@@ -18,7 +24,7 @@ import {
   StarOutlined,
 } from '@ant-design/icons';
 import { GridContent } from '@ant-design/pro-components';
-import { useAccess, useModel, useParams } from '@umijs/max';
+import { history, useAccess, useModel, useParams } from '@umijs/max';
 import { Avatar, Button, Card, Col, Divider, Dropdown, Menu, message, Row, Space, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -79,6 +85,18 @@ const QuestionDetail = () => {
       message.error('操作失败');
     }
   };
+  const doEdit = async (info: { key: string }) => {
+    switch (info.key) {
+      case 'edit':
+        history.push({ pathname: `/editQuestion/${qd?._id}` }, { auth: true });
+        break;
+      case 'del':
+        const res = await deleteQuestion(qd?._id || '');
+        message.success(res.message);
+        history.replace('/');
+        break;
+    }
+  };
 
   // 是否允许编辑题目
   const canEdit = canAdmin || qd?.userId?._id === currentUser?._id;
@@ -111,6 +129,7 @@ const QuestionDetail = () => {
         <Dropdown
           overlay={
             <Menu
+              onClick={doEdit}
               items={[
                 { key: 'edit', icon: <EditOutlined />, label: '修改' },
                 { key: 'del', icon: <DeleteOutlined />, label: '删除' },

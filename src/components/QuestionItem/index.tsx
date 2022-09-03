@@ -37,7 +37,13 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   const { currentUser } = initialState || {};
   const { getUser } = useModel('user');
   const { canLogin, canAdmin } = useAccess();
-  const { question = {} as QuestionsType, showReview, showActions = true, onReload } = props;
+  const {
+    question = {} as QuestionsType,
+    showReview,
+    showActions = true,
+    onReload,
+    showEdit = false,
+  } = props;
 
   const doFavour = async () => {
     if (!question?._id || favourLoading) {
@@ -160,7 +166,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
               </Space>
             </Col>
           )}
-          {(question.userId._id === currentUser?._id || canAdmin) && (
+          {(question.userId._id === currentUser?._id || canAdmin) && showEdit && (
             <Col>
               <Space size={10}>
                 <Link to={`/editQuestion/${question._id}`} state={{ auth: true }}>

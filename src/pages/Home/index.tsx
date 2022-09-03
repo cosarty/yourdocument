@@ -67,6 +67,7 @@ const Home = () => {
       ...pas,
       reviewStatus: REVIEW_STATUS_ENUM.REVIEWING + '',
     });
+
     setQuestions(data!.list);
     setTotal(data!.total);
     setLoading(false);

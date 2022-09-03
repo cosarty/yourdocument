@@ -1,4 +1,4 @@
-const QuestionsModel = require('../../model/questionsSchema');
+const UserModel = require('../../model/userSchema');
 const validator = require('../../middleware/validator');
 const addMessage = require('../message/addmessage');
 const { checkQutionsId } = require('./service/quetionsServe');
@@ -24,6 +24,12 @@ const deleteQuestionsValidator = [
 
 const delteteQuestions = async (req, res, next) => {
   try {
+    // 删除此题目的收藏记录
+    await UserModel.updateMany(
+      { _id: req.question.userId },
+      { $pull: { favours: req.question._id } },
+    );
+
     // 这边到时候要加一个删除原因
     await req.question.update({ isDelete: true });
     await addMessage({
