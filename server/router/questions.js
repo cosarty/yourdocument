@@ -15,13 +15,8 @@ router.post('/search', require('../controller/questions/searchQuestions'));
 // 获取题目详情
 router.get('/get/:qutionsId', require('../controller/questions/getQuestions'));
 
-//TODO 删除题目  --- 遗留bug  自己也可以删除自己的题目
 // 删除题目 -> 发送消息  1、组织的创建者 2、自己上传的题目 3、管理员
-router.delete(
-  '/delete/:qutionsId',
-  auth(),
-  require('../controller/questions/deleteQuestions'),
-);
+router.delete('/delete/:qutionsId', auth(), require('../controller/questions/deleteQuestions'));
 
 // 获取自己上传的题目  reviewStatus 1 2 3
 router.post('/search/origin', auth(), require('../controller/questions/searchOriginQuestions'));
@@ -37,12 +32,12 @@ router.put(
 );
 
 // 获取自己的浏览记录 获取自己的浏览题目  最多可查看50条浏览记录
-router.get('/history', auth(), require('../controller/questions/historyQuestions'));
+router.post('/history', auth(), require('../controller/questions/historyQuestions'));
 
 // 收藏题目  添加 取消 -> 更新收藏列表
 router.put('/favour/:qutionsId', auth(), require('../controller/questions/favourQuestion'));
 
-//TODO 获取收藏列表   目前是直接从登陆获取
-// router.post('/getfavour', auth(), require('../controller/questions/searchQuestions'));
+// 获取收藏列表
+router.post('/getfavour', auth(), require('../controller/questions/searchfavourQuestions'));
 
 module.exports = router;
