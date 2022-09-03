@@ -70,8 +70,11 @@ export const updateQuestion = async (qutionsId: string, payload: any) => await r
   method: 'PUT', data: payload
 })
 
+// 获取收藏列表
+export const getfavourQuestion = async (payload?: { tags?: string[] }) => await request<API.API_TYPE<QuestionsType[]>>(`/api/questions/getfavour`, {
+  method: 'POST', data: payload
+})
 
-// 埋点记录浏览数
 
 
 

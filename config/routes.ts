@@ -30,8 +30,8 @@
       },
       {
         name: '我的收藏',
-        path: '/account/favour',
-        component: './Welcome',
+        path: '/account/Favour',
+        component: '@/pages/Account/Favour',
         icon: 'CodeOutlined',
       },
       {
