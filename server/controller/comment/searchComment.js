@@ -9,10 +9,15 @@ const searchComment = async (req, res, next) => {
     const commentList = await CommentModel.find({
       user: _id,
       isDelete: false,
-    }).populate({
-      path: 'questionId',
-      match: { isDelete: false },
-    });
+    })
+      .populate({
+        path: 'user',
+        select: { nickname: 1, avtar_url: 1 },
+      })
+      .populate({
+        path: 'questionId',
+        match: { isDelete: false },
+      });
 
     console.log('commentList: ', commentList);
 

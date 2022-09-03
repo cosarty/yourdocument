@@ -1,10 +1,11 @@
 import { request } from 'umi'
+import { QuestionsType } from './question';
 import { ReplyType } from './reply'
 
 export type CommentType = {
   _id: string,
   user: { nickname: string, avtar_url: string, _id: string }, // 用户id
-  questionId: string, // 问题id
+  questionId: QuestionsType, // 问题id
   content: string, // 回答内容
   priority: boolean, // 采纳
   // thumbNum: String, // 点赞
@@ -12,6 +13,7 @@ export type CommentType = {
   isDelete: boolean,
   create_time: Date;
   update_time: Date;
+
 }
 
 export const getComment = async (payload: { questionId: string }) => await request<API.API_TYPE<CommentType[]>>('/api/comment/get', {
@@ -37,6 +39,10 @@ export const priorityComment = async (payload: { commentId: string, priority: bo
   data: payload
 })
 
+
+export const searchComment = async () => await request<API.API_TYPE<CommentType[]>>('/api/comment/search', {
+  method: 'GET'
+})
 
 
 

@@ -30,8 +30,7 @@ import './index.less';
 interface CommentItemProps {
   comment: CommentType;
   onDelete: () => void;
-  onUpdate: () => void;
-  questionId: QuestionsType;
+  questionId?: QuestionsType;
   showQuestion?: boolean;
 }
 
@@ -64,7 +63,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
    * 删除回答
    */
   const doDelete = async () => {
-    await deleteComment({ commentId: commentState._id, questionId: questionId._id });
+    await deleteComment({ commentId: commentState._id, questionId: comment.questionId._id });
     message.success('删除成功!!');
     onDelete();
   };
@@ -96,7 +95,7 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
                       <AddCommentModal
                         content={commentState.content}
                         commentId={comments?._id}
-                        questionId={questionId?._id}
+                        questionId={comments.questionId?._id}
                         edit
                         onReload={(com) => {
                           setCommentState({ ...commentState, content: com.content });
@@ -123,10 +122,10 @@ const CommentItem: React.FC<CommentItemProps> = (props) => {
           style={{ fontSize: 18, marginBottom: 16 }}
         >
           <Link
-            to={`/qd/${questionId?._id}/c/${comment?._id}`}
+            to={`/qd/${comment.questionId?._id}/c/${comment?._id}`}
             style={{ color: 'rgba(0, 0, 0, 0.85)' }}
           >
-            {getQuestionTitle(questionId)}
+            {getQuestionTitle(comment.questionId)}
           </Link>
         </Typography.Title>
       )}

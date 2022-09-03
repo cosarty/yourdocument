@@ -43,7 +43,7 @@
       {
         name: '我的回答',
         path: '/account/comment',
-        component: './Welcome',
+        component: '@/pages/Account/Comment',
         icon: 'CodeOutlined',
       },
       {

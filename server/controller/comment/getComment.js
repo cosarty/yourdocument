@@ -17,6 +17,10 @@ const getCommentValidator = [
           path: 'user',
           select: { nickname: 1, avtar_url: 1 },
         })
+        .populate({
+          path: 'questionId',
+          match: { isDelete: false },
+        })
         .sort({ priority: -1, create_time: -1 });
 
       if (!comment || comment.isget) return Promise.reject('评论不存在');

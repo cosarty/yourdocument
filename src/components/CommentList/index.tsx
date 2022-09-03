@@ -105,7 +105,6 @@ const CommentList: React.FC<CommentListProps> = (props) => {
                 questionId={question}
                 comment={comment}
                 key={comment._id}
-                onUpdate={() => {}}
                 onDelete={() => {
                   const index = list.findIndex((item) => item._id === comment._id);
                   if (index > -1) {
