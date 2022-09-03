@@ -39,3 +39,5 @@ yarn dev
 - 判断数据不为 null
   - questionId: { $ne: null },
   - .where('questionId') .ne(null)
+
+typescript 工具类 Exclude

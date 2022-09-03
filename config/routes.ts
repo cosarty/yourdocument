@@ -101,7 +101,7 @@
       {
         name: '人员管理',
         path: '/manage/users',
-        component: './Welcome',
+        component: '@/pages/Mange/User',
         icon: 'CodeOutlined',
         access: 'canSuper'
       },
