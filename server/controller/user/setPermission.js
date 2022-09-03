@@ -37,7 +37,7 @@ const setPermission = async (req, res, next) => {
       data: null,
     });
   } catch (err) {
-    next(err);
+    next({ code: 500, message: '服务器错误！！', data: null });
   }
 };
 

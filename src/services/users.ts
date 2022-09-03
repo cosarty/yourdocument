@@ -71,5 +71,9 @@ export const getUserList = async (payload: any) => await request<API.API_TYPE<{ 
 export const deleteUser = async (payload: { userId: string }) => await request<API.API_TYPE<null>>('/api/user/delete', {
   method: 'DELETE', data: payload
 })
+// 设置权限
+export const setPermission = async (payload: { userId: string, auth: string }) => await request<API.API_TYPE<null>>('/api/user/setPermission', {
+  method: 'PUT', data: payload
+})
 
 export default { login, getCurrentUser, register, updateUser }

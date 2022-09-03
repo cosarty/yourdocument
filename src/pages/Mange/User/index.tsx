@@ -1,16 +1,21 @@
 import defaultAvtar from '@/assets/shitijun.png';
 import type { CurrentUser } from '@/services/users';
-import { banUser, deleteUser, getUserList } from '@/services/users';
+import { banUser, deleteUser, getUserList, setPermission } from '@/services/users';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { useAccess } from '@umijs/max';
-import { Image, message, Popconfirm, Switch } from 'antd';
+import { Image, message, Popconfirm, Select, Switch } from 'antd';
 import { useRef } from 'react';
 
 const MangeUser = () => {
   const actionRef = useRef<ActionType>();
   const { canSuper, canIsAdmin } = useAccess();
-
+  const handleChange = async (userId: string, auth: string) => {
+    const res = await setPermission({ userId, auth });
+    if (res.code === 202) {
+      message.success('设置成功');
+    }
+  };
   const columns: ProColumns<CurrentUser>[] = [
     {
       title: 'id',
@@ -50,8 +55,23 @@ const MangeUser = () => {
         admin: { text: '管理员' },
         user: { text: ' 用户' },
       },
+      render: (_, user) => {
+        return canSuper ? (
+          <Select
+            defaultValue={user.auth}
+            style={{ width: 120 }}
+            onChange={(value) => {
+              handleChange(user._id, value);
+            }}
+          >
+            <Select.Option value='admin'>管理员</Select.Option>
+            <Select.Option value='user'>普通用户</Select.Option>
+          </Select>
+        ) : (
+          <span>{_}</span>
+        );
+      },
     },
-
     {
       title: '创建时间',
       dataIndex: 'create_time',
@@ -64,7 +84,7 @@ const MangeUser = () => {
       title: '封号',
       render: (_, user) => (
         <Switch
-          checkedChildren='正常'
+          checkedChildren='解封'
           unCheckedChildren='封号'
           defaultChecked={user?.is_ban}
           onClick={async () => {
@@ -111,7 +131,6 @@ const MangeUser = () => {
         filterType: 'light',
       }}
       request={async (params) => {
-        console.log('params: ', params);
         const res = await getUserList(params);
         if (res.code === 202) {
           return {
