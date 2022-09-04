@@ -24,6 +24,7 @@ const getAllQuestionValidator = validator([
 ]);
 const getAllQuestion = async (req, res, next) => {
   const queryData = {};
+
   const { title, tags, type, reviewStatus, pageSize = 20, pageNum = 1 } = req.body;
 
   title && (queryData.title = new RegExp(title));
@@ -32,6 +33,7 @@ const getAllQuestion = async (req, res, next) => {
 
   reviewStatus && (queryData.reviewStatus = reviewStatus);
   const skip = pageSize * (pageNum - 1);
+  console.log('queryData: ', queryData);
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()

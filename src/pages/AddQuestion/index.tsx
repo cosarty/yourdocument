@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-param-reassign */
 import AddMultipleOptions from '@/components/AddMultipleOptions';
 import AddSingleOptions from '@/components/AddSingleOptions';
@@ -101,7 +102,8 @@ const AddQuestion = () => {
         values = pick(values, ['type'], true);
         const { data, message: msg } = await updateQuestion(questionId, values);
 
-        history.replace(`/qd/${data?._id}`);
+        // history.replace(`/qd/${data?._id}`);
+        history.go(-1);
         message.success(msg);
       }
       setSubmitting(false);

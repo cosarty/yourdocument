@@ -1,6 +1,6 @@
 import RichTextViewer from '@/components/RichTextViewer';
 import type { QuestionsType } from '@/services/question';
-import { getQuestionDetail, getQuestionreRerence, getQuestionTitle } from '@/util/businessUtils';
+import { getQuestionDetail, getQuestionreRerence } from '@/util/businessUtils';
 import { Typography } from 'antd';
 import React from 'react';
 import './index.less';
@@ -14,13 +14,11 @@ interface QuestionDetailCardProps {
 const QuestionDetailCard: React.FC<QuestionDetailCardProps> = (props) => {
   const { question = {} as QuestionsType, showReference = false, showTitle = true } = props;
 
-  const questionTitle = getQuestionTitle(question);
-
   return (
     <div className='question-detail-card'>
       {showTitle && question.title && (
         <Typography.Title level={4} style={{ marginBottom: 16 }}>
-          {questionTitle}
+          <RichTextViewer htmlContent={question.title}></RichTextViewer>
         </Typography.Title>
       )}
 

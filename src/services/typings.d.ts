@@ -77,6 +77,6 @@ declare namespace Payload {
     order?: string;
     pageSize?: number;
     pageNum?: number;
-    reviewStatus?: number
+    reviewStatus?: number | string
   };
 }

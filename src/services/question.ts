@@ -33,6 +33,7 @@ export type QuestionsType = {
   update_time: Date;
   reference?: string;
   reviewMessage?: string;
+  reviewTim: Date,
   [key: string]: any
 }
 
@@ -40,7 +41,7 @@ export const searchQuetions = async (payload: Payload.QuestionSearchParams) => a
   method: 'POST', data: payload
 })
 
-
+// 管理员获取题目列表
 export const getAllQuetions = async (payload: Payload.QuestionSearchParams) => await request<API.QuestionList<QuestionsType>>('/api/questions/getAll', {
   method: 'POST', data: payload
 })
