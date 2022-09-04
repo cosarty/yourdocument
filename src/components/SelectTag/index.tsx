@@ -11,6 +11,7 @@ interface SelectTagsProps {
   maxTagsNumber?: number;
   placeholder?: string;
   style?: CSSProperties;
+  showEmty?: boolean;
 }
 
 const SelectTag: FC<SelectTagsProps> = (props) => {
@@ -32,6 +33,7 @@ const SelectTag: FC<SelectTagsProps> = (props) => {
     placeholder,
     style,
     mode = 'multiple',
+    showEmty = false,
   } = props;
 
   const handleChange = (tag: any, checked: any) => {
@@ -46,8 +48,9 @@ const SelectTag: FC<SelectTagsProps> = (props) => {
   const groupTagsView =
     tagsAll &&
     tagsAll.map((groupTag) => {
+      const isShow = groupTag.tags.length === 0 && showEmty;
       return (
-        groupTag.tags.length > 0 && (
+        (groupTag.tags.length > 0 || isShow) && (
           <Tabs.TabPane tab={groupTag.name} key={groupTag.name}>
             {groupTag.tags.map((tag) => {
               return (

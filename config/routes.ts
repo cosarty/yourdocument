@@ -107,7 +107,8 @@
       {
         name: '分类管理',
         path: '/manage/classtify',
-        component: './Welcome',
+        component: '@/pages/Mange/Tags',
+        access: 'canSuper',
         icon: 'CodeOutlined',
       },
       {

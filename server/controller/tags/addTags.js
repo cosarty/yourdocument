@@ -32,7 +32,7 @@ const addTagsValidator = [
       await Promise.all(
         tags.map(async (tag) => {
           // 判断此分类下的tag是否已经存在
-          const i = await TagsModel.findOne({ name: req.body.name, tags: tag });
+          const i = await TagsModel.findOne({ tags: tag });
           if (i) existTag.push(tag);
         }),
       );
