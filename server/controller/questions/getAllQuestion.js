@@ -26,6 +26,7 @@ const getAllQuestion = async (req, res, next) => {
   const queryData = {};
 
   const { title, tags, type, reviewStatus, pageSize = 20, pageNum = 1 } = req.body;
+  console.log('req.body: ', req.body);
 
   title && (queryData.title = new RegExp(title));
   tags && tags.length > 0 && (queryData.tags = tags);
@@ -33,17 +34,19 @@ const getAllQuestion = async (req, res, next) => {
 
   reviewStatus && (queryData.reviewStatus = reviewStatus);
   const skip = pageSize * (pageNum - 1);
-  console.log('queryData: ', queryData);
+
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()
       .populate({ path: 'userId', select: { nickname: 1 } })
-      .where({ ...queryData, isDelete: false })
-      .skip(skip)
-      .limit(pageSize || null);
+      .where({ ...queryData, isDelete: false });
+
   // 搜索
-  const questionslist = await queryQuestion();
+  const questionslist = await queryQuestion()
+    .skip(skip)
+    .limit(pageSize || null);
   const total = await queryQuestion().count();
+
   try {
     res.status(200).send({
       code: 200,

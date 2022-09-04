@@ -73,7 +73,7 @@ const MangeUser = () => {
       },
     },
     {
-      title: '创建时间',
+      title: '注册时间',
       dataIndex: 'create_time',
       valueType: 'dateTime',
       hideInSearch: true,

@@ -103,7 +103,7 @@ const AddSingleOptions: React.FC<AddSingleOptionsProps> = ({
           {options.map((option, index) => {
             const letter = String.fromCharCode(65 + index);
             return (
-              <Radio value={letter} key={option}>
+              <Radio value={letter} key={index}>
                 <Space style={{ display: 'flex' }} align='baseline'>
                   <EditableCell index={index} changeOption={changeOption} value={option} />
                   {options.length > min && (

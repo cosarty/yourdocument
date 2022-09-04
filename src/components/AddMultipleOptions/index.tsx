@@ -109,7 +109,7 @@ const AddMultipleOptions: React.FC<AddOptionsProps> = ({
             {options.map((option, index) => {
               const letter = String.fromCharCode(65 + index);
               return (
-                <Checkbox value={letter} key={option}>
+                <Checkbox value={letter} key={index}>
                   <Space style={{ display: 'flex' }} align='baseline'>
                     <EditableCell index={index} changeOption={changeOption} value={option} />
                     {options.length > min && (

@@ -42,6 +42,8 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 
+const DEFAULT_PAGE_SIZE = 4;
+
 const MangeQuestion = () => {
   const [total, setTotal] = useState<number>(0);
   const [showRejectModal, setShowRejectModal] = useState<boolean>(false);
@@ -53,7 +55,7 @@ const MangeQuestion = () => {
 
   const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({
     reviewStatus: REVIEW_STATUS_ENUM.REVIEWING,
-    pageSize: 10,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const loadData = async () => {
@@ -120,7 +122,6 @@ const MangeQuestion = () => {
                   reviewStatus: REVIEW_STATUS_ENUM.REVIEWING.toString(),
                 }}
                 onFinish={async (values) => {
-                  console.log('values: ', values);
                   if (values?.tags?.length === 0) {
                     delete values?.tags;
                   }
@@ -130,7 +131,7 @@ const MangeQuestion = () => {
                   });
                 }}
               >
-                <ProFormText name='name' label='题目名' />
+                <ProFormText name='title' label='题目名' />
                 <ProFormSelect name='reviewStatus' label='审核状态' valueEnum={REVIEW_STATUS_MAP} />
                 <ProForm.Item label='标签' name='tags'>
                   <SelectTag placeholder='标签搜索' />
@@ -143,18 +144,18 @@ const MangeQuestion = () => {
               // loading={loading}
               dataSource={questions}
               pagination={{
-                pageSize: 10,
+                pageSize: DEFAULT_PAGE_SIZE,
                 current: searchParams.pageNum ?? 1,
-                showSizeChanger: false,
-                showQuickJumper: true,
+
                 total,
                 showTotal() {
                   return `总数 ${total}`;
                 },
-                onChange(pageNum) {
+                onChange(pageNum, pageSize) {
                   const params = {
                     ...searchParams,
                     pageNum,
+                    pageSize,
                   };
                   setSearchParams(params);
                 },
@@ -172,7 +173,7 @@ const MangeQuestion = () => {
                           {'题目：' + getQuestionTitle(item)}
                         </a>
                       }
-                      description={new Date(item._createTime).toLocaleDateString()}
+                      description={new Date(item.create_time).toLocaleDateString()}
                     />
                   </List.Item>
                 );
@@ -305,7 +306,7 @@ const MangeQuestion = () => {
                   {new Date(currQuestion.update_time).toLocaleString()}
                 </Descriptions.Item>
                 <Descriptions.Item label='审核时间'>
-                  {new Date(currQuestion.reviewStatus).toLocaleString()}
+                  {new Date(currQuestion.reviewTime).toLocaleString()}
                 </Descriptions.Item>
 
                 <Descriptions.Item label='审核信息'>

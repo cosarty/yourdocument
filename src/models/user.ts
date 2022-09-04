@@ -37,7 +37,8 @@ const useUser = () => {
     try {
       // 保存用户信息
       await getUser()
-      const redirect = new URLSearchParams(search).get('redirect')
+      let redirect = new URLSearchParams(search).get('redirect')
+      if (redirect === '/login') redirect = '/'
       // history.replace({ pathname: redirect ?? '/' })
       // 设置但是不跳转
       // window.history.replaceState(null, null, redirect ?? '/')

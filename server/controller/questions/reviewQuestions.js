@@ -45,7 +45,11 @@ const reviewQuestions = async (req, res, next) => {
   const { reviewMessage, reviewStatus } = req.body;
 
   try {
-    await req.question.update({ reviewMessage, reviewStatus });
+    await req.question.update({
+      reviewMessage: reviewMessage || '无',
+      reviewStatus,
+      reviewTime: new Date(),
+    });
 
     // 消息通知
     if (reviewStatus === 2) {
