@@ -37,6 +37,8 @@ router.post('/history', auth(), require('../controller/questions/historyQuestion
 // 收藏题目  添加 取消 -> 更新收藏列表
 router.put('/favour/:qutionsId', auth(), require('../controller/questions/favourQuestion'));
 
+router.post('/getAll', auth(['super', 'admin']), require('../controller/questions/getAllQuestion'));
+
 // 获取收藏列表
 router.post('/getfavour', auth(), require('../controller/questions/searchfavourQuestions'));
 

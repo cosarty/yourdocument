@@ -94,7 +94,7 @@
       {
         name: '题目管理',
         path: '/manage/question',
-        component: './Welcome',
+        component: '@/pages/Mange/Question',
         icon: 'CodeOutlined',
       },
 

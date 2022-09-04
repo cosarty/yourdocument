@@ -33,7 +33,11 @@ const delteteQuestions = async (req, res, next) => {
     // 这边到时候要加一个删除原因
     await req.question.update({ isDelete: true });
     // 如果是文章作者删除的话就不发送通知
-    if (req.user._id.toString() !== req.question.userId.toString()) {
+    // 驳回的文章删除也不需要发送短信
+    if (
+      req.user._id.toString() !== req.question.userId.toString() ||
+      req.question.reviewStatus === 3
+    ) {
       await addMessage({
         toUserId: req.question.userId,
         title: '问题下架!!',

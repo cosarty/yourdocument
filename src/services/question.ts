@@ -41,6 +41,11 @@ export const searchQuetions = async (payload: Payload.QuestionSearchParams) => a
 })
 
 
+export const getAllQuetions = async (payload: Payload.QuestionSearchParams) => await request<API.QuestionList<QuestionsType>>('/api/questions/getAll', {
+  method: 'POST', data: payload
+})
+
+
 
 export const addQuestion = async (payload: any) => await request<API.API_TYPE<null>>('/api/questions/addQuestion', {
   method: 'POST', data: payload
