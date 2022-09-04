@@ -12,7 +12,13 @@ import {
   REVIEW_STATUS_MAP,
   REVIEW_STATUS_MAP_INFO,
 } from '@/constant/question';
-import { deleteQuestion, getAllQuetions, getQuestions, QuestionsType } from '@/services/question';
+import {
+  deleteQuestion,
+  getAllQuetions,
+  getQuestions,
+  QuestionsType,
+  reviewQuestion,
+} from '@/services/question';
 import { getQuestionTitle } from '@/util/businessUtils';
 import { DeleteOutlined, EditOutlined, MoreOutlined } from '@ant-design/icons';
 import { LightFilter, ProForm, ProFormSelect, ProFormText } from '@ant-design/pro-components';
@@ -74,18 +80,11 @@ const MangeQuestion = () => {
     loadData();
   }, [questionId]);
 
-  const doPassReview = () => {
-    setSubmitting(true);
-    //   reviewQuestion(questionId, form.getFieldValue('score'), REVIEW_STATUS_ENUM.PASS)
-    //     .then((res) => {
-    //       if (res) {
-    //         message.success('已通过');
-    //       } else {
-    //         message.error('操作失败');
-    //       }
-    //     })
-    //     .finally(() => setSubmitting(false));
-    // };
+  const doPassReview = async () => {
+    const data = await reviewQuestion(questionId, REVIEW_STATUS_ENUM.PASS);
+    message.success(data.message);
+    await loadData();
+    await doDate();
   };
 
   const doRejectReview = () => {
@@ -96,12 +95,10 @@ const MangeQuestion = () => {
     // loadData
     switch (info.key) {
       case 'pass':
-        history.push({ pathname: `/editQuestion/${qd?._id}` }, { auth: true });
+        await doPassReview();
         break;
-      case 'reject':
-        const res = await deleteQuestion(qd?._id || '');
-        message.success(res.message);
-        history.replace('/');
+      case 'reje':
+        doRejectReview();
         break;
     }
   };
@@ -218,10 +215,13 @@ const MangeQuestion = () => {
                       overlay={
                         <Menu
                           onClick={doEdit}
-                          items={[
-                            { key: 'pass', icon: <EditOutlined />, label: '通过' },
-                            { key: 'reje', icon: <DeleteOutlined />, label: '驳回' },
-                          ]}
+                          items={(() => {
+                            const action = [{ key: 'pass', icon: <EditOutlined />, label: '通过' }];
+                            if (currQuestion?.reviewStatus !== 3) {
+                              action.push({ key: 'reje', icon: <DeleteOutlined />, label: '驳回' });
+                            }
+                            return action;
+                          })()}
                         />
                       }
                       arrow
@@ -321,7 +321,15 @@ const MangeQuestion = () => {
       <QuestionRejectModal
         visible={showRejectModal}
         questionId={questionId}
-        onClose={() => setShowRejectModal(false)}
+        onClose={async () => {
+          setShowRejectModal(false);
+        }}
+        onSucceed={async (msg) => {
+          const data = await reviewQuestion(questionId, REVIEW_STATUS_ENUM.REJECT, msg);
+          message.success(data.message);
+          await loadData();
+          await doDate();
+        }}
       />
       {currQuestion && (
         <Drawer
@@ -329,7 +337,9 @@ const MangeQuestion = () => {
           placement='right'
           width='80%'
           contentWrapperStyle={{ maxWidth: 800 }}
-          onClose={() => setCommentDrawerVisible(false)}
+          onClose={() => {
+            setCommentDrawerVisible(false);
+          }}
           visible={commentDrawerVisible}
         >
           <CommentList question={currQuestion} />

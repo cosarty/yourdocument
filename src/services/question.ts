@@ -87,6 +87,14 @@ export const searchOriginQuestion = async (payload?: Payload.QuestionSearchParam
 })
 
 
+// 审核题目
+
+export const reviewQuestion = async (qutionsId: string, reviewStatus: number, message?: string) => await request<API.QuestionList<QuestionsType>>(`/api/questions/review/${qutionsId}`, {
+  method: 'PUT',
+  data: { reviewStatus: reviewStatus + '', reviewMessage: message }
+})
+
+
 export default {
   searchQuetions,
   addQuestion,

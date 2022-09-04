@@ -70,7 +70,7 @@ const reviewQuestions = async (req, res, next) => {
 
     res.status(200).send({
       code: 202,
-      message: '审核成功!!!',
+      message: reviewStatus === 2 ? '审核成功!!!' : '驳回成功!!!',
       data: null,
     });
   } catch (error) {

@@ -5,7 +5,7 @@ import { useAccess } from 'umi';
 interface QuestionRejectModalProps {
   questionId: string;
   visible: boolean;
-  onSucceed?: () => void;
+  onSucceed?: (message: string | undefined) => void;
   onClose: () => void;
 }
 
@@ -18,7 +18,7 @@ const QuestionRejectModal: React.FC<QuestionRejectModalProps> = (props) => {
   const { visible, questionId, onClose, onSucceed } = props;
 
   const [reviewMessage, setReviewMessage] = useState<string>();
-  const [submitting, setSubmitting] = useState<boolean>(false);
+
   const access = useAccess();
 
   const doSubmit = async () => {
@@ -31,26 +31,21 @@ const QuestionRejectModal: React.FC<QuestionRejectModalProps> = (props) => {
       return;
     }
     // 执行操作
-    setSubmitting(true);
-    // const res = await reviewQuestion(questionId, 0, REVIEW_STATUS_ENUM.REJECT, reviewMessage);
-    const res = false;
-    if (res) {
-      message.success('已下架');
-      onSucceed?.();
-      onClose();
-    } else {
-      message.error('操作失败');
-    }
-    setSubmitting(false);
+
+    onSucceed?.(reviewMessage);
+    onClose();
   };
 
   return (
     <Modal
       title='请输入拒绝原因'
       visible={visible}
-      confirmLoading={submitting}
       onOk={doSubmit}
-      onCancel={onClose}
+      onCancel={() => {
+        setReviewMessage('');
+        onClose();
+      }}
+      destroyOnClose
     >
       <AutoComplete
         options={[
