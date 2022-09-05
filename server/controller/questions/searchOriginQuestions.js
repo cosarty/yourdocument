@@ -45,7 +45,8 @@ const searchOriginQuestions = async (req, res, next) => {
   // 搜索
   const questionslist = await queryQuestion()
     .skip(skip)
-    .limit(pageSize || null);
+    .limit(pageSize || null)
+    .sort({ create_time: -1 });
   const total = await queryQuestion().count();
   try {
     res.status(200).send({

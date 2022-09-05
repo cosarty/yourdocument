@@ -25,7 +25,7 @@ const searchOriginMessage = async (req, res, next) => {
   const { status, pageSize, pageNum } = req.body;
   const skip = pageSize * (pageNum - 1);
   Number.isInteger(status) && (queryData.status = status);
-  console.log('queryData: ', queryData);
+
   // 技巧 获取数量
   const queryMessage = () =>
     MessageModel.find()

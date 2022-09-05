@@ -16,4 +16,7 @@ router.post('/search', auth(), require('../controller/message/searchMessage'));
 
 router.get('/count', auth(), require('../controller/message/countMessage'));
 
+// 清空所有消息
+router.delete('/clearAll', auth(), require('../controller/message/clearAll'));
+
 module.exports = router;

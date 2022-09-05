@@ -7,6 +7,10 @@ const cheerio = require('cheerio');
  * @return {Promise<*|boolean>}
  */
 
+const getTitle = (title) => {
+  return cheerio.load(question.detail).text().trim();
+};
+
 const addMessage = async (contexnt) => {
   const { sendEmail, mailContent, ...op } = contexnt;
 
@@ -25,10 +29,14 @@ const addMessage = async (contexnt) => {
     ) {
       // 美化标题
       const mailTitle = cheerio.load(op.title).text().trim();
+      const macontent = cheerio
+        .load(mailContent ?? op.content)
+        .text()
+        .trim();
       await sendMail({
         to: message.toUserId.email,
         subject: `${mailTitle}`,
-        content: mailContent ?? op.content,
+        content: macontent,
       });
     }
     return true;

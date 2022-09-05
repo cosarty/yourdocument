@@ -56,7 +56,7 @@ const reviewQuestions = async (req, res, next) => {
       await addMessage({
         toUserId: req.question.userId,
         title: '题目审核通过!!',
-        content: `您上传的题目【${req.question.title}】已通过审核`,
+        content: `您上传的题目：${req.question.title}已通过审核`,
         sendEmail: true,
         type: 2,
       });
@@ -64,7 +64,7 @@ const reviewQuestions = async (req, res, next) => {
       await addMessage({
         toUserId: req.question.userId,
         title: '题目审核失败!!',
-        content: `您上传的题目【${req.question.title}】未通过审核，拒绝原因：${
+        content: `您上传的题目：${req.question.title}：未通过审核，拒绝原因：${
           reviewMessage || '无'
         }`,
         sendEmail: true,
