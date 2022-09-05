@@ -7,10 +7,10 @@ const auth = require('../middleware/authorization');
 router.put('/update', auth(), require('../controller/message/updateMessage'));
 
 // 更新所有 只能更改查看状态
-router.post('/updateAll', auth(), require('../controller/paper/createPaper'));
+router.put('/updateAll', auth(), require('../controller/message/updateAllMessage'));
 
 // 查看消息  搜索消息  目前只支持已读未读
-router.post('/search', auth(), require('../controller/paper/createPaper'));
+router.post('/search', auth(), require('../controller/message/searchMessage'));
 
 // 查看未读的数量 计数一下就好
 

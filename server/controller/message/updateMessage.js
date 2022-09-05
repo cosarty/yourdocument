@@ -1,9 +1,8 @@
-const MessageModel = require('../../model/messageSchame');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
 const { checkMessage } = require('./service/messageServe');
 // 校验参数
-const addCommentValidator = [
+const updateMessageValidator = [
   validator([validator.isValidObjectId(['body'], 'messageId')]),
   validator([
     body('status')
@@ -12,8 +11,8 @@ const addCommentValidator = [
       .withMessage('消息状态只能是 0 未读 1 已读')
       .bail()
       .toInt(),
+    body('isDelete').optional().isBoolean().withMessage('删除状态只能是boolean'),
   ]),
-  validator([body('isDelete').optional().isBoolean().withMessage('删除状态只能是boolean')]),
   async (req, res, next) => {
     try {
       const message = await checkMessage(req.body.messageId);
@@ -53,4 +52,4 @@ const updateMessage = async (req, res, next) => {
   }
 };
 
-module.exports = [addCommentValidator, updateMessage];
+module.exports = [updateMessageValidator, updateMessage];
