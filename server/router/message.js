@@ -14,6 +14,6 @@ router.post('/search', auth(), require('../controller/message/searchMessage'));
 
 // 查看未读的数量 计数一下就好
 
-router.post('/count', auth(), require('../controller/paper/createPaper'));
+router.get('/count', auth(), require('../controller/message/countMessage'));
 
 module.exports = router;
