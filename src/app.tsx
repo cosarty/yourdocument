@@ -21,9 +21,6 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
   loading?: boolean;
 }> {
-  document.addEventListener('visibilitychange', () => {
-    console.log(1);
-  });
   try {
     let isThowrErr = false;
     // 添加权限提示

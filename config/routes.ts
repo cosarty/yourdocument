@@ -26,31 +26,31 @@
         name: '个人资料',
         path: '/account/info',
         component: '@/pages/Account/Info',
-        icon: 'CodeOutlined',
+        icon: 'UserOutlined',
       },
       {
         name: '我的收藏',
         path: '/account/Favour',
         component: '@/pages/Account/Favour',
-        icon: 'CodeOutlined',
+        icon: 'StarOutlined',
       },
       {
         name: '我的题目',
         path: '/account/question',
         component: '@/pages/Account/Questions',
-        icon: 'CodeOutlined',
+        icon: 'FileOutlined',
       },
       {
         name: '我的回答',
         path: '/account/comment',
         component: '@/pages/Account/Comment',
-        icon: 'CodeOutlined',
+        icon: 'MessageOutlined',
       },
       {
         name: '消息通知',
         path: '/account/message',
         component: '@/pages/Account/Message',
-        icon: 'CodeOutlined',
+        icon: 'BellOutlined',
       },
       // {
       //   name: '错题本',
@@ -95,21 +95,21 @@
         name: '题目管理',
         path: '/manage/question',
         component: '@/pages/Mange/Question',
-        icon: 'CodeOutlined',
+
       },
 
       {
         name: '人员管理',
         path: '/manage/users',
         component: '@/pages/Mange/User',
-        icon: 'CodeOutlined',
+
       },
       {
         name: '分类管理',
         path: '/manage/classtify',
         component: '@/pages/Mange/Tags',
         access: 'canSuper',
-        icon: 'CodeOutlined',
+
       },
       {
         component: './404',
@@ -138,6 +138,6 @@
     path: '/qd/:questionId',
     component: '@/pages/QuestionDetail',
     hideMenu: true,
-    target: '_blank'
+    // target: '_blank'
   },
 ];

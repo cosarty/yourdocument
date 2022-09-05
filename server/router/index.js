@@ -23,6 +23,8 @@ router.use('/organize', require('./organize'));
 
 // 消息路由
 
+router.use('/message', require('./message'));
+
 // 评论路由
 router.use('/comment', require('./comment'));
 

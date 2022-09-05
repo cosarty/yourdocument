@@ -7,6 +7,7 @@ import { TOKEN_KEY } from '@/constant/storKey'
 import { message } from 'antd'
 
 
+
 const useUser = () => {
 
 
@@ -21,6 +22,9 @@ const useUser = () => {
 
   }
 
+
+
+
   // 获取当前用户
   const getUser = async () => {
     const user = await users.getCurrentUser()
@@ -28,6 +32,17 @@ const useUser = () => {
     else await setInitialState((s) => ({ ...s, currentUser: null }));
   }
 
+  // 遗留
+  // useEffect(() => {
+  //   // 埋点监听
+  //   // 监听窗口展示
+  //   document.addEventListener('visibilitychange', () => {
+  //     if (document.visibilityState === 'visible') {
+  //       getUser()
+  //     }
+
+  //   })
+  // }, [])
 
   const login = async (pra: Payload.Login) => {
     const { search } = location

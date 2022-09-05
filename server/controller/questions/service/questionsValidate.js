@@ -24,9 +24,9 @@ exports.title = body('title')
   .bail()
   .isString()
   .withMessage('标题只允许字符串!!!')
-  .bail()
-  .isLength({ mix: 5, max: 80 })
-  .withMessage('标题长度只允许5-80个字符!!!!');
+  .bail();
+// .isLength({ mix: 5, max: 80 })
+// .withMessage('标题长度只允许5-80个字符!!!!');
 exports.detail = body('detail').optional().isString().withMessage('题目解析只能是字符串!!!');
 exports.tags = body('tags')
   .isArray()
