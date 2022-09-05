@@ -18,12 +18,10 @@ const addTagsValidator = [
           return Promise.reject('创建失败!!');
         }
       }),
-    body('tags')
-      .isArray()
-      .withMessage('tags必须是一个数组!!!')
-      .bail()
-      .notEmpty()
-      .withMessage('tag不能含有空字符串或为空!!!'),
+    body('tags').isArray().withMessage('tags必须是一个数组!!!'),
+    // .bail()
+    // .notEmpty()
+    // .withMessage('tag不能含有空字符串或为空!!!'),
   ]),
   validator([
     body('tags').custom(async (tags, { req }) => {
@@ -43,6 +41,7 @@ const addTagsValidator = [
 
 const addTags = async (req, res) => {
   const { name, tags } = req.body;
+
   try {
     const tagModel = await TagsModel.findOne({ name });
     tagModel.tags.push(...tags);

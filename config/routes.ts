@@ -86,6 +86,7 @@
     path: '/manage',
     access: 'canAdmin',
     name: '管理员界面',
+    icon: 'AppstoreAddOutlined',
     routes: [
       {
         path: '/manage',
@@ -95,6 +96,7 @@
         name: '题目管理',
         path: '/manage/question',
         component: '@/pages/Mange/Question',
+        icon: 'ContainerOutlined'
 
       },
 
@@ -102,6 +104,7 @@
         name: '人员管理',
         path: '/manage/users',
         component: '@/pages/Mange/User',
+        icon: 'UsergroupAddOutlined'
 
       },
       {
@@ -109,6 +112,7 @@
         path: '/manage/classtify',
         component: '@/pages/Mange/Tags',
         access: 'canSuper',
+        icon: 'MacCommandOutlined'
 
       },
       {

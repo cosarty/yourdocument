@@ -1,14 +1,35 @@
 const TagsModel = require('../../model/tagsSchema');
+const QuestionModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
+
+const checkTags = async (tags) => {
+  const noiTag = [];
+  await Promise.all(
+    tags.map(async (t) => {
+      const q = await QuestionModel.find({ tags: t });
+      if (q.length > 0) noiTag.push(t);
+    }),
+  );
+
+  if (noiTag.length > 0)
+    return Promise.reject('这些标签下面挂载题目无法删除(' + noiTag.join(',') + ')');
+};
 
 const delTagsValidator = [
   validator([
     body('name').custom(async (name, { req }) => {
       const tag = await TagsModel.findOne({ name });
       if (!tag) return Promise.reject('分类不存在!!!');
-      // 如果不存在就创建
-      req.tags = tag;
+      try {
+        await checkTags(tag.tags);
+
+        // 如果不存在就创建
+        req.tags = tag;
+      } catch (error) {
+        console.log('error: ', error);
+        return Promise.reject(error);
+      }
     }),
     body('tags')
       .optional()
@@ -16,7 +37,14 @@ const delTagsValidator = [
       .withMessage('tags必须是一个数组!!!')
       .bail()
       .notEmpty()
-      .withMessage('tag不能含有空字符串或为空!!!'),
+      .withMessage('tags不能含有空字符串或为空!!!')
+      .custom(async (tags) => {
+        try {
+          await checkTags(tags);
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }),
   ]),
 ];
 

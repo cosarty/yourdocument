@@ -53,9 +53,12 @@ const MangeUser = () => {
       hideInSearch: canIsAdmin,
       valueEnum: {
         admin: { text: '管理员' },
-        user: { text: ' 用户' },
+        user: { text: '普通用户' },
       },
       render: (_, user) => {
+        if (user.is_ban) {
+          return <span>{_}</span>;
+        }
         return canSuper ? (
           <Select
             defaultValue={user.auth}
@@ -91,6 +94,7 @@ const MangeUser = () => {
             const res = await banUser({ userId: user._id ?? '' });
             if (res.code === 202) {
               message.success(res.message);
+              actionRef?.current?.reload();
             } else {
               message.error('操作失败');
             }

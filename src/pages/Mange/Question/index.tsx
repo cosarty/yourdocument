@@ -108,7 +108,7 @@ const MangeQuestion = () => {
   return (
     <>
       <Row gutter={[12, 12]}>
-        <Col md={5} xs={24}>
+        <Col md={6} xs={24}>
           <Card
             title='题目列表（点右边筛选）'
             extra={
@@ -146,7 +146,7 @@ const MangeQuestion = () => {
               pagination={{
                 pageSize: DEFAULT_PAGE_SIZE,
                 current: searchParams.pageNum ?? 1,
-
+                simple: true,
                 total,
                 showTotal() {
                   return `总数 ${total}`;
@@ -181,7 +181,7 @@ const MangeQuestion = () => {
             />
           </Card>
         </Col>
-        <Col md={13} xs={24}>
+        <Col md={12} xs={24}>
           <Card
             title={
               <>
