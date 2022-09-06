@@ -16,11 +16,11 @@ interface SelectTagsProps {
 
 const SelectTag: FC<SelectTagsProps> = (props) => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [tagsAll, setTagsAll] = useState<API.TagAll>([]);
+  const [tagsAll, setTagsAll] = useState<API.TagAll['data']>([]);
 
   useEffect(() => {
-    getTags().then((tags) => {
-      setTagsAll(tags);
+    getTags().then(({ data }) => {
+      setTagsAll(data);
     });
   }, []);
 

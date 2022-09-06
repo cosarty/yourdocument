@@ -12,8 +12,7 @@ const checkTags = async (tags) => {
     }),
   );
 
-  if (noiTag.length > 0)
-    return Promise.reject('这些标签下面挂载题目无法删除(' + noiTag.join(',') + ')');
+  if (noiTag.length > 0) return Promise.reject(noiTag.join(',') + '标签下面挂有题目无法删除！！');
 };
 
 const delTagsValidator = [
@@ -22,9 +21,8 @@ const delTagsValidator = [
       const tag = await TagsModel.findOne({ name });
       if (!tag) return Promise.reject('分类不存在!!!');
       try {
-        await checkTags(tag.tags);
+        await checkTags(req.body?.tags ?? []);
 
-        // 如果不存在就创建
         req.tags = tag;
       } catch (error) {
         console.log('error: ', error);

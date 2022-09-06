@@ -15,13 +15,13 @@ export const getTags = async () => await request<API.TagAll>('/api/tags/getTags'
 })
 
 // 删除分类
-export const delTags = async (payload: { name: string, tags?: string[] }) => await request<API.TagAll>('/api/tags/getTags', {
-  method: 'PUT', data: payload
+export const delTags = async (payload: { name: string, tags?: string[] }) => await request<API.API_TYPE<null>>('/api/tags/delTags', {
+  method: 'DELETE', data: payload
 })
 
 // 添加分类
-export const updateTags = async ({ name, tags = [] }: { name: string, tags: string[] }) => await request<API.TagAll>('/api/tags/getTags', {
-  method: 'DELETE', data: { name, tags }
+export const updateTags = async (payload: { name: string, tags?: string[] }) => await request<API.API_TYPE<null>>('/api/tags/addTags', {
+  method: 'PUT', data: payload
 })
 
 

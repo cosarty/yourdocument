@@ -35,11 +35,11 @@ declare namespace API {
 
   type UpdateUser = API_TYPE<null>;
 
-  type TagAll = {
+  type TagAll = API_TYPE<{
     name: string;
     tags: string[];
-  }[];
-
+  }[]
+  >;
   type QuestionList<T> = API_TYPE<{
     list: T[],
     total: number
