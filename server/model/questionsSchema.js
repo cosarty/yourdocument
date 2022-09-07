@@ -46,8 +46,8 @@ const questionsSchema = createShcema({
   reviewTime: Date,
   reviewMessage: String, // 审核消息
   reviewId: { type: Schema.Types.ObjectId, ref: 'User' }, // 审核人
-  tags: [{ type: String, required: true }],
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  tags: [{ type: String, required: true }], // 标签
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 题目发起人
   viewNum: { type: Number, default: 0 }, // 阅读人数
 });
 

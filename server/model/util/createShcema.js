@@ -1,5 +1,7 @@
 const mongose = require('mongoose');
 
+// 每张表下面加入两个公共字段
+// 更新时间 和 创建时间
 const createSchema = (fields) =>
   new mongose.Schema(
     {
