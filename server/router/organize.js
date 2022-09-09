@@ -35,7 +35,7 @@ router.get('/get', auth(), require('../controller/organize/getOrganize'));
 // 踢出组织  要把成绩一起删掉  设置成isDelete
 router.put('/kickout/:organizeId', auth(), require('../controller/organize/kickoutOrganize'));
 
-// 查看组织试卷列表  组织成员查看开发试卷
+// 查看组织试卷列表  组织成员查看开放试卷
 router.get('/viewPaper', auth(), require('../controller/organize/viewPaper'));
 
 // 查看下发试卷详情   删除的也可以看  只能创建者查看  获取试卷内的题目

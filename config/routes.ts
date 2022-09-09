@@ -13,6 +13,13 @@
     exact: true,
   },
   {
+    path: '/paper',
+    name: '试卷',
+    icon: 'smile',
+    component: './Welcome',
+    exact: true,
+  },
+  {
     path: '/account',
     name: '个人',
     icon: 'UserOutlined',
@@ -52,36 +59,37 @@
         component: '@/pages/Account/Message',
         icon: 'BellOutlined',
       },
-      // {
-      //   name: '错题本',
-      //   path: '/account/mistakes',
-      //   component: './Welcome',
-      //   icon: 'CodeOutlined',
-      // },
+      {
+        name: '错题本',
+        path: '/account/mistakes',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
       {
         component: './404',
       },
     ],
   },
-  /*   {
-      path: '/organi',
-      name: '组织',
-      access: 'canLogin',
-      routes: [
-        {
-          name: '我的组织',
-          path: '/organi/my',
-          component: './Welcome',
-          icon: 'CodeOutlined',
-        },
-        {
-          name: '我的试卷',
-          path: '/organi/paper',
-          component: './Welcome',
-          icon: 'CodeOutlined',
-        },
-      ],
-    }, */
+  {
+    path: '/organi',
+    name: '组织',
+    access: 'canLogin',
+    component: '@/layout/OrganiLayout',
+    routes: [
+      {
+        name: '我的组织',
+        path: '/organi/my',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
+      {
+        name: '我的试卷',
+        path: '/organi/paper',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
+    ],
+  },
   {
     path: '/manage',
     access: 'canAdmin',
