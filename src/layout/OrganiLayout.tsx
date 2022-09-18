@@ -11,8 +11,9 @@ import { useState } from 'react';
 export default () => {
   const [pathname, setPathname] = useState('/welcome');
   return (
-    <>
+    <> 
       <ProLayout
+        contentStyle={{ marginLeft: 0, marginRight: 0 }}
         // route={defaultProps}
         menuRender={false}
         location={{

@@ -3,7 +3,7 @@
     title: '登录',
     path: '/login',
     component: '@/pages/Login',
-    layout: false
+    layout: false,
   },
   {
     path: '/',
@@ -71,19 +71,45 @@
     ],
   },
   {
-    path: '/organi',
-    name: '组织',
+    path: '/vieworgani',
     access: 'canLogin',
     component: '@/layout/OrganiLayout',
     routes: [
       {
-        name: '我的组织',
-        path: '/organi/my',
+        path: '/vieworgani',
+        redirect: '/vieworgani/my',
+      },
+      {
+        name: '成员',
+        path: '/vieworgani/my',
         component: './Welcome',
         icon: 'CodeOutlined',
       },
       {
-        name: '我的试卷',
+        name: '试卷',
+        path: '/vieworgani/paper',
+        component: './Welcome',
+        icon: 'CodeOutlined',
+      },
+    ],
+  },
+  {
+    path: '/organi',
+    name: '组织',
+    access: 'canLogin',
+    routes: [
+      {
+        path: '/organi',
+        redirect: '/organi/my',
+      },
+      {
+        name: '创建',
+        path: '/organi/my',
+        component: '@/pages/Orgniza/MyCreate',
+        icon: 'CodeOutlined',
+      },
+      {
+        name: '我的',
         path: '/organi/paper',
         component: './Welcome',
         icon: 'CodeOutlined',
@@ -104,24 +130,21 @@
         name: '题目管理',
         path: '/manage/question',
         component: '@/pages/Mange/Question',
-        icon: 'ContainerOutlined'
-
+        icon: 'ContainerOutlined',
       },
 
       {
         name: '人员管理',
         path: '/manage/users',
         component: '@/pages/Mange/User',
-        icon: 'UsergroupAddOutlined'
-
+        icon: 'UsergroupAddOutlined',
       },
       {
         name: '分类管理',
         path: '/manage/classtify',
         component: '@/pages/Mange/Tags',
         access: 'canSuper',
-        icon: 'MacCommandOutlined'
-
+        icon: 'MacCommandOutlined',
       },
       {
         component: './404',
@@ -136,15 +159,13 @@
     path: '/addQuestion',
     access: 'canLogin',
     component: '@/pages/AddQuestion',
-    hideMenu: true
+    hideMenu: true,
   },
   {
     path: '/editQuestion/:questionId',
-    wrappers: [
-      '@/wrappers/authEditQuestion',
-    ],
+    wrappers: ['@/wrappers/authEditQuestion'],
     component: '@/pages/AddQuestion',
-    hideMenu: true
+    hideMenu: true,
   },
   {
     path: '/qd/:questionId',

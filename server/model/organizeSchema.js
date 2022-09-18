@@ -5,6 +5,7 @@ const organizeSchema = createShcema({
   name: { type: String, required: true },
   flag: { type: String, required: true }, //邀请码
   isDelete: { type: Boolean, default: false },
+  isPublish: { type: Boolean, required: true }, // 是否公开
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, //组织的发起人
   papers: [
     {

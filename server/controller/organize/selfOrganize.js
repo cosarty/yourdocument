@@ -5,7 +5,7 @@ const selfOrganize = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
     const selfList = await OrganizeModel.aggregate()
-      .match({ userId })
+      .match({ userId, isDelete: false })
       .group({ _id: '$userId', organizes: { $addToSet: '$_id' } })
       .lookup({
         from: 'users',
