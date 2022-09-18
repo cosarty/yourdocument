@@ -1,0 +1,27 @@
+import { request } from '@umijs/max';
+import type { QuestionsType } from './question';
+import type { CurrentUser } from './users';
+
+export type OrganizeType = {
+  name: string;
+  flag: string; //邀请码
+  isPublish: boolean; // 是否公开
+  userId: CurrentUser; //组织的发起人
+  papers: {
+    papersId: QuestionsType;
+    publish: boolean;
+  }; // 组织试卷
+  part: [
+    {
+      user: CurrentUser;
+      nickname: string;
+      pass: boolean; // 是否通过组织
+    },
+  ]; // 参与用户 用户昵称
+  motto: string; 
+};
+
+
+export const getSelfOrgnize = async () => await request<API.API_TYPE<{organizes: OrganizeType[],user:  CurrentUser}>>('/api/organize/self', {
+  method: 'GET'
+})

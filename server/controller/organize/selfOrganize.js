@@ -21,14 +21,10 @@ const selfOrganize = async (req, res, next) => {
       })
       .project({
         _id: 0,
-        user: 1,
-        'organizes.name': 1,
-        'organizes._id': 1,
-        'organizes.motto': 1,
-      })
-      .unwind('user');
-
-    res.status(202).send({ code: 202, message: '获取成功!!', data: selfList[0] });
+        user: { nickname: 1, _id: 1 },
+        organizes: { name: 1, _id: 1, motto: 1, isPublish: 1, part: 1, flag: 1 },
+      });
+    res.status(200).send({ code: 200, message: '获取成功!!', data: selfList[0] });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败!!', data: null });
