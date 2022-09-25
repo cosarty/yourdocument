@@ -3,6 +3,7 @@ import type { QuestionsType } from './question';
 import type { CurrentUser } from './users';
 
 export type OrganizeType = {
+  _id: string;
   name: string;
   flag: string; //邀请码
   isPublish: boolean; // 是否公开
@@ -32,4 +33,9 @@ export const createOrgnize = async (payload: { name: string; motto: string }) =>
   await request<API.API_TYPE<null>>('/api/organize/create', {
     method: 'POST',
     data: payload,
+  });
+
+export const deleteOrgnize = async (organizeId: string) =>
+  await request<API.API_TYPE<null>>(`/api/organize/del/${organizeId}`, {
+    method: 'DELETE',
   });

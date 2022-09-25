@@ -1,9 +1,8 @@
-import type { OrganizeType } from '@/services/organize';
-import { getSelfOrgnize } from '@/services/organize';
+import { deleteOrgnize, getSelfOrgnize, OrganizeType } from '@/services/organize';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
 import { Link } from '@umijs/max';
-import { Col, Row, Space, Spin, Typography } from 'antd';
+import { Col, message, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 export interface MyCreateOegizeRefType {
@@ -47,6 +46,20 @@ const MyCreateOrgnize = forwardRef((_, ref) => {
     );
   };
 
+  const actionHandle = async (key: 'edit' | 'delete', id: string) => {
+    switch (key) {
+      case 'edit':
+        break;
+      case 'delete':
+        const { code } = await deleteOrgnize(id);
+        if (code === 202) {
+          message.success('删除成功!!!');
+          await doLoadData();
+        }
+        break;
+    }
+  };
+
   // 重新加载数据
   useImperativeHandle(ref, () => ({
     reload: () => {
@@ -70,7 +83,23 @@ const MyCreateOrgnize = forwardRef((_, ref) => {
                 bordered
                 title={<Link to={'/vieworgani'}>{og.name}</Link>}
                 headerBordered
-                actions={[<EditOutlined key='edit' />, <DeleteOutlined key='ellipsis' />]}
+                actions={[
+                  <EditOutlined
+                    key='edit'
+                    onClick={() => {
+                      actionHandle('edit', og._id);
+                    }}
+                  />,
+                  <Popconfirm
+                    key='delete'
+                    title='确定删除此组织？'
+                    onConfirm={() => actionHandle('delete', og._id)}
+                    okText='确认'
+                    cancelText='取消'
+                  >
+                    <DeleteOutlined />
+                  </Popconfirm>,
+                ]}
                 extra={
                   <Typography.Paragraph copyable={{ tooltips: ['邀请码'] }}>
                     {og.flag}
