@@ -74,6 +74,7 @@
     path: '/vieworgani',
     access: 'canLogin',
     component: '@/layout/OrganiLayout',
+    
     routes: [
       {
         path: '/vieworgani',
@@ -97,24 +98,7 @@
     path: '/organi',
     name: '组织',
     access: 'canLogin',
-    routes: [
-      {
-        path: '/organi',
-        redirect: '/organi/my',
-      },
-      {
-        name: '创建',
-        path: '/organi/my',
-        component: '@/pages/Orgniza/MyCreate',
-        icon: 'CodeOutlined',
-      },
-      {
-        name: '我的',
-        path: '/organi/paper',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
-    ],
+    component: '@/pages/Orgniza',
   },
   {
     path: '/manage',

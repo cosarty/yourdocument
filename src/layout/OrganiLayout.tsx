@@ -11,7 +11,7 @@ import { useState } from 'react';
 export default () => {
   const [pathname, setPathname] = useState('/welcome');
   return (
-    <> 
+    <>
       <ProLayout
         contentStyle={{ marginLeft: 0, marginRight: 0 }}
         // route={defaultProps}
@@ -37,7 +37,7 @@ export default () => {
       >
         <PageContainer
           onBack={() => {
-            history.push('/');
+            history.replace('/organi');
           }}
           tags={<Tag color='blue'>状态一</Tag>}
           header={{

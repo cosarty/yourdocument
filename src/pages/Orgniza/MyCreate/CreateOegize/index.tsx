@@ -1,17 +1,28 @@
+import { createOrgnize } from '@/services/organize';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
-import { Button } from 'antd';
-const CreateOegize = () => {
+import { Button, message } from 'antd';
+import type { FC } from 'react';
+
+interface CreateOegizeProps {
+  onFinish?: () => void;
+}
+
+const CreateOegize: FC<CreateOegizeProps> = ({ onFinish }) => {
+  const submit = async (values: { name: string; motto: string }) => {
+    const { code } = await createOrgnize(values);
+    return code === 202;
+  };
   return (
     <ModalForm<{
       name: string;
-      company: string;
+      motto: string;
     }>
-      title='添加组织'
+      title='创建组织'
       trigger={
         <Button type='primary'>
           <PlusOutlined />
-          添加组织
+          创建组织
         </Button>
       }
       autoFocusFirstInput
@@ -19,8 +30,14 @@ const CreateOegize = () => {
         destroyOnClose: true,
         width: 400,
       }}
-      onFinish={async (values) => {
-        console.log('values: ', values);
+      onFinish={async (v) => {
+        const ps = await submit(v);
+        if (ps) {
+          message.success('创建成功!!');
+        }
+        onFinish?.();
+
+        return ps;
       }}
     >
       <ProFormText
