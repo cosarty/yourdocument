@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import { useRef, useState } from 'react';
 import type { MyCreateOegizeRefType } from './MyCreate';
 import MyCreate from './MyCreate';
-import CreateOegize from './MyCreate/CreateOegize';
+import CreateOegize from './MyCreate/CreateOrEditOegize';
 import MyPass from './MyPass';
 
 const tabList = [
@@ -41,9 +41,9 @@ const Orgniza = () => {
       extra={
         <CreateOegize
           onFinish={() => {
-            console.log('myCreateref.current: ', myCreateref.current);
             myCreateref.current?.reload();
           }}
+          edit={false}
         />
       }
       activeTabKey={activeTabKey}

@@ -15,7 +15,7 @@ const createOrganizeValidator = [
   async (req, res, next) => {
     const { name } = req.body;
     const { _id } = req.user;
-    const or = await OrganizeModel.findOne({ name, userId: _id });
+    const or = await OrganizeModel.findOne({ name, userId: _id, isDelete: false });
     console.log('or: ', or);
     if (or) return next({ code: 400, message: '不能创建名字一样的组织!!', data: null });
 
@@ -28,8 +28,8 @@ const createOrganize = async (req, res, next) => {
   const { _id: userId } = req.user;
 
   try {
-    const count = await OrganizeModel.find({ userId, isDelete: false }).count();
-    if (count >= 5) return next({ code: 400, message: '每个用户最多创建5个组织!!', data: null });
+    // const count = await OrganizeModel.find({ userId, isDelete: false }).count();
+    // if (count >= 5) return next({ code: 400, message: '每个用户最多创建5个组织!!', data: null });
     // 创建邀请码
     let flag;
     while (true) {

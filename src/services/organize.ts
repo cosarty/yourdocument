@@ -39,3 +39,9 @@ export const deleteOrgnize = async (organizeId: string) =>
   await request<API.API_TYPE<null>>(`/api/organize/del/${organizeId}`, {
     method: 'DELETE',
   });
+
+export const editOrgnize = async (organizeId: string, payload: { name: string; motto: string }) =>
+  await request<API.API_TYPE<null>>(`/api/organize/edit/${organizeId}`, {
+    method: 'PUT',
+    data: payload,
+  });

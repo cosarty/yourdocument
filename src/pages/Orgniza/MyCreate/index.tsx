@@ -1,9 +1,10 @@
 import { deleteOrgnize, getSelfOrgnize, OrganizeType } from '@/services/organize';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
 import { Link } from '@umijs/max';
 import { Col, message, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import CreateOrEditOegize from './CreateOrEditOegize';
 
 export interface MyCreateOegizeRefType {
   reload: () => void;
@@ -84,10 +85,14 @@ const MyCreateOrgnize = forwardRef((_, ref) => {
                 title={<Link to={'/vieworgani'}>{og.name}</Link>}
                 headerBordered
                 actions={[
-                  <EditOutlined
-                    key='edit'
-                    onClick={() => {
-                      actionHandle('edit', og._id);
+                  <CreateOrEditOegize
+                    key={'edit'}
+                    edit
+                    ogInfo={{ name: og.name, motto: og.motto, id: og._id }}
+                    onFinish={(v) => {
+                      const selfOg = orgnizaList.find((o) => o._id === v?.id) ?? {};
+                      Object.assign(selfOg, { ...v });
+                      setOrgnizaList([...orgnizaList]);
                     }}
                   />,
                   <Popconfirm
