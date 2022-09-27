@@ -1,32 +1,12 @@
+import type { OgInfoType } from '@/wrappers/authVieworgani';
+import AuthVieworgani from '@/wrappers/authVieworgani';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history, useLocation } from '@umijs/max';
+import { history } from '@umijs/max';
 import { Button, Input, Tag } from 'antd';
-/* 
-const defaultProps = {
-  routes: [
-    {
-      name: '成员',
-      path: '/vieworgani/my',
-      component: '../pages/Welcome',
-      icon: <CodeOutlined />,
-    },
-    {
-      name: '试卷',
-      path: '/vieworgani/paper',
-      component: '../pages/Welcome',
-      icon: <CodeOutlined />,
-    },
-  ],
-};
- */
-export default () => {
-  const { state } = useLocation();
-  console.log('state: ', state);
-  // if (!state?.id) {
-  //   message.success('参数错误!!!');
-  //   return <Navigate to='/login' replace />;
-  // }
+import type { FC } from 'react';
 
+const Vieworgani: FC<OgInfoType> = ({ users, papers }) => {
+  console.log('users,papers: ', users, papers);
   return (
     <>
       <PageContainer
@@ -40,12 +20,13 @@ export default () => {
             // backgroundColor: '#fff',
             // position: 'fixed',
             // top: 0,
-            width: '100%',
+            // width: '100%',
             // left: 0,
             // zIndex: 999,
             boxShadow: '0 2px 8px #f0f1f2',
           },
         }}
+        fixedHeader
         extra={[
           <Input.Search
             key='search'
@@ -71,3 +52,5 @@ export default () => {
     </>
   );
 };
+
+export default AuthVieworgani(Vieworgani);

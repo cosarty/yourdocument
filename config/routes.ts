@@ -13,13 +13,6 @@
     exact: true,
   },
   {
-    path: '/paper',
-    name: '试卷',
-    icon: 'smile',
-    component: './Welcome',
-    exact: true,
-  },
-  {
     path: '/account',
     name: '个人',
     icon: 'UserOutlined',
@@ -72,27 +65,9 @@
   },
   {
     path: '/vieworgani',
-    access: 'canLogin',
-    component: '@/layout/OrganiLayout',
-    
-    routes: [
-      {
-        path: '/vieworgani',
-        redirect: '/vieworgani/my',
-      },
-      {
-        name: '成员',
-        path: '/vieworgani/my',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
-      {
-        name: '试卷',
-        path: '/vieworgani/paper',
-        component: './Welcome',
-        icon: 'CodeOutlined',
-      },
-    ],
+    component: '@/pages/Vieworgani',
+    // wrappers: ['@/wrappers/authVieworgani'],
+    layout: false,
   },
   {
     path: '/organi',

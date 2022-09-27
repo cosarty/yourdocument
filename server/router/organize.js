@@ -18,7 +18,7 @@ router.get('/applyList', auth(), require('../controller/organize/applyListOrgani
 // 获取组织人员
 router.get('/users/:organizeId', auth(), require('../controller/organize/usersOrganize'));
 
-// 变价组织
+//  编辑组织
 router.put('/edit/:organizeId', auth(), require('../controller/organize/editOrganize'));
 
 // TODO 前端的时候写  删除下发的试卷 要把成绩一起删除掉不能忘记 要不然出大事情

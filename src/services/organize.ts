@@ -1,5 +1,6 @@
 import { request } from '@umijs/max';
-import type { QuestionsType } from './question';
+import { PaperType } from './paper';
+
 import type { CurrentUser } from './users';
 
 export type OrganizeType = {
@@ -8,10 +9,6 @@ export type OrganizeType = {
   flag: string; //邀请码
   isPublish: boolean; // 是否公开
   userId: CurrentUser; //组织的发起人
-  papers: {
-    papersId: QuestionsType;
-    publish: boolean;
-  }; // 组织试卷
   part: {
     user: CurrentUser;
     nickname: string;
@@ -44,4 +41,19 @@ export const editOrgnize = async (organizeId: string, payload: { name: string; m
   await request<API.API_TYPE<null>>(`/api/organize/edit/${organizeId}`, {
     method: 'PUT',
     data: payload,
+  });
+
+// /api/organize/viewPaper
+// 获取试卷详情
+export const viewPaper = async (organizeId: string) =>
+  await request<API.API_TYPE<PaperType[]>>(`/api/organize/viewPaper`, {
+    method: 'GET',
+    params: {
+      organizeId,
+    },
+  });
+// 获取人员详情
+export const viewUsers = async (organizeId: string) =>
+  await request<API.API_TYPE<OrganizeType['part']>>(`/api/organize/users/${organizeId}`, {
+    method: 'GET',
   });

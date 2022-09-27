@@ -1,8 +1,9 @@
-import { deleteOrgnize, getSelfOrgnize, OrganizeType } from '@/services/organize';
+import type { OrganizeType } from '@/services/organize';
+import { deleteOrgnize, getSelfOrgnize } from '@/services/organize';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ProCard } from '@ant-design/pro-components';
-import { Link } from '@umijs/max';
-import { Col, message, Popconfirm, Row, Space, Spin, Typography } from 'antd';
+import { history } from '@umijs/max';
+import { Button, Col, message, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import CreateOrEditOegize from './CreateOrEditOegize';
 
@@ -13,6 +14,7 @@ export interface MyCreateOegizeRefType {
 const MyCreateOrgnize = forwardRef((_, ref) => {
   const [loading, setLoading] = useState(false);
   const [orgnizaList, setOrgnizaList] = useState<OrganizeType[]>([]);
+
   const doLoadData = async () => {
     setLoading(true);
     const { code, data } = await getSelfOrgnize();
@@ -82,7 +84,16 @@ const MyCreateOrgnize = forwardRef((_, ref) => {
                 hoverable
                 loading={loading}
                 bordered
-                title={<Link to={'/vieworgani'}>{og.name}</Link>}
+                title={
+                  <Button
+                    type='link'
+                    onClick={() => {
+                      history.push('/vieworgani/', { og });
+                    }}
+                  >
+                    {og.name}
+                  </Button>
+                }
                 headerBordered
                 actions={[
                   <CreateOrEditOegize
