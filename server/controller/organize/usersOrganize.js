@@ -19,7 +19,7 @@ const usersOrganizeValidator = [
 
 const usersOrganize = async (req, res, next) => {
   try {
-    await req.organize.populate({ path: 'part.user', select: { nickname: 1 } });
+    await req.organize.populate({ path: 'part.user', select: { nickname: 1, avtar_url: 1 } });
     users = req.organize.part.filter((u) => u.pass);
     console.log('users: ', users);
     res.status(200).send({ code: 200, message: '获取成功!!', data: users });

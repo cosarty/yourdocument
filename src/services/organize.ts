@@ -1,7 +1,12 @@
 import { request } from '@umijs/max';
-import { PaperType } from './paper';
+import type { PaperType } from './paper';
 
 import type { CurrentUser } from './users';
+
+export type SimpleUser = {
+  user: CurrentUser;
+  pass: boolean;
+};
 
 export type OrganizeType = {
   _id: string;
@@ -9,11 +14,7 @@ export type OrganizeType = {
   flag: string; //邀请码
   isPublish: boolean; // 是否公开
   userId: CurrentUser; //组织的发起人
-  part: {
-    user: CurrentUser;
-    nickname: string;
-    pass: boolean; // 是否通过组织
-  }[];
+  part: SimpleUser[];
   // 参与用户 用户昵称
   motto: string;
 };

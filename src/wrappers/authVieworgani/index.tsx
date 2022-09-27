@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 export type OgInfoType = { papers: PaperType[]; users: OrganizeType['part'] };
 
 // 编辑题目的拦截器 只有题目创建者和管理员可以编辑
-export default (Component: React.FC<OgInfoType>) => () => {
+export default (Component: React.FC<OgInfoType & { og: OrganizeType }>) => () => {
   const {
     state: { og },
   } = (useLocation() as { state: { og: OrganizeType } }) ?? {};
@@ -20,17 +20,18 @@ export default (Component: React.FC<OgInfoType>) => () => {
   });
 
   if (!og?._id || !canLogin) {
-    message.warn('组织无效请重新登录!!!!');
-    return <Navigate to='/login' replace />;
+    message.warn('组织无效!!!!');
+    return <Navigate to='/organi' replace />;
   }
 
   const loadData = async () => {
     const [paper, user] = await Promise.all([
       viewPaper(og._id).then(({ data: d }) => d),
       viewUsers(og._id).then(({ data: d }) => d),
-    ]);
+    ]).finally(() => {
+      setLoading(false);
+    });
     setOgInfo({ users: user ?? [], papers: paper ?? [] });
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -43,6 +44,6 @@ export default (Component: React.FC<OgInfoType>) => () => {
       <Spin size='large' wrapperClassName='aaa' />{' '}
     </div>
   ) : (
-    <Component {...ogInfo} />
+    <Component {...ogInfo} og={og} />
   );
 };

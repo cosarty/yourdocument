@@ -47,6 +47,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "1.1.1",
+    "@ant-design/pro-list": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "@umijs/route-utils": "^2.0.0",

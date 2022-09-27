@@ -1,7 +1,5 @@
-import type { QuestionsType } from './question';
-
 export type PaperType = {
-  papersId: QuestionsType;
+  papersId: { detail: string; _id: string; name: string };
+
   publish: boolean;
-  _id: string;
 };
