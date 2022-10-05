@@ -55,7 +55,13 @@
       {
         name: '错题本',
         path: '/account/mistakes',
-        component: './Welcome',
+        component: '@/pages/Account/Mistakes',
+        icon: 'CodeOutlined',
+      },
+      {
+        name: '我的试卷',
+        path: '/account/mypaper',
+        component: '@/pages/Account/Paper',
         icon: 'CodeOutlined',
       },
       {

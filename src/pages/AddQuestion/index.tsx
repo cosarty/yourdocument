@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 import AddMultipleOptions from '@/components/AddMultipleOptions';
 import AddSingleOptions from '@/components/AddSingleOptions';
+import ControlPrivateQuestion from '@/components/ControlPrivateQuestion';
 import RichTextEditor from '@/components/RichTextEditor';
 import SelectTag from '@/components/SelectTag';
 import { QUESTION_DIFFICULTY_ENUM, QUESTION_TYPE_ENUM } from '@/constant/question';
@@ -80,6 +81,7 @@ const AddQuestion = () => {
         'tags',
         'title',
         'type',
+        'isPrivate',
       ]);
       // 编码转换
       values[`params${values.type}`].options = Object.fromEntries(
@@ -321,6 +323,13 @@ const AddQuestion = () => {
 
               <ProForm.Item label='解析' name='detail'>
                 <RichTextEditor placeholder='请输入解析，尽量准确清晰，不用刻意加粗' />
+              </ProForm.Item>
+              <ProForm.Item
+                label='权限'
+                name='isPrivate'
+                rules={[{ required: true, message: '请选择权限' }]}
+              >
+                <ControlPrivateQuestion />
               </ProForm.Item>
               <ProForm.Item
                 {...submitFormLayout}

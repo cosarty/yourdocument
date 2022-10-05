@@ -18,6 +18,7 @@ import { history, Link, useAccess, useModel } from '@umijs/max';
 import { Button, Col, Divider, List, message, Popconfirm, Row, Space, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import ControlPrivateQuestionL from '../ControlPrivateQuestion';
 import styles from './index.less';
 
 const { Title, Paragraph } = Typography;
@@ -29,6 +30,7 @@ interface QuestionItemProps {
   showActions?: boolean; // 展示操作栏
   onReload?: () => void;
   target?: string;
+  showPricateState?: boolean;
 }
 
 const QuestionItem: FC<QuestionItemProps> = (props) => {
@@ -45,6 +47,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     showActions = true,
     onReload,
     showEdit = false,
+    showPricateState = false,
   } = props;
 
   const doFavour = async () => {
@@ -109,7 +112,19 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
   );
 
   return (
-    <List.Item>
+    <List.Item
+      extra={
+        showPricateState && (
+          <ControlPrivateQuestionL
+            qustionId={question._id}
+            value={question.isPrivate}
+            onChange={() => {
+              onReload?.();
+            }}
+          />
+        )
+      }
+    >
       <Title
         level={5}
         ellipsis={{ rows: 2 }}

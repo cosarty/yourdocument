@@ -87,6 +87,7 @@ const Questions = () => {
         renderItem={(item) => {
           return (
             <QuestionItem
+              showPricateState
               question={item}
               showReview
               showEdit

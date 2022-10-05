@@ -67,3 +67,11 @@ exports.reference = body('reference')
   .custom(async (reference, { req }) => {
     if (req.body.type != '3') return Promise.reject('答案填写错误！！');
   });
+exports.isPrivate = body('isPrivate')
+  .optional()
+  .isString()
+  .withMessage('请输入权限!!!')
+  .bail()
+  .custom(async (reference, { req }) => {
+    if (req.body.type != '3') return Promise.reject('答案填写错误！！');
+  });

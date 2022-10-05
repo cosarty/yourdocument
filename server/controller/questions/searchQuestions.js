@@ -24,7 +24,7 @@ const searchQuestionsValidator = validator([
   body('pageNum').optional().isInt().withMessage('页数必须是整型的').toInt(),
 ]);
 const searchQuestions = async (req, res, next) => {
-  const queryData = {};
+  const queryData = { isPrivate: { $in: [true, undefined] } };
   const {
     title,
     tags,
@@ -39,7 +39,7 @@ const searchQuestions = async (req, res, next) => {
   title && (queryData.title = new RegExp(title));
   tags && tags.length > 0 && (queryData.tags = tags);
   type && (queryData.type = type);
-  difficulty && (queryData.difficulty = difficulty);
+  !Number.isNaN(Number(difficulty)) && (queryData.difficulty = difficulty);
   const skip = pageSize * (pageNum - 1);
   // 技巧 获取数量
   const queryQuestion = () =>

@@ -35,7 +35,7 @@ const searchOriginQuestions = async (req, res, next) => {
   type && (queryData.type = type);
   reviewStatus && (queryData.reviewStatus = reviewStatus);
   difficulty && (queryData.difficulty = difficulty);
-  console.log('queryData: ', queryData);
+
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()

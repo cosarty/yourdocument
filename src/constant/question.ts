@@ -1,5 +1,8 @@
 export const QUESTION_TYPE_ENUM = {
-  0: '判断题', 1: '单选题', 2: '多选题', 3: '简答题'
+  0: '判断题',
+  1: '单选题',
+  2: '多选题',
+  3: '简答题',
 };
 
 export const QUESTION_DIFFICULTY_ENUM = {
@@ -14,7 +17,6 @@ export const QUESTION_DIFFICULTY_COLOR_ENUM = {
   2: '#FF2D55',
 };
 
-
 export const REVIEW_STATUS_ENUM = {
   REVIEWING: 1,
   PASS: 2,
@@ -23,7 +25,7 @@ export const REVIEW_STATUS_ENUM = {
 
 export const REVIEW_STATUS_MAP = {
   1: '审核中',
-  2: '已发布',
+  2: '已审核',
   3: '拒绝',
 };
 
@@ -33,7 +35,7 @@ export const REVIEW_STATUS_MAP_INFO = {
     color: 'blue',
   },
   2: {
-    text: '已发布',
+    text: '已审核',
     color: 'green',
   },
   3: {

@@ -26,8 +26,8 @@ const viewPaperValidator = [
 ];
 
 const viewPaper = async (req, res, next) => {
-  const match = {};
-  if (req.isCreate === false) match = { 'papers.publish': true };
+  const match = { isDelete: false };
+  if (req.isCreate === false) Object.assign(match, { 'papers.publish': true });
   try {
     await req.organize.populate({
       path: 'papers.papersId',

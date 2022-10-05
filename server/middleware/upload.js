@@ -50,7 +50,6 @@ const uploadMiddleware =
           files,
         },
         fileFilter(req, file, cb) {
-          console.log('mime.getExtension(file.mimetype): ', mime.getExtension(file.mimetype));
           if (!acceptType.includes(mime.getExtension(file.mimetype))) {
             // 如果有问题，你可以总是这样发送一个错误:
             cb(new Error('文件类型必须是：' + acceptType.map((f) => '.' + f).join(' ')));

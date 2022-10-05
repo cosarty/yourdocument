@@ -6,7 +6,7 @@ const auth = require('../middleware/authorization');
 // 添加题目
 router.post('/addQuestion', auth(), require('../controller/questions/addQuestion'));
 
-// 更新题目 题目开放还是私有？
+// 更新题目
 router.put('/updateQuestion/:qutionsId', auth(), require('../controller/questions/updateQuetions'));
 
 // 获取题目  首页搜索
@@ -41,5 +41,8 @@ router.post('/getAll', auth(['super', 'admin']), require('../controller/question
 
 // 获取收藏列表
 router.post('/getfavour', auth(), require('../controller/questions/searchfavourQuestions'));
+
+// 更新题目权限
+router.put('/updatePeivate/:qutionsId', auth(), require('../controller/questions/updatePeivate'));
 
 module.exports = router;

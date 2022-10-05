@@ -50,9 +50,14 @@ const GlobalHeaderRight: React.FC = () => {
         <Access accessible={canLogin} fallback={login}>
           <Link to='/addQuestion' target={'_blank'}>
             {!isMobile() && (
-              <Button type='primary' size='large' className={styles.btn}>
-                上传题目
-              </Button>
+              <>
+                <Link to={'/account/mypaper'} target='_blank'>
+                  创建试卷
+                </Link>
+                <Button type='primary' size='large' className={styles.btn}>
+                  上传题目
+                </Button>
+              </>
             )}
           </Link>
           <Avatar />
