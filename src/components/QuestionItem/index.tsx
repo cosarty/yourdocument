@@ -193,6 +193,7 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
               </Space>
             </Col>
           )}
+          <Tag color='#3b5999'>选题</Tag>
           {(question.userId._id === currentUser?._id || canAdmin) && showEdit && (
             <Col>
               <Space size={10}>

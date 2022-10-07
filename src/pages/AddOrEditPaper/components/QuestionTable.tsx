@@ -1,7 +1,9 @@
 import { MenuOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-components';
 import { arrayMoveImmutable, ProTable, useRefFunction } from '@ant-design/pro-components';
-import { Tag } from 'antd';
+import { Button, Tag } from 'antd';
+import Paragraph from 'antd/lib/typography/Paragraph';
+
 import { useEffect, useState } from 'react';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import styles from './index.less';
@@ -20,19 +22,40 @@ const columns: ProColumns[] = [
     title: '题目',
     dataIndex: 'name',
     className: styles['drag-visible'],
+    width: 120,
   },
   {
     title: '分数',
     dataIndex: 'age',
+    width: 80,
+    render: (_) => {
+      return (
+        <Paragraph
+          editable={{
+            onChange: (v) => {
+              console.log(v);
+            },
+            autoSize: { maxRows: 1, minRows: 1 },
+            tooltip: '编辑分数',
+          }}
+        >
+          {_}
+        </Paragraph>
+      );
+    },
   },
   {
     title: '操作',
     width: 180,
     key: 'option',
     valueType: 'option',
-    render: (...arg) => {
-      console.log('arg: ', arg);
-      return <Tag color='#cd201f'>移除</Tag>;
+    render: () => {
+      return (
+        <>
+          <Button type='link'>查看</Button>
+          <Tag color='#cd201f'>移除</Tag>
+        </>
+      );
     },
   },
 ];

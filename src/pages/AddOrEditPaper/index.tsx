@@ -1,12 +1,13 @@
+import QueryQuestions from '@/components/QueryQuestions';
 import { ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { Affix, Button, Card, Col, Row, Statistic } from 'antd';
 import QuestionTable from './components/QuestionTable';
 
 const AddOrEditPaper = () => {
   return (
-    <ProForm submitter={false} layout='horizontal'>
-      <Row gutter={[16, 16]}>
-        <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
+    <Row gutter={[16, 16]}>
+      <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
+        <ProForm submitter={false} layout='horizontal'>
           <Card bordered={false} title='试卷详情' bodyStyle={{ marginBottom: 20 }}>
             <ProForm.Group>
               <ProFormText name='name' label='名称' placeholder='请输入名称' />
@@ -35,14 +36,30 @@ const AddOrEditPaper = () => {
               <Button type='primary'>完成</Button>
             </Card>
           </Affix>
-        </Col>
-        <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
-          <Card bordered={false} title='选题'>
-            题目
-          </Card>
-        </Col>
-      </Row>
-    </ProForm>
+        </ProForm>
+      </Col>
+      <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
+        <Card
+          bordered={false}
+          title='选题'
+          tabList={[
+            {
+              key: 'common',
+              tab: '大厅',
+            },
+            {
+              key: 'my',
+              tab: '我的',
+            },
+          ]}
+          onTabChange={(key) => {
+            console.log('key: ', key);
+          }}
+        >
+          <QueryQuestions />
+        </Card>
+      </Col>
+    </Row>
   );
 };
 
