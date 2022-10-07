@@ -1,14 +1,4 @@
-// import copy from 'copy-to-clipboard';
-// import { WEB_HOST } from '@/constant';
-// import { shareQuestion } from '@/services/question';
-// import { message } from 'antd';
-// import { history } from 'umi';
-// import type { QuestionType } from '@/models/question';
-// import { stringify } from 'querystring';
-// import BraftEditor from 'braft-editor';
-// import type { LevelType } from '@/constant/level';
-// import { LEVEL_LIST } from '@/constant/level';
-// import type { CurrentUser, SimpleUser } from '@/models/user';
+
 import BraftEditor from 'braft-editor';
 import type { QuestionsType } from '@/services/question';
 

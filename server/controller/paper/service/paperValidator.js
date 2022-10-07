@@ -34,6 +34,7 @@ exports.questions = body('questions')
   .bail();
 
 exports.points = body('points')
+  .optional()
   .isNumeric()
   .withMessage('分数必须是整数!!!')
   .custom(async (points) => {

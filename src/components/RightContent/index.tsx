@@ -48,18 +48,20 @@ const GlobalHeaderRight: React.FC = () => {
       </div>
       <div className={styles.user}>
         <Access accessible={canLogin} fallback={login}>
-          <Link to='/addQuestion' target={'_blank'}>
-            {!isMobile() && (
-              <>
-                <Link to={'/account/mypaper'} target='_blank'>
-                  创建试卷
-                </Link>
-                <Button type='primary' size='large' className={styles.btn}>
+          {!isMobile() && (
+            <>
+              <Link to={'/account/mypaper'} target='_blank'>
+                创建试卷
+              </Link>
+
+              <Button type='primary' size='large' className={styles.btn}>
+                <Link to='/addQuestion' target={'_blank'}>
                   上传题目
-                </Button>
-              </>
-            )}
-          </Link>
+                </Link>
+              </Button>
+            </>
+          )}
+
           <Avatar />
         </Access>
       </div>

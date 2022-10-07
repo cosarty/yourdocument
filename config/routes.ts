@@ -52,12 +52,12 @@
         component: '@/pages/Account/Message',
         icon: 'BellOutlined',
       },
-      {
-        name: '错题本',
-        path: '/account/mistakes',
-        component: '@/pages/Account/Mistakes',
-        icon: 'CodeOutlined',
-      },
+      // {
+      //   name: '错题本',
+      //   path: '/account/mistakes',
+      //   component: '@/pages/Account/Mistakes',
+      //   icon: 'CodeOutlined',
+      // },
       {
         name: '我的试卷',
         path: '/account/mypaper',
@@ -124,6 +124,12 @@
     path: '/addQuestion',
     access: 'canLogin',
     component: '@/pages/AddQuestion',
+    hideMenu: true,
+  },
+  {
+    path: '/addPaper',
+    access: 'canLogin',
+    component: '@/pages/AddOrEditPaper',
     hideMenu: true,
   },
   {
