@@ -39,24 +39,8 @@ const AddOrEditPaper = () => {
         </ProForm>
       </Col>
       <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
-        <Card
-          bordered={false}
-          title='选题'
-          tabList={[
-            {
-              key: 'common',
-              tab: '大厅',
-            },
-            {
-              key: 'my',
-              tab: '我的',
-            },
-          ]}
-          onTabChange={(key) => {
-            console.log('key: ', key);
-          }}
-        >
-          <QueryQuestions />
+        <Card bordered={false} title='选题'>
+          <QueryQuestions showMy isSelect />
         </Card>
       </Col>
     </Row>

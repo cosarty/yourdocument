@@ -1,9 +1,8 @@
 const QuestionsModel = require('../../model/questionsSchema');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-const { difficulty } = require('./service/questionsValidate');
+const { difficulty, tags } = require('./service/questionsValidate');
 const searchOriginQuestionsValidator = validator([
-  body('title').optional().isString().withMessage('title是字符串类型!!!'),
   body('type')
     .optional()
     .bail()
@@ -19,6 +18,7 @@ const searchOriginQuestionsValidator = validator([
     .withMessage('审核状态只能是1,2,3')
     .toInt(),
   difficulty,
+  tags.optional(),
 ]);
 
 /**
@@ -29,13 +29,13 @@ const searchOriginQuestionsValidator = validator([
  */
 const searchOriginQuestions = async (req, res, next) => {
   const queryData = {};
-  const { title, type, pageSize, reviewStatus, pageNum, difficulty } = req.body;
+  const { type, pageSize, reviewStatus, pageNum, difficulty, tags } = req.body;
   const skip = pageSize * (pageNum - 1);
-  title && (queryData.title = title);
+
   type && (queryData.type = type);
   reviewStatus && (queryData.reviewStatus = reviewStatus);
   difficulty && (queryData.difficulty = difficulty);
-
+  tags && tags.length > 0 && (queryData.tags = tags);
   // 技巧 获取数量
   const queryQuestion = () =>
     QuestionsModel.find()

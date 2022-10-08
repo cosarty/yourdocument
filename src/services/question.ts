@@ -40,7 +40,7 @@ export type QuestionsType = {
   [key: string]: any;
 };
 
-export const searchQuetions = async (payload: Payload.QuestionSearchParams) =>
+export const searchQuetions = async (payload: any) =>
   await request<API.QuestionList<QuestionsType>>('/api/questions/search', {
     method: 'POST',
     data: payload,
@@ -95,7 +95,7 @@ export const getfavourQuestion = async (payload?: { tags?: string[] }) =>
   });
 
 // 获取自己上传的题目
-export const searchOriginQuestion = async (payload?: Payload.QuestionSearchParams) =>
+export const searchOriginQuestion = async (payload?: any) =>
   await request<API.QuestionList<QuestionsType>>(`/api/questions/search/origin`, {
     method: 'POST',
     data: payload,

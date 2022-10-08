@@ -1,7 +1,10 @@
+import { QUESTION_TYPE_ENUM } from '@/constant/question';
+import { getQuestionTitle } from '@/util/businessUtils';
 import { MenuOutlined } from '@ant-design/icons';
 import type { ProColumns } from '@ant-design/pro-components';
 import { arrayMoveImmutable, ProTable, useRefFunction } from '@ant-design/pro-components';
-import { Button, Tag } from 'antd';
+import { useModel } from '@umijs/max';
+import { Tag } from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 
 import { useEffect, useState } from 'react';
@@ -10,7 +13,7 @@ import styles from './index.less';
 
 const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />);
 
-const columns: ProColumns[] = [
+const columns: (editQuestion: any) => ProColumns[] = (editQuestion) => [
   {
     title: '排序',
     dataIndex: 'sort',
@@ -20,13 +23,25 @@ const columns: ProColumns[] = [
   },
   {
     title: '题目',
-    dataIndex: 'name',
+    dataIndex: ['question', 'title'],
     className: styles['drag-visible'],
     width: 120,
+    render: (_, { question }) => {
+      return <span> {getQuestionTitle(question)}</span>;
+    },
+  },
+  {
+    title: '题型',
+    dataIndex: ['question', 'type'],
+    className: styles['drag-visible'],
+    width: 120,
+    render: (_) => {
+      return <span> {QUESTION_TYPE_ENUM[_?.toString()]}</span>;
+    },
   },
   {
     title: '分数',
-    dataIndex: 'age',
+    dataIndex: 'grade',
     width: 80,
     render: (_) => {
       return (
@@ -49,49 +64,34 @@ const columns: ProColumns[] = [
     width: 180,
     key: 'option',
     valueType: 'option',
-    render: () => {
+    render: (_, record) => {
       return (
         <>
-          <Button type='link'>查看</Button>
-          <Tag color='#cd201f'>移除</Tag>
+          {/* <Button type='link'>查看</Button> */}
+          <Tag
+            color='#cd201f'
+            onClick={() => {
+              editQuestion(record);
+            }}
+          >
+            移除
+          </Tag>
         </>
       );
     },
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    index: 0,
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    index: 1,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    index: 2,
-  },
-];
-
 const QuestionTable = () => {
-  const [dataSource, setDataSource] = useState(data);
   const SortableItem = SortableElement((props: any) => <tr {...props} />);
   const SortContainer = SortableContainer((props: any) => <tbody {...props} />);
 
+  const { checkQuetion, editQuestion } = useModel('checkQuestions');
+  const [dataSource, setDataSource] = useState<any>([]);
+
   useEffect(() => {
-    console.log(dataSource);
-  }, [dataSource]);
+    setDataSource(checkQuetion);
+  }, [checkQuetion]);
 
   const onSortEnd = useRefFunction(
     ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
@@ -124,7 +124,7 @@ const QuestionTable = () => {
     <ProTable
       className={styles['question-table']}
       headerTitle={false}
-      columns={columns}
+      columns={columns(editQuestion)}
       rowKey='index'
       search={false}
       pagination={false}

@@ -5,13 +5,13 @@ import {
   QUESTION_TYPE_ENUM,
   REVIEW_STATUS_ENUM,
 } from '@/constant/question';
-import type { QuestionsType } from '@/services/question';
-import { searchQuetions } from '@/services/question';
+import { QuestionsType, searchOriginQuestion, searchQuetions } from '@/services/question';
 import { AppstoreAddOutlined, OrderedListOutlined, TagsOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProForm } from '@ant-design/pro-components';
 import { Link, useSearchParams } from '@umijs/max';
 import { Button, Card, Empty, List, Radio, Space } from 'antd';
+import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 
@@ -23,6 +23,10 @@ const tabListNoTitle = [
   {
     key: 'favourNum',
     tab: '收藏',
+  },
+  {
+    key: 'my',
+    tab: '我的',
   },
 ];
 
@@ -45,31 +49,48 @@ const formItemLayout = {
   },
 };
 
-const QueryQuestions = () => {
+export type QueryQuestionsType = {
+  showMy: boolean;
+  isSelect?: boolean;
+};
+
+// 类型覆盖
+export type SearchParamsType = Omit<Payload.QuestionSearchParams, 'orderKey'> & {
+  orderKey?: 'create_time' | 'favourNum' | 'my';
+};
+
+const QueryQuestions: FC<QueryQuestionsType> = ({ showMy, isSelect }) => {
   const formRef = useRef<ProFormInstance>();
   const [params] = useSearchParams();
   const [total, setTotal] = useState<number>(0);
   const [questions, setQuestions] = useState<QuestionsType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [searchParams, setSearchParams] = useState<Payload.QuestionSearchParams>({
+  const [searchParams, setSearchParams] = useState<SearchParamsType>({
     orderKey: 'create_time',
     pageSize: 11,
     pageNum: 1,
   });
 
-  const handleSearch = async (pas: any) => {
+  const handleSearch = async (pas: SearchParamsType) => {
     if (pas?.tags?.length === 0) {
       delete pas?.tags;
     }
     setLoading(true);
-    const { data } = await searchQuetions({
-      ...pas,
-      reviewStatus: REVIEW_STATUS_ENUM.REVIEWING + '',
-    });
+    if (!searchParams.orderKey || searchParams.orderKey === 'my') {
+      delete searchParams.orderKey;
 
-    setQuestions(data!.list);
-    setTotal(data!.total);
+      const { data } = await searchOriginQuestion({ ...searchParams, reviewStatus: '2' });
+      setQuestions(data!.list);
+      setTotal(data!.total);
+    } else {
+      const { data } = await searchQuetions({
+        ...pas,
+        reviewStatus: REVIEW_STATUS_ENUM.REVIEWING + '',
+      });
+      setQuestions(data!.list);
+      setTotal(data!.total);
+    }
     setLoading(false);
   };
 
@@ -175,7 +196,8 @@ const QueryQuestions = () => {
       </Card>
       <br />
       <Card
-        tabList={tabListNoTitle}
+        // [].slice(0,undefined)
+        tabList={tabListNoTitle.slice(0, showMy ? undefined : -1)}
         activeTabKey={searchParams.orderKey}
         bodyStyle={{
           paddingTop: 8,
@@ -219,7 +241,7 @@ const QueryQuestions = () => {
             ),
           }}
           renderItem={(item, i) => {
-            return <QuestionItem question={item} key={i} />;
+            return <QuestionItem question={item} key={i} isSelect={isSelect} />;
           }}
         />
       </Card>

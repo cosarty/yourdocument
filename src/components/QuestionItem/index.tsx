@@ -16,8 +16,7 @@ import {
 } from '@ant-design/icons';
 import { history, Link, useAccess, useModel } from '@umijs/max';
 import { Button, Col, Divider, List, message, Popconfirm, Row, Space, Tag, Typography } from 'antd';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ControlPrivateQuestionL from '../ControlPrivateQuestion';
 import styles from './index.less';
 
@@ -31,6 +30,7 @@ interface QuestionItemProps {
   onReload?: () => void;
   target?: string;
   showPricateState?: boolean;
+  isSelect?: boolean;
 }
 
 const QuestionItem: FC<QuestionItemProps> = (props) => {
@@ -48,7 +48,10 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     onReload,
     showEdit = false,
     showPricateState = false,
+    isSelect = false,
   } = props;
+
+  const { checkQuetion, editQuestion } = useModel('checkQuestions');
 
   const doFavour = async () => {
     if (!question?._id || favourLoading) {
@@ -96,6 +99,12 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
     } else {
       message.error('删除失败');
     }
+  };
+
+  const isCheck = () => !checkQuetion.find((q) => q.question._id === question._id);
+
+  const editCheckQuestion = (q: QuestionsType) => {
+    editQuestion({ question: q, grade: 0 });
   };
 
   const IconText = ({ icon, text, onClick = () => {}, danger = false, loading = false }: any) => (
@@ -193,7 +202,16 @@ const QuestionItem: FC<QuestionItemProps> = (props) => {
               </Space>
             </Col>
           )}
-          <Tag color='#3b5999'>选题</Tag>
+          {isSelect && !showEdit && (
+            <Tag
+              color={isCheck() ? '#3b5999' : '#cd201f'}
+              onClick={() => {
+                editCheckQuestion(question);
+              }}
+            >
+              {isCheck() ? '选题' : '移出'}
+            </Tag>
+          )}
           {(question.userId._id === currentUser?._id || canAdmin) && showEdit && (
             <Col>
               <Space size={10}>

@@ -1,19 +1,29 @@
+import type { QuestionsType } from '@/services/question';
 import { useState } from 'react';
 
-export type CheckQuestionType = { grade: number; question: string };
+export type CheckQuestionType = { grade: number; question: QuestionsType; index?: number };
 
 const UseCheckQuestions = () => {
   const [checkQuetion, setCheckQuetion] = useState<CheckQuestionType[]>([]);
 
-  const addQuestions = (question: CheckQuestionType) => {
-    // 判断题目是否选中
-    const isover = checkQuetion.find((q) => q.question === question.question);
-    if (!isover) return setCheckQuetion([...checkQuetion, question]);
+  const editGrade = (question: { _id: string; grade: number }) => {
+    // 修改分数
+    const isover = checkQuetion.find((q) => q.question._id === question._id);
+    if (!isover) return;
     isover.grade = question.grade;
-    return setCheckQuetion([...checkQuetion]);
+    setCheckQuetion([...checkQuetion]);
   };
 
-  return { addQuestions, checkQuetion };
+  const editQuestion = (question: CheckQuestionType) => {
+    const isover = checkQuetion.findIndex((q) => q.question._id === question.question._id);
+    if (isover !== -1)
+      setCheckQuetion(
+        [...checkQuetion.filter((_, i) => i !== isover)].map((p, i) => ({ ...p, index: i })),
+      );
+    else setCheckQuetion([...checkQuetion, { ...question, index: checkQuetion.length + 1 }]);
+  };
+
+  return { editGrade, checkQuetion, editQuestion, setCheckQuetion };
 };
 
 export default UseCheckQuestions;
