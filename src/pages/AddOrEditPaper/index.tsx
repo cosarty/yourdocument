@@ -29,7 +29,11 @@ const AddOrEditPaper = () => {
             </ProCard>
           </ProCard.Group>
           <Card title='题目'>
-            <QuestionTable />
+            <QuestionTable
+              onReady={(data: any) => {
+                console.log(data);
+              }}
+            />
           </Card>
           <Affix offsetBottom={20}>
             <Card style={{ marginTop: 20, textAlign: 'center' }}>
