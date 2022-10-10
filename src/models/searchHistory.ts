@@ -7,18 +7,16 @@ const useSearchHistory = () => {
   );
 
   useEffect(() => {
-    if (searchList.length === 0 && getStorage<SEARCH_KEY_TYPE>(SEARCH_KEY)) removeStorage(SEARCH_KEY)
-    if (searchList.filter(s => !!s).length === 0) return
+    if (searchList.length === 0 && getStorage<SEARCH_KEY_TYPE>(SEARCH_KEY))
+      removeStorage(SEARCH_KEY);
+    if (searchList.filter((s) => !!s).length === 0) return;
 
-    console.log(0)
     // 每次有新值就加入storage
     setStorage(SEARCH_KEY, searchList);
-
   }, [searchList]);
 
   const addSearchHistory = (value: SEARCH_KEY_TYPE[number]) => {
-
-    setSearchList([...new Set([...searchList, value].filter(s => !!s))]);
+    setSearchList([...new Set([...searchList, value].filter((s) => !!s))]);
   };
 
   const clearhistory = () => setSearchList([]);
