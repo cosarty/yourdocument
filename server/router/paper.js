@@ -26,4 +26,8 @@ router.put('/updateCore/:paperId', auth(), require('../controller/paper/updateCo
 
 // 删除试卷   -> 删除自己创建的试卷
 router.delete('/del/:paperId', auth(), require('../controller/paper/delPaper'));
+
+// 获取我创建的试卷信息
+router.get('/get/myPaper', auth(), require('../controller/paper/getMyPaper'));
+
 module.exports = router;

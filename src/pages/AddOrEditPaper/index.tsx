@@ -1,5 +1,7 @@
 import QueryQuestions from '@/components/QueryQuestions';
+import { cratePaper } from '@/services/paper';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { history } from '@umijs/max';
 import { Affix, Button, Card, Col, message, Row } from 'antd';
 import { useState } from 'react';
 import GradeStat from './components/GradeStat';
@@ -8,15 +10,26 @@ import QuestionTable from './components/QuestionTable';
 const AddOrEditPaper = () => {
   const [checkList, setCheckList] = useState([]);
 
-  const submit = async (value: any) => {
-    console.log('value: ', value);
+  const submit = async (value) => {
     if (checkList.length === 0) return message.warn('试卷题目不能为空！！');
+    const { code } = await cratePaper({
+      ...value,
+      questions: checkList,
+    });
+    message.success(code === 200 ? '创建成功' : '创建失败');
+    if (code === 200) {
+      history.push('/account/mypaper');
+    }
   };
 
   return (
     <Row gutter={[16, 16]}>
       <Col xs={{ span: 24 }} sm={{ span: 24 }} xl={{ span: 12 }}>
-        <ProForm submitter={false} layout='horizontal' onFinish={submit}>
+        <ProForm<{ name: string; detail: string }>
+          submitter={false}
+          layout='horizontal'
+          onFinish={submit}
+        >
           <Card bordered={false} title='试卷详情' bodyStyle={{ marginBottom: 20 }}>
             <ProFormText
               name='name'
@@ -42,7 +55,7 @@ const AddOrEditPaper = () => {
           <Affix offsetBottom={20}>
             <Card style={{ marginTop: 20, textAlign: 'center' }}>
               <Button type='primary' htmlType='submit'>
-                完成
+                创建试卷
               </Button>
             </Card>
           </Affix>
