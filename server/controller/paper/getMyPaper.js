@@ -20,15 +20,14 @@ const getMyPaper = async (req, res, next) => {
         as: 'organize',
       })
       .project({
+        _id: 1,
+        name: 1,
+        detail: 1,
+        create_time: 1,
+        questions: 1,
         organize: {
-          flag: 0,
-          isDelete: 0,
-          userId: 0,
-          motto: 0,
-          papers: 0,
-          part: 0,
-          create_time: 0,
-          update_time: 0,
+          _id: 1,
+          name: 1,
         },
       });
     res.status(200).send({
