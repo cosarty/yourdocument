@@ -16,7 +16,8 @@ import {
 } from '@ant-design/icons';
 import { history, Link, useAccess, useModel } from '@umijs/max';
 import { Button, Col, Divider, List, message, Popconfirm, Row, Space, Tag, Typography } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
+import type { FC} from 'react';
+import React, { useEffect, useState } from 'react';
 import ControlPrivateQuestionL from '../ControlPrivateQuestion';
 import styles from './index.less';
 

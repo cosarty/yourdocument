@@ -51,13 +51,14 @@ const columns: (editQuestion: any, editGrade: any) => ProColumns[] = (editQuesti
             onChange: (v) => {
               if (!/^\d+$/.test(v) && Number.isNaN(Number(v)))
                 return message.warn('成绩只允许正整数');
+              if (Number(v) === record.grade) return;
               editGrade({ _id: record.question._id, grade: Number(v) });
             },
             autoSize: { maxRows: 1, minRows: 1 },
             tooltip: '编辑分数',
           }}
         >
-          {_}
+          {_?.toString()}
         </Paragraph>
       );
     },
