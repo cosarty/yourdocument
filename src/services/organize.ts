@@ -59,3 +59,12 @@ export const viewUsers = async (organizeId: string) =>
   await request<API.API_TYPE<OrganizeType['part']>>(`/api/organize/users/${organizeId}`, {
     method: 'GET',
   });
+
+// 开放试卷 /organize/publishpaper/{organizeId}
+export const publishPaper = async (organizeId: string, paperId: string) =>
+  await request<API.API_TYPE<OrganizeType['part']>>(`/api/organize/publishpaper/${organizeId}`, {
+    method: 'PUT',
+    data: {
+      paperId,
+    },
+  });

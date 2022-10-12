@@ -1,4 +1,4 @@
-import type { OrganizeType, SimpleUser } from '@/services/organize';
+import { OrganizeType, publishPaper, SimpleUser } from '@/services/organize';
 import type { PaperType } from '@/services/paper';
 import { issuedPaper } from '@/services/paper';
 import type { OgInfoType } from '@/wrappers/authVieworgani';
@@ -49,7 +49,17 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
       <Tag color={paper.publish ? '#5BD8A6' : 'pink'}>{paper.publish ? '发布中' : '未发布'}</Tag>
     ),
     actions: [
-      <Switch key='fds' checkedChildren='开启' unCheckedChildren='关闭' defaultChecked />,
+      <Switch
+        key='fds'
+        checkedChildren='关闭'
+        unCheckedChildren='开放'
+        defaultChecked={paper.publish}
+        onChange={() => {
+          publishPaper(og._id, paper.papersId._id).then(({ code, message: msg }) => {
+            if (code === 200) message.success(msg);
+          });
+        }}
+      />,
       <a key='a'>答题</a>,
       <a key='s'>查看</a>,
       <Popconfirm
@@ -145,7 +155,12 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
               dataSource={papers.map((paper) => rendPaper(paper))}
             />
           </ProCard>
-          <ProCard style={{ marginBlockStart: 24 }} gutter={12} title={'成员'} split='vertical'>
+          <ProCard
+            className={style['user-card']}
+            style={{ marginBlockStart: 24 }}
+            gutter={12}
+            title={'成员'}
+          >
             <ProCard bordered={false} headerBordered={false}>
               <ProList<any>
                 pagination={{
@@ -166,7 +181,7 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
             </ProCard>
 
             <ProCard title='详情'>
-              <div style={{ height: 360 }}>
+              <div style={{ height: 300 }}>
                 <Empty />
               </div>
             </ProCard>
