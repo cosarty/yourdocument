@@ -30,9 +30,12 @@ const PaperItem: FC<PaperItemProps> = (props) => {
   };
 
   const doEdit = () => {
-    history.push({
-      pathname: '/addPaper',
-    });
+    history.push(
+      {
+        pathname: '/editPaper',
+      },
+      { paperId: paper._id },
+    );
   };
   return (
     <List.Item className='paper-item' key={paper.name}>

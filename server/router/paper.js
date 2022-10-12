@@ -11,11 +11,11 @@ router.put('/addqution/:paperId', auth(), require('../controller/paper/addqution
 
 // 删除题目
 router.delete('/removeqution/:paperId', auth(), require('../controller/paper/removequtionPaper'));
+
 // 更新试卷 ->更新简介和标题和总成绩
 router.put('/update/:paperId', auth(), require('../controller/paper/updatePaper'));
 
 // 下发试卷  -> 下发后的试卷题目是无法删的  下发到自己创建的组织
-
 router.put('/issued/:paperId', auth(), require('../controller/paper/issuedPaper'));
 
 //   查看试卷详情  只能获取没有被删除的题目哦

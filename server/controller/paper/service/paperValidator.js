@@ -8,6 +8,8 @@ exports.name = body('name')
   .withMessage('试卷名称应该为字符串')
   .bail()
   .custom(async (name, { req }) => {
+    if (req.path.indexOf('update') !== -1) return Promise.resolve();
+
     const { _id: ownership } = req.user;
 
     const paper = await PaperModel.findOne({ ownership, name: name.trim() });

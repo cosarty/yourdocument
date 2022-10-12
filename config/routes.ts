@@ -133,6 +133,12 @@
     hideMenu: true,
   },
   {
+    path: '/editPaper',
+    wrappers: ['@/wrappers/authEditPaper'],
+    component: '@/pages/AddOrEditPaper',
+    hideMenu: true,
+  },
+  {
     path: '/editQuestion/:questionId',
     wrappers: ['@/wrappers/authEditQuestion'],
     component: '@/pages/AddQuestion',

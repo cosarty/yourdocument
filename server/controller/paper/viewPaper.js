@@ -30,40 +30,52 @@ const viewPaperValidator = [
 
 const viewPaper = async (req, res, next) => {
   try {
+    const paper = await PaperModel.findById(req.query.paperId)
+      .populate('ownership')
+      .populate('questions.question');
+    // .where({ questions: { $elemMatch: { 'question.isDelete': false } } });
+
     // 坑 aggregate的match搜索id的时候必须先转换
-    const paper = await PaperModel.aggregate()
-      .match({ _id: mongoose.Types.ObjectId(req.query.paperId) })
-      .unwind('questions')
-      .match({ 'questions.isDelete': false })
-      .group({
-        _id: {
-          id: '$_id',
-          ownership: '$ownership',
-          detail: '$detail',
-          points: '$points',
-          name: '$name',
-        },
-        questions: { $addToSet: '$questions' },
-      })
-      .lookup({
-        from: 'users',
-        foreignField: '_id',
-        localField: '_id.ownership',
-        as: 'ownership',
-      })
-      .unwind('ownership')
-      .project({
-        _id: 0,
-        paperInfo: {
-          paperId: '$_id.id',
-          detail: '$_id.detail',
-          name: '$_id.name',
-          points: '$_id.points、',
-        },
-        'ownership.nickname': 1,
-        'questions.question': 1,
-        'questions.grade': 1,
-      });
+    // const paper = await PaperModel.aggregate()
+    //   .match({ _id: mongoose.Types.ObjectId(req.query.paperId) })
+    //   .unwind('questions')
+    //   .match({ 'questions.isDelete': false })
+    //   .group({
+    //     _id: {
+    //       id: '$_id',
+    //       ownership: '$ownership',
+    //       detail: '$detail',
+    //       points: '$points',
+    //       name: '$name',
+    //     },
+    //     // questions: { $addToSet: '$questions' },
+    //   })
+    //   .lookup({
+    //     from: 'users',
+    //     foreignField: '_id',
+    //     localField: '_id.ownership',
+    //     as: 'ownership',
+    //   })
+    // .lookup({
+    //   from: 'questions',
+    //   foreignField: '_id',
+    //   localField: 'questions.question',
+    //   as: 'question',
+    // })
+    // .unwind('ownership');
+    // .project({
+    //   _id: 0,
+    //   paperInfo: {
+    //     paperId: '$_id.id',
+    //     detail: '$_id.detail',
+    //     name: '$_id.name',
+    //     points: '$_id.points、',
+    //   },
+    //   'ownership.nickname': 1,
+    //   // 'questions.question': 1,
+    //   // 'questions.grade': 1,
+    //   questions: 1,
+    // });
     res.status(200).send({
       code: 200,
       message: '查看成功!!',

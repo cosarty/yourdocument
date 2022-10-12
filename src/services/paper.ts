@@ -1,4 +1,5 @@
 import { request } from '@umijs/max';
+import type { QuestionsType } from './question';
 
 export type PaperType = {
   papersId: { detail: string; _id: string; name: string };
@@ -14,13 +15,13 @@ export type SourcePaperType = {
   organize: { _id: string; name: number }[];
 };
 
-// /api/paper/create
-
-export const cratePaper = async (payload: {
+export type PaperPayloadType = {
   name: string;
   detail: string;
   questions: { grade: number; question: string }[];
-}) =>
+};
+
+export const cratePaper = async (payload: PaperPayloadType) =>
   await request<API.API_TYPE<null>>(`/api/paper/create`, {
     method: 'POST',
     data: payload,
@@ -29,4 +30,24 @@ export const cratePaper = async (payload: {
 export const getMyPaper = async () =>
   await request<API.API_TYPE<SourcePaperType[]>>(`/api/paper/get/myPaper`, {
     method: 'GET',
+  });
+
+// 获取试卷详情
+export const viewPaper = async (paperId: string) =>
+  await request<
+    API.API_TYPE<
+      Pick<PaperPayloadType, 'detail' | 'name'> & {
+        questions: QuestionsType;
+        paperId: string;
+      }
+    >
+  >(`/api/paper/view`, {
+    method: 'GET',
+    params: { paperId },
+  });
+
+export const updatePaper = async (paperId: string, payload: PaperPayloadType) =>
+  await request<API.CurrentUser>(`/api/paper/update/${paperId}`, {
+    method: 'PUT',
+    data: payload,
   });

@@ -1,7 +1,7 @@
 const { checkPaperId } = require('./service/paperSvice');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
-const { name, detail, points } = require('./service/paperValidator');
+const { name, detail, points, questions } = require('./service/paperValidator');
 
 /**
  *更新试卷信息
@@ -22,17 +22,18 @@ const updatePaperValidator = [
       return next({ code: 403, message: error, data: null });
     }
   },
-  validator([name.optional(), detail, points.optional()]),
+  validator([name.optional(), detail, points.optional(), questions.optional()]),
 ];
 
 const updatePaper = async (req, res, next) => {
   const paper = req.paper;
-  const { name, detail, points } = req.body;
+  const { name, detail, points, questions } = req.body;
   const conf = {};
 
   name && (conf.name = name);
   detail && (conf.detail = detail);
   points && (conf.points = points);
+  Array.isArray(questions) && (conf.questions = questions);
 
   try {
     await paper.update(conf);

@@ -23,7 +23,10 @@ const UseCheckQuestions = () => {
     else setCheckQuetion([...checkQuetion, { ...question, index: checkQuetion.length + 1 }]);
   };
 
-  return { editGrade, checkQuetion, editQuestion, setCheckQuetion };
+  const initCheckQuestion = (questions?: Pick<CheckQuestionType, 'grade' | 'question'>[]) => {
+    if (questions) setCheckQuetion([...questions.map((p, i) => ({ ...p, index: i }))]);
+  };
+  return { editGrade, checkQuetion, editQuestion, setCheckQuetion, initCheckQuestion };
 };
 
 export default UseCheckQuestions;
