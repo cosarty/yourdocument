@@ -21,8 +21,6 @@ router.get('/users/:organizeId', auth(), require('../controller/organize/usersOr
 //  编辑组织
 router.put('/edit/:organizeId', auth(), require('../controller/organize/editOrganize'));
 
-// TODO 前端的时候写  删除下发的试卷 要把成绩一起删除掉不能忘记 要不然出大事情
-
 // 获取自己创建组织列表
 router.get('/self', auth(), require('../controller/organize/selfOrganize'));
 

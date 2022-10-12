@@ -22,7 +22,6 @@ const sendMailValid = validator([
 ]);
 
 // 发送验证码的逻辑
-// TODO 一个用户一分钟只能发送一个验证码
 const sendMail = async (req, res, next) => {
   const { email } = req.body;
   let captcha;

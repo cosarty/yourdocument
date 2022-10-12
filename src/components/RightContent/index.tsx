@@ -50,7 +50,7 @@ const GlobalHeaderRight: React.FC = () => {
         <Access accessible={canLogin} fallback={login}>
           {!isMobile() && (
             <>
-              <Link to={'/account/mypaper'} target='_blank'>
+              <Link to={'/addPaper'} target='_blank'>
                 创建试卷
               </Link>
 

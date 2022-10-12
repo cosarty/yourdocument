@@ -33,7 +33,7 @@ export const getMyPaper = async () =>
   });
 
 // 获取试卷详情
-export const viewPaper = async (paperId: string) =>
+export const viewOgPaper = async (paperId: string) =>
   await request<
     API.API_TYPE<
       Pick<PaperPayloadType, 'detail' | 'name'> & {
@@ -47,7 +47,16 @@ export const viewPaper = async (paperId: string) =>
   });
 
 export const updatePaper = async (paperId: string, payload: PaperPayloadType) =>
-  await request<API.CurrentUser>(`/api/paper/update/${paperId}`, {
+  await request<API.API_TYPE<null>>(`/api/paper/update/${paperId}`, {
     method: 'PUT',
     data: payload,
+  });
+export const deletePaper = async (paperId: string) =>
+  await request<API.API_TYPE<null>>(`/api/paper/del/${paperId}`, {
+    method: 'DELETE',
+  });
+export const issuedPaper = async (paperId: string, organizeId: string) =>
+  await request<API.API_TYPE<null>>(`/api/paper/issued/${paperId}`, {
+    method: 'PUT',
+    data: { organizeId },
   });

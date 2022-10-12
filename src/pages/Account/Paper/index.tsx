@@ -1,7 +1,6 @@
 import PaperItem from '@/components/PaperItem';
 import type { SourcePaperType } from '@/services/paper';
 import { getMyPaper } from '@/services/paper';
-import { LightFilter, ProFormSelect } from '@ant-design/pro-components';
 import { history, Link } from '@umijs/max';
 import { Button, Card, Empty, List, message } from 'antd';
 import { useEffect, useState } from 'react';
@@ -47,9 +46,9 @@ const MyPaper = () => {
       }
     >
       {/* TODO 还未实现 */}
-      <LightFilter bordered>
+      {/* <LightFilter bordered>
         <ProFormSelect name='ownership' placeholder='范围' valueEnum={{ 0: '私有', 1: '公开' }} />
-      </LightFilter>
+      </LightFilter> */}
       <List<SourcePaperType>
         itemLayout='vertical'
         loading={loading}
@@ -74,7 +73,7 @@ const MyPaper = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='您还没有上传过试卷哦'>
               <Link to='/addPaper'>
                 <Button type='primary' size='large'>
-                  上传试卷
+                  创建试卷
                 </Button>
               </Link>
             </Empty>

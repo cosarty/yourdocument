@@ -1,8 +1,10 @@
 import type { SourcePaperType } from '@/services/paper';
+import { deletePaper } from '@/services/paper';
 import { history, Link } from '@umijs/max';
 import { Button, List, message, Popconfirm, Space, Typography } from 'antd';
 import type { FC } from 'react';
 import './index.less';
+import IssuedOrg from './IssuedOrg';
 interface PaperItemProps {
   paper: SourcePaperType;
   showReview?: boolean; // 显示审核状态
@@ -16,17 +18,10 @@ const PaperItem: FC<PaperItemProps> = (props) => {
   const { paper = {} as SourcePaperType, showEdit, onReload } = props;
 
   const doDelete = async () => {
-    // const res = await deletePaper(paper._id);
+    const res = await deletePaper(paper._id);
     onReload?.();
-    message.success('操作成功');
-    // if (res) {
-    //   message.success('操作成功');
-    //   if (onReload) {
-    //     onReload();
-    //   }
-    // } else {
-    //   message.error('操作失败');
-    // }
+    if (res.code === 200) message.success('操作成功');
+    else message.success('操作失败');
   };
 
   const doEdit = () => {
@@ -38,40 +33,42 @@ const PaperItem: FC<PaperItemProps> = (props) => {
     );
   };
   return (
-    <List.Item className='paper-item' key={paper.name}>
-      <Link to={`/`} target='_blank'>
-        <Title
-          level={5}
-          ellipsis={{ rows: 2 }}
-          className='paper-item-title'
-          style={{ height: 'auto' }}
-        >
-          <span>名称:{paper.name}</span>
-        </Title>
-      </Link>
+    <>
+      <List.Item className='paper-item' key={paper.name}>
+        <Link to={`/`} target='_blank'>
+          <Title
+            level={5}
+            ellipsis={{ rows: 2 }}
+            className='paper-item-title'
+            style={{ height: 'auto' }}
+          >
+            <span>名称:{paper.name}</span>
+          </Title>
+        </Link>
 
-      <Space direction='vertical'>
-        <span>描述:{paper.detail}</span>
-        <p>日期:{new Date(paper.create_time).toLocaleString()}</p>
-      </Space>
+        <Space direction='vertical'>
+          <span>描述:{paper.detail}</span>
+          <p>日期:{new Date(paper.create_time).toLocaleString()}</p>
+        </Space>
 
-      <div className='tags-row' style={{ height: 'auto' }}>
-        {showEdit ? (
-          <Space>
-            <Popconfirm title='确认删除么，操作无法撤销' onConfirm={() => doDelete()}>
-              <Button type='primary' danger onClick={() => {}}>
-                删除
+        <div className='tags-row' style={{ height: 'auto' }}>
+          {showEdit ? (
+            <Space>
+              <Popconfirm title='确认删除么，操作无法撤销' onConfirm={doDelete}>
+                <Button type='primary' danger onClick={() => {}}>
+                  删除
+                </Button>
+              </Popconfirm>
+
+              <Button type='primary' onClick={doEdit}>
+                编辑
               </Button>
-            </Popconfirm>
-
-            <Button type='primary' onClick={doEdit}>
-              编辑
-            </Button>
-            <Button onClick={doEdit}>下发</Button>
-          </Space>
-        ) : null}
-      </div>
-    </List.Item>
+              <IssuedOrg paperId={paper._id} />
+            </Space>
+          ) : null}
+        </div>
+      </List.Item>
+    </>
   );
 };
 

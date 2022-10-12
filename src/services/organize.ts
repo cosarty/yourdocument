@@ -17,6 +17,7 @@ export type OrganizeType = {
   part: SimpleUser[];
   // 参与用户 用户昵称
   motto: string;
+  papers?: PaperType[];
 };
 
 export const getSelfOrgnize = async () =>

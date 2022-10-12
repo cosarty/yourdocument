@@ -1,5 +1,5 @@
 import QueryQuestions from '@/components/QueryQuestions';
-import { cratePaper, updatePaper, viewPaper } from '@/services/paper';
+import { cratePaper, updatePaper, viewOgPaper } from '@/services/paper';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { history, useModel, useOutletContext } from '@umijs/max';
 import { Affix, Button, Card, Col, message, Row } from 'antd';
@@ -48,7 +48,7 @@ const AddOrEditPaper = () => {
             onFinish={submit}
             request={async () => {
               if (!edit) return {} as FormFieldType;
-              const { data } = await viewPaper(paperId);
+              const { data } = await viewOgPaper(paperId);
               // 初始化选中的题目
               initCheckQuestion(data?.questions as any);
               return (

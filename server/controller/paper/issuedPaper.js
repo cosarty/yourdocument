@@ -20,8 +20,8 @@ const issuedPaperValidator = [
       const paper = await checkPaperId(paperId);
       if (paper.ownership.toString() !== id)
         return next({ code: 403, message: '您没有此试卷的权限', data: null });
-      if (or.papers.find((o) => o.papersId.toString() === paperId))
-        return next({ code: 403, message: '试卷已经下发', data: null });
+      // if (or.papers.find((o) => o.papersId.toString() === paperId))
+      //   return next({ code: 403, message: '试卷已经下发', data: null });
       req.paper = paper;
       req.or = or;
       next();
@@ -36,9 +36,17 @@ const issuedPaper = async (req, res, next) => {
   const { paperId } = req.params;
   const or = req.or;
   try {
-    or.papers.push({ papersId: paperId });
+    const extis = or.papers.findIndex((o) => o.papersId.toString() === paperId) !== -1;
+    if (extis) {
+      or.papers = or.papers.filter((o) => o.papersId.toString() !== paperId);
+    } else {
+      or.papers.push({ papersId: paperId });
+    }
+
     await or.save();
-    res.status(200).send({ code: 200, message: '下发成功!!', data: null });
+    res
+      .status(200)
+      .send({ code: 200, message: extis ? '取消下发成功!!' : '下发成功!!', data: null });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '下发失败!!', data: null });

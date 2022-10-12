@@ -34,9 +34,6 @@ router.use('/reply', require('./reply'));
 // 上传路由
 router.use('/upload', require('./upload'));
 
-//TODO 错题本 等前端写的差不多再来写
-// 错题本路由// 错题本路由
-
 // 404
 // 所有路由定义完之后，最后做404处理 /
 router.all('*', (req, res) => {

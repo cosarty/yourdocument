@@ -1,39 +1,16 @@
 import type { OrganizeType, SimpleUser } from '@/services/organize';
 import type { PaperType } from '@/services/paper';
+import { issuedPaper } from '@/services/paper';
 import type { OgInfoType } from '@/wrappers/authVieworgani';
 import AuthVieworgani from '@/wrappers/authVieworgani';
 import { ProCard } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProList from '@ant-design/pro-list';
 import { history } from '@umijs/max';
-import { Button, Empty, Input, Progress, Switch, Tag, Typography } from 'antd';
+import { Button, Empty, Input, message, Popconfirm, Progress, Switch, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import style from './index.less';
-
-const rendPaper = (paper: PaperType) => ({
-  title: paper.papersId.name,
-  subTitle: (
-    <Tag color={paper.publish ? '#5BD8A6' : 'pink'}>{paper.publish ? '发布中' : '未发布'}</Tag>
-  ),
-  actions: [
-    <Switch key='fds' checkedChildren='开启' unCheckedChildren='关闭' defaultChecked />,
-    <a key='a'>答题</a>,
-    <a key='s'>查看</a>,
-    <a key='delete'>删除</a>,
-  ],
-  avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-  id: paper.papersId._id,
-  content: (
-    <div
-      style={{
-        flex: 1,
-      }}
-    >
-      <div>{paper.papersId.detail || '无'}</div>
-    </div>
-  ),
-});
 
 const renderUser = (user: SimpleUser) => ({
   title: user.user.nickname,
@@ -54,7 +31,52 @@ const renderUser = (user: SimpleUser) => ({
   ),
 });
 
-const Vieworgani: FC<OgInfoType & { og: OrganizeType }> = ({ users, papers, og }) => {
+const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }> = ({
+  users,
+  papers,
+  og,
+  changePaper,
+}) => {
+  const issuedOg = async (pid: string) => {
+    await issuedPaper(pid, og._id);
+    changePaper();
+    message.success('删除成功');
+  };
+
+  const rendPaper = (paper: PaperType) => ({
+    title: paper.papersId.name,
+    subTitle: (
+      <Tag color={paper.publish ? '#5BD8A6' : 'pink'}>{paper.publish ? '发布中' : '未发布'}</Tag>
+    ),
+    actions: [
+      <Switch key='fds' checkedChildren='开启' unCheckedChildren='关闭' defaultChecked />,
+      <a key='a'>答题</a>,
+      <a key='s'>查看</a>,
+      <Popconfirm
+        key='delete'
+        title='确认删除么，操作无法撤销'
+        onConfirm={() => {
+          issuedOg(paper.papersId._id);
+        }}
+      >
+        <Button danger type='link'>
+          删除
+        </Button>
+      </Popconfirm>,
+    ],
+    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
+    id: paper.papersId._id,
+    content: (
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <div>{paper.papersId.detail || '无'}</div>
+      </div>
+    ),
+  });
+
   return (
     <>
       <HelmetProvider>
@@ -73,12 +95,6 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType }> = ({ users, papers, og }
           header={{
             style: {
               padding: '8px 16px',
-              // backgroundColor: '#fff',
-              // position: 'fixed',
-              // top: 0,
-              // width: '100%',
-              // left: 0,
-              // zIndex: 999,
               boxShadow: '0 2px 8px #f0f1f2',
             },
           }}
