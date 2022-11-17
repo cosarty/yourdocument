@@ -69,7 +69,7 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
           issuedOg(paper.papersId._id);
         }}
       >
-        <Button danger type='link'>
+        <Button danger type='link' style={{ padding: 0 }}>
           删除
         </Button>
       </Popconfirm>,

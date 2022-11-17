@@ -29,6 +29,9 @@ const getMyPaper = async (req, res, next) => {
           _id: 1,
           name: 1,
         },
+      })
+      .sort({
+        create_time: -1,
       });
     res.status(200).send({
       code: 200,

@@ -49,7 +49,7 @@ const questionsSchema = createShcema({
   tags: [{ type: String, required: true }], // 标签
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // 题目发起人
   viewNum: { type: Number, default: 0 }, // 阅读人数
-  isPrivate: { type: Boolean, required: true },
+  isPrivate: { type: Boolean, required: true, default: false },
 });
 
 module.exports = model('Questions', questionsSchema);

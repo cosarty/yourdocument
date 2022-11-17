@@ -33,6 +33,7 @@ const viewPaper = async (req, res, next) => {
     const paper = await PaperModel.findById(req.query.paperId)
       .populate('ownership')
       .populate('questions.question');
+
     // .where({ questions: { $elemMatch: { 'question.isDelete': false } } });
 
     // 坑 aggregate的match搜索id的时候必须先转换

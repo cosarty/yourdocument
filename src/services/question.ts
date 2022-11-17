@@ -101,6 +101,13 @@ export const searchOriginQuestion = async (payload?: any) =>
     data: payload,
   });
 
+// 获取浏览记录
+export const searchHistoryQuestion = async (payload?: any) =>
+  await request<API.QuestionList<QuestionsType>>(`/api/questions/history`, {
+    method: 'post',
+    data: payload,
+  });
+
 // 审核题目
 
 export const reviewQuestion = async (qutionsId: string, reviewStatus: number, message?: string) =>

@@ -65,6 +65,12 @@
         icon: 'CodeOutlined',
       },
       {
+        name: '浏览记录',
+        path: '/account/history',
+        component: '@/pages/Account/History',
+        icon: 'HistoryOutlined',
+      },
+      {
         component: './404',
       },
     ],

@@ -26,7 +26,7 @@ const addComment = async (req, res, next) => {
     });
     // 评论数加一
     req.question.commentNum += 1;
-    req.question.save();
+    await req.question.save();
     await comment.save();
     res
       .status(200)
