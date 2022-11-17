@@ -1,14 +1,16 @@
 const OrganizeModel = require('../../model/organizeSchema');
-
+const mongoose = require('mongoose');
+const validator = require('../../middleware/validator');
+const applyListValidate = [validator([validator.isValidObjectId(['params'], 'organizeId')])];
 // 申请加入组织
 const applyListOrganize = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
-    console.log('userId: ', userId);
+    const { organizeId } = req.params;
     // 查找没有通过的用户信息
     // 平铺消息
     const applyList = await OrganizeModel.aggregate()
-      .match({ userId, 'part.pass': false })
+      .match({ userId, _id: mongoose.Types.ObjectId(organizeId), 'part.pass': false })
       .unwind('part')
       .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' });
 
@@ -19,4 +21,4 @@ const applyListOrganize = async (req, res, next) => {
   }
 };
 
-module.exports = [applyListOrganize];
+module.exports = [applyListValidate, applyListOrganize];

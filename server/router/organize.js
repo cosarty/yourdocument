@@ -14,7 +14,7 @@ router.post('/apply', auth(), require('../controller/organize/applyOrganize'));
 router.put('/pass/:userId', auth(), require('../controller/organize/passOrganize'));
 
 // 申请列表
-router.get('/applyList', auth(), require('../controller/organize/applyListOrganize'));
+router.get('/applyList/:organizeId', auth(), require('../controller/organize/applyListOrganize'));
 // 获取组织人员
 router.get('/users/:organizeId', auth(), require('../controller/organize/usersOrganize'));
 

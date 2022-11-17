@@ -7,6 +7,7 @@ const passOrganizeValidator = [
   validator([
     validator.isValidObjectId(['params'], 'userId'),
     body('organizeId').exists().withMessage('请输入组织号'),
+    body('isPass').exists().withMessage('true：通过 false 驳回'),
   ]),
 
   async (req, res, next) => {
@@ -29,11 +30,18 @@ const passOrganizeValidator = [
 // 申请加入组织
 const passOrganize = async (req, res, next) => {
   try {
-    req.organize.part[0].pass = true;
+    const { isPass } = req.body;
+    const { userId } = req.params;
+    if (isPass) {
+      req.organize.part[0].pass = true;
+    } else {
+      const idx = req.organize.part.findIndex((re) => re.user.toString() === userId.toString());
+      req.organize.part.splice(idx, 1);
+    }
 
     await req.organize.save();
 
-    res.status(202).send({ code: 202, message: '设置成功!!', data: null });
+    res.status(200).send({ code: 200, message: isPass ? '通过成功!!' : '驳回成功!!', data: null });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '设置失败!!', data: null });

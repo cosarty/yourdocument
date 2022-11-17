@@ -16,7 +16,10 @@ import style from './index.less';
 const renderUser = (user: SimpleUser) => ({
   title: user.user.nickname,
 
-  actions: [<a key='s'>查看</a>, <a key='delete'>删除</a>],
+  actions: [
+    // <a key='s'>查看</a>,
+    <a key='delete'>删除</a>,
+  ],
   avatar: user.user.avtar_url,
   id: user.user._id,
   content: (
