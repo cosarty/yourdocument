@@ -17,11 +17,11 @@ const applyOrganizeValidator = [
     try {
       const or = await OrganizeModel.findOne({ flag });
 
-      if (!or) return next({ code: 403, message: '没有此组织！！', data: null });
+      if (!or) return next({ code: 400, message: '没有此组织！！', data: null });
       if (or.userId.toString() === id)
-        return next({ code: 403, message: '不能申请加入自己的组织', data: null });
+        return next({ code: 400, message: '不能申请加入自己的组织', data: null });
       if (or.part.find((u) => u?.user?.toString() === id))
-        return next({ code: 403, message: '不能重复申请', data: null });
+        return next({ code: 200, message: '申请中', data: { ret: 1 } });
       req.organize = or;
       next();
     } catch (error) {
@@ -34,7 +34,7 @@ const applyOrganize = async (req, res, next) => {
   const { _id: user } = req.user;
   try {
     await req.organize.update({ $push: { part: { user } } });
-    res.status(202).send({ code: 202, message: '申请成功!!', data: null });
+    res.status(200).send({ code: 200, message: '申请成功!!', data: { ret: 0 } });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '申请失败!!', data: null });

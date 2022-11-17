@@ -2,7 +2,7 @@ import { createOrgnize, editOrgnize } from '@/services/organize';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import { Button, message } from 'antd';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 interface CreateOegizeProps {
   onFinish?: (v?: ogInfo) => void;

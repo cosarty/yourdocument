@@ -1,4 +1,5 @@
-import { OrganizeType, publishPaper, SimpleUser } from '@/services/organize';
+import type { OrganizeType, SimpleUser } from '@/services/organize';
+import { publishPaper } from '@/services/organize';
 import type { PaperType } from '@/services/paper';
 import { issuedPaper } from '@/services/paper';
 import type { OgInfoType } from '@/wrappers/authVieworgani';
@@ -60,7 +61,7 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
           });
         }}
       />,
-      <a key='a'>答题</a>,
+      // <a key='a'>答题</a>,
       <a key='s'>查看</a>,
       <Popconfirm
         key='delete'
@@ -111,7 +112,7 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
           fixedHeader
           extra={[
             <Input.Search key='search' />,
-            <Button key='3'>下发试卷</Button>,
+            // <Button key='3'>下发试卷</Button>,
             <Button key='2' type='primary'>
               审批
             </Button>,

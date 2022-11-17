@@ -2,6 +2,7 @@ import { Card } from 'antd';
 import { useRef, useState } from 'react';
 import type { MyCreateOegizeRefType } from './MyCreate';
 import MyCreate from './MyCreate';
+import ApplyOrange from './MyCreate/ApplyOrange';
 import CreateOegize from './MyCreate/CreateOrEditOegize';
 import MyPass from './MyPass';
 
@@ -39,12 +40,15 @@ const Orgniza = () => {
       tabList={tabList}
       title={false}
       extra={
-        <CreateOegize
-          onFinish={() => {
-            myCreateref.current?.reload();
-          }}
-          edit={false}
-        />
+        <>
+          <ApplyOrange />,
+          <CreateOegize
+            onFinish={() => {
+              myCreateref.current?.reload();
+            }}
+            edit={false}
+          />
+        </>
       }
       activeTabKey={activeTabKey}
       onTabChange={(key: string) => {

@@ -68,3 +68,11 @@ export const publishPaper = async (organizeId: string, paperId: string) =>
       paperId,
     },
   });
+// 申请组织
+export const applyOrg = async (flag: string) =>
+  await request<API.API_TYPE<{ ret: number }>>(`/api/organize/apply`, {
+    method: 'POST',
+    data: {
+      flag,
+    },
+  });
