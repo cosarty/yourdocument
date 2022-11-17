@@ -8,8 +8,9 @@ import { ProCard } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProList from '@ant-design/pro-list';
 import { history } from '@umijs/max';
-import { Button, Empty, Input, message, Popconfirm, Progress, Switch, Tag, Typography } from 'antd';
+import { Button, Input, message, Popconfirm, Progress, Switch, Tag, Typography } from 'antd';
 import type { FC } from 'react';
+import { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import style from './index.less';
 
@@ -41,55 +42,75 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
   og,
   changePaper,
 }) => {
+  const [getPublish, setPublish] = useState<{ id?: string; isPublish?: boolean }[]>([{}]);
+
   const issuedOg = async (pid: string) => {
     await issuedPaper(pid, og._id);
     changePaper();
     message.success('删除成功');
   };
 
-  const rendPaper = (paper: PaperType) => ({
-    title: paper.papersId.name,
-    subTitle: (
-      <Tag color={paper.publish ? '#5BD8A6' : 'pink'}>{paper.publish ? '发布中' : '未发布'}</Tag>
-    ),
-    actions: [
-      <Switch
-        key='fds'
-        checkedChildren='关闭'
-        unCheckedChildren='开放'
-        defaultChecked={paper.publish}
-        onChange={() => {
-          publishPaper(og._id, paper.papersId._id).then(({ code, message: msg }) => {
-            if (code === 200) message.success(msg);
-          });
-        }}
-      />,
-      // <a key='a'>答题</a>,
-      <a key='s'>查看</a>,
-      <Popconfirm
-        key='delete'
-        title='确认删除么，操作无法撤销'
-        onConfirm={() => {
-          issuedOg(paper.papersId._id);
-        }}
-      >
-        <Button danger type='link' style={{ padding: 0 }}>
-          删除
-        </Button>
-      </Popconfirm>,
-    ],
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
-    id: paper.papersId._id,
-    content: (
-      <div
-        style={{
-          flex: 1,
-        }}
-      >
-        <div>{paper.papersId.detail || '无'}</div>
-      </div>
-    ),
-  });
+  const selfPublish = (paper: PaperType) => {
+    const publish = getPublish.find((p) => p.id === paper.papersId._id);
+    return publish?.isPublish ?? paper.publish;
+  };
+
+  const rendPaper = (paper: PaperType) => {
+    return {
+      title: paper.papersId.name,
+      subTitle: (
+        <Tag color={selfPublish(paper) ? '#5BD8A6' : 'pink'}>
+          {selfPublish(paper) ? '发布中' : '未发布'}
+        </Tag>
+      ),
+      actions: [
+        <Switch
+          key='fds'
+          checkedChildren='关闭'
+          unCheckedChildren='开放'
+          defaultChecked={paper.publish}
+          onChange={() => {
+            publishPaper(og._id, paper.papersId._id).then(({ code, message: msg }) => {
+              if (code === 200) {
+                message.success(msg);
+                const p = getPublish.find((p) => p.id === paper.papersId._id);
+                if (p) {
+                  p.isPublish = !p.isPublish;
+                } else {
+                  getPublish.push({ id: paper.papersId._id, isPublish: !paper.publish });
+                }
+                setPublish([...getPublish]);
+              }
+            });
+          }}
+        />,
+        // <a key='a'>答题</a>,
+        <a key='s'>查看</a>,
+        <Popconfirm
+          key='delete'
+          title='确认删除么，操作无法撤销'
+          onConfirm={() => {
+            issuedOg(paper.papersId._id);
+          }}
+        >
+          <Button danger type='link' style={{ padding: 0 }}>
+            删除
+          </Button>
+        </Popconfirm>,
+      ],
+      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
+      id: paper.papersId._id,
+      content: (
+        <div
+          style={{
+            flex: 1,
+          }}
+        >
+          <div>{paper.papersId.detail || '无'}</div>
+        </div>
+      ),
+    };
+  };
 
   return (
     <>
@@ -184,11 +205,11 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
               />
             </ProCard>
 
-            <ProCard title='详情'>
+            {/* <ProCard title='详情'>
               <div style={{ height: 300 }}>
                 <Empty />
               </div>
-            </ProCard>
+            </ProCard> */}
           </ProCard>
         </PageContainer>
       </HelmetProvider>
