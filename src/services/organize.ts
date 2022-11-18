@@ -76,3 +76,11 @@ export const applyOrg = async (flag: string) =>
       flag,
     },
   });
+// 申请列表
+export const applyList = async (organizeId: string) =>
+  await request<API.API_TYPE<{ part: CurrentUser[]; _id: string }>>(
+    `/api/organize/applyList/${organizeId}`,
+    {
+      method: 'GET',
+    },
+  );

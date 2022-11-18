@@ -25,7 +25,10 @@ const userSchema = createShcema({
   avtar_url: {
     type: String,
     default: null,
-    get: (url) => (url ? require('config')['site'] + url : ''),
+    get: (url) => {
+      console.log(url ? require('config')['site'] + url : '');
+      return url ? require('config')['site'] + url : '';
+    },
   },
   is_ban: {
     type: Boolean,

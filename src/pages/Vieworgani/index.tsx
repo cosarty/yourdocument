@@ -12,6 +12,7 @@ import { Button, Input, message, Popconfirm, Progress, Switch, Tag, Typography }
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import Approval from './Approval';
 import style from './index.less';
 
 const renderUser = (user: SimpleUser) => ({
@@ -112,6 +113,8 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
     };
   };
 
+  const approval = () => {};
+
   return (
     <>
       <HelmetProvider>
@@ -137,9 +140,7 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
           extra={[
             <Input.Search key='search' />,
             // <Button key='3'>下发试卷</Button>,
-            <Button key='2' type='primary'>
-              审批
-            </Button>,
+            <Approval key={'approval'} refresh={() => {}} organizeId={og._id} />,
           ]}
         >
           <ProCard

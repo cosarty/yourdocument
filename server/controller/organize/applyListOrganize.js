@@ -12,9 +12,13 @@ const applyListOrganize = async (req, res, next) => {
     const applyList = await OrganizeModel.aggregate()
       .match({ userId, _id: mongoose.Types.ObjectId(organizeId), 'part.pass': false })
       .unwind('part')
-      .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' });
-
-    res.status(200).send({ code: 202, message: '获取成功!!', data: applyList });
+      .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' })
+      .project({ part: 1 });
+    applyList[0] &&
+      applyList[0].part.map((p) => {
+        p.avtar_url = require('config')['site'] + p.avtar_url;
+      });
+    res.status(200).send({ code: 200, message: '获取成功!!', data: applyList[0] ?? {} });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败!!', data: null });
