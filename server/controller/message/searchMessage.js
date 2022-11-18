@@ -35,7 +35,8 @@ const searchOriginMessage = async (req, res, next) => {
   // 搜索
   const messagelist = await queryMessage()
     .skip(skip)
-    .limit(pageSize || null);
+    .limit(pageSize || null)
+    .sort({ create_time: -1 });
   const total = await queryMessage().count();
   try {
     res.status(200).send({

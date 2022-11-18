@@ -29,7 +29,7 @@ const ApplyOrange: FC = () => {
         label='邀请码'
         rules={[
           { required: true, message: '请输入邀请码' },
-          { max: 9, min: 9, message: '请输入六位邀请码' },
+          { max: 9, min: 9, message: '邀请码无效' },
         ]}
         placeholder='请输入邀请码'
       />

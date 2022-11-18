@@ -1,5 +1,5 @@
 import type { OrganizeType, SimpleUser } from '@/services/organize';
-import { publishPaper } from '@/services/organize';
+import { kickoutOg, publishPaper } from '@/services/organize';
 import type { PaperType } from '@/services/paper';
 import { issuedPaper } from '@/services/paper';
 import type { OgInfoType } from '@/wrappers/authVieworgani';
@@ -15,28 +15,6 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Approval from './Approval';
 import style from './index.less';
 
-const renderUser = (user: SimpleUser) => ({
-  title: user.user.nickname,
-
-  actions: [
-    // <a key='s'>查看</a>,
-    <a key='delete'>删除</a>,
-  ],
-  avatar: user.user.avtar_url,
-  id: user.user._id,
-  content: (
-    <div
-      style={{
-        flex: 1,
-        width: 200,
-      }}
-    >
-      <div>完成数:</div>
-      <Progress percent={80} />
-    </div>
-  ),
-});
-
 const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }> = ({
   users,
   papers,
@@ -51,11 +29,50 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
     message.success('删除成功');
   };
 
+  // 踢出组织
+  const kitout = async (uid: string) => {
+    await kickoutOg(og._id, { userId: uid });
+    changePaper();
+    message.success('删除成功');
+  };
+
   const selfPublish = (paper: PaperType) => {
     const publish = getPublish.find((p) => p.id === paper.papersId._id);
     return publish?.isPublish ?? paper.publish;
   };
 
+  const renderUser = (user: SimpleUser) => ({
+    title: user.user.nickname,
+
+    actions: [
+      // <a key='s'>查看</a>,
+      <Popconfirm
+        key='delete'
+        title='确认删除么，操作无法撤销'
+        onConfirm={() => {
+          kitout(user.user._id);
+        }}
+      >
+        <Button danger type='link' style={{ padding: 0 }}>
+          删除
+        </Button>
+      </Popconfirm>,
+      ,
+    ],
+    avatar: user.user.avtar_url,
+    id: user.user._id,
+    content: (
+      <div
+        style={{
+          flex: 1,
+          width: 200,
+        }}
+      >
+        <div>完成数:</div>
+        <Progress percent={80} />
+      </div>
+    ),
+  });
   const rendPaper = (paper: PaperType) => {
     return {
       title: paper.papersId.name,
@@ -113,8 +130,6 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
     };
   };
 
-  const approval = () => {};
-
   return (
     <>
       <HelmetProvider>
@@ -140,7 +155,13 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
           extra={[
             <Input.Search key='search' />,
             // <Button key='3'>下发试卷</Button>,
-            <Approval key={'approval'} refresh={() => {}} organizeId={og._id} />,
+            <Approval
+              key={'approval'}
+              refresh={() => {
+                changePaper();
+              }}
+              organizeId={og._id}
+            />,
           ]}
         >
           <ProCard

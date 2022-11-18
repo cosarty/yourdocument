@@ -10,9 +10,8 @@ export type OgInfoType = { papers: PaperType[]; users: OrganizeType['part'] };
 // 编辑题目的拦截器 只有题目创建者和管理员可以编辑
 export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>) =>
   () => {
-    const {
-      state: { og },
-    } = (useLocation() as { state: { og: OrganizeType } }) ?? {};
+    const { state } = (useLocation() as { state: { og: OrganizeType } }) ?? {};
+
     const { canLogin } = useAccess();
     const [loading, setLoading] = useState(false);
     const [ogInfo, setOgInfo] = useState<OgInfoType>({
@@ -20,7 +19,7 @@ export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper
       users: [],
     });
 
-    if (!og?._id || !canLogin) {
+    if (!state || !state.og?._id || !canLogin) {
       message.warn('组织无效!!!!');
       return <Navigate to='/organi' replace />;
     }
@@ -28,8 +27,8 @@ export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper
     const loadData = async () => {
       setLoading(true);
       const [paper, user] = await Promise.all([
-        viewPaper(og._id).then(({ data: d }) => d),
-        viewUsers(og._id).then(({ data: d }) => d),
+        viewPaper(state.og._id).then(({ data: d }) => d),
+        viewUsers(state.og._id).then(({ data: d }) => d),
       ]).finally(() => {
         setLoading(false);
       });
@@ -37,7 +36,7 @@ export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper
     };
 
     useEffect(() => {
-      if (!og?._id || !canLogin) return;
+      if (!state.og?._id || !canLogin) return;
       loadData();
     }, []);
 
@@ -48,7 +47,7 @@ export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper
     ) : (
       <Component
         {...ogInfo}
-        og={og}
+        og={state.og}
         changePaper={() => {
           loadData();
         }}

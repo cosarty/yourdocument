@@ -1,5 +1,5 @@
 const OrganizeModel = require('../../model/organizeSchema');
-
+const addMessage = require('../message/addmessage');
 const validator = require('../../middleware/validator');
 const { body } = require('express-validator');
 
@@ -35,12 +35,19 @@ const passOrganize = async (req, res, next) => {
     if (isPass) {
       req.organize.part[0].pass = true;
     } else {
-      const idx = req.organize.part.findIndex((re) => re.user.toString() === userId.toString());
-      req.organize.part.splice(idx, 1);
+      req.organize.part = req.organize.part.filter((u) => u?.user?.toString() !== userId);
     }
 
     await req.organize.save();
-
+    if (isPass) {
+      await addMessage({
+        toUserId: userId,
+        title: '组织申请成功!!',
+        content: `恭喜加入${req.organize.name}的大家庭`,
+        sendEmail: true,
+        type: 6,
+      });
+    }
     res.status(200).send({ code: 200, message: isPass ? '通过成功!!' : '驳回成功!!', data: null });
   } catch (err) {
     console.log(err);

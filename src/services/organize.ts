@@ -84,3 +84,16 @@ export const applyList = async (organizeId: string) =>
       method: 'GET',
     },
   );
+
+export const passOg = async (userId: string, payload: { organizeId: string; isPass: boolean }) =>
+  await request<API.API_TYPE<null>>(`/api/organize/pass/${userId}`, {
+    method: 'PUT',
+    data: payload,
+  });
+
+// 踢出组织
+export const kickoutOg = async (organizeId: string, payload: { userId: string }) =>
+  await request<API.API_TYPE<null>>(`/api/organize/kickout/${organizeId}`, {
+    method: 'PUT',
+    data: payload,
+  });

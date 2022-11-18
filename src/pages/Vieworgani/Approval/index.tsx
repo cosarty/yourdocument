@@ -1,7 +1,7 @@
 import { USER_GENDER_ENUM } from '@/constant/user';
-import { applyList } from '@/services/organize';
+import { applyList, passOg } from '@/services/organize';
 import type { CurrentUser } from '@/services/users';
-import { Avatar, Button, Modal } from 'antd';
+import { Avatar, Button, message, Modal } from 'antd';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -29,6 +29,17 @@ const Approval: FC<ApprovalProps> = ({ refresh, organizeId }) => {
     }
   }, [isModalOpen]);
 
+  const passSubmit = async (isPass: boolean, uid: string) => {
+    const { message: msg, code } = await passOg(uid, { isPass, organizeId });
+    if (code === 200) {
+      message.success(msg);
+      if (isPass) {
+        refresh();
+      } else {
+        setPassUserList([...passUserList.filter((p) => p._id !== uid)]);
+      }
+    }
+  };
   return (
     <>
       <Button
@@ -40,7 +51,7 @@ const Approval: FC<ApprovalProps> = ({ refresh, organizeId }) => {
         审批
       </Button>
       <Modal
-        title='试卷下发'
+        title='申请列表'
         visible={isModalOpen}
         onOk={() => {
           setIsModalOpen(false);
@@ -54,10 +65,22 @@ const Approval: FC<ApprovalProps> = ({ refresh, organizeId }) => {
             <Avatar src={pass.avtar_url} style={{ marginRight: 10 }} />
             <span style={{ fontWeight: 700, fontSize: 20, marginRight: 10 }}>{pass.nickname}</span>
             <span style={{ fontWeight: 700 }}>({USER_GENDER_ENUM[pass.gender]})</span>
-            <Button type='link' onClick={() => {}} s>
+            <Button
+              type='link'
+              onClick={() => {
+                passSubmit(true, pass._id);
+              }}
+              style={{ paddingRight: 0 }}
+            >
               通过
             </Button>
-            <Button type='link' onClick={() => {}} danger>
+            <Button
+              type='link'
+              onClick={() => {
+                passSubmit(false, pass._id);
+              }}
+              danger
+            >
               拒绝
             </Button>
           </p>

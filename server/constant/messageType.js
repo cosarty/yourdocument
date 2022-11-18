@@ -4,4 +4,5 @@ const MESSAGE_TYPE_ENUM = {
   3: 'turnQuestion',
   4: 'addComment',
   5: 'reply',
+  6: 'passStatus',
 };

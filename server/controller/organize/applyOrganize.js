@@ -16,11 +16,15 @@ const applyOrganizeValidator = [
     const id = req.user._id.toString();
     try {
       const or = await OrganizeModel.findOne({ flag });
+      console.log('or: ', or);
 
       if (!or) return next({ code: 400, message: '没有此组织！！', data: null });
       if (or.userId.toString() === id)
         return next({ code: 400, message: '不能申请加入自己的组织', data: null });
-      if (or.part.find((u) => u?.user?.toString() === id))
+
+      if (or.part.find((u) => u?.user?.toString() === id && u?.pass))
+        return next({ code: 400, message: '已加入该组织', data: null });
+      if (or.part.find((u) => u?.user?.toString() === id && !u?.pass))
         return next({ code: 200, message: '申请中', data: { ret: 1 } });
       req.organize = or;
       next();
