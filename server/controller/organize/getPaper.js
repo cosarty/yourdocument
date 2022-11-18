@@ -12,7 +12,7 @@ const getPaperValidator = [
       const or = await checkOrganizeId(organizeId);
 
       if (
-        or.userId.toString() !== req.user._id.toString() ||
+        or.userId.toString() !== req.user._id.toString() &&
         !or.papers.find((p) => p.papersId.toString() === paperId)
       )
         return next({ code: 403, message: '您没有权限', data: null });
@@ -58,6 +58,7 @@ const getPaper = async (req, res, next) => {
       .project({
         _id: 0,
         'paper.ownership': 0,
+        ownership: 0,
       })
       .unwind('paper');
 

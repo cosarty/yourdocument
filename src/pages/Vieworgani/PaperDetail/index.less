@@ -5,12 +5,33 @@
   margin-bottom: 10px;
   padding: 0 20px;
 }
-
+.title {
+  display: flex;
+  align-items: center;
+  font-size: 0;
+  > div {
+    &:first-child {
+      margin-right: 10px;
+      font-weight: 700;
+      font-size: 24px;
+    }
+    &:last-child {
+      color: red;
+      font-size: 14px;
+    }
+  }
+}
 .contaner {
+  position: relative;
+
   height: 85vh;
   padding: 10px;
   overflow-y: scroll;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.3) inset;
+  @media screen and (max-width: 650px) {
+    width: 85vw !important;
+    margin: 0 auto;
+  }
   :global {
     .ant-typography {
       margin-bottom: 0 !important;
@@ -29,4 +50,8 @@
   padding: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.3) inset;
+  @media screen and (max-width: 650px) {
+    width: 85vw !important;
+    margin: 0 auto;
+  }
 }

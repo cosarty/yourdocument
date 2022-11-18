@@ -1,5 +1,6 @@
 import { request } from '@umijs/max';
 import type { PaperType } from './paper';
+import type { QuestionsType } from './question';
 
 import type { CurrentUser } from './users';
 
@@ -18,6 +19,20 @@ export type OrganizeType = {
   // 参与用户 用户昵称
   motto: string;
   papers?: PaperType[];
+};
+export type PaperInfo = {
+  paper?: {
+    _id: string;
+    name: string;
+    detail: string;
+    isDelete: false;
+    questions: {
+      question: string;
+      grade: number;
+    }[];
+    points: number;
+  };
+  questionInfo?: QuestionsType[];
 };
 
 export const getSelfOrgnize = async () =>
@@ -104,4 +119,10 @@ export const kickoutOg = async (organizeId: string, payload: { userId: string })
   await request<API.API_TYPE<null>>(`/api/organize/kickout/${organizeId}`, {
     method: 'PUT',
     data: payload,
+  });
+// 查看组织试卷
+export const getPaperOgInfo = async (organizeId: string, paperId: string) =>
+  await request<API.API_TYPE<PaperInfo>>(`/api/organize/getPaper`, {
+    method: 'GET',
+    params: { organizeId, paperId },
   });

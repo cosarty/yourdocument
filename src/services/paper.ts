@@ -2,7 +2,7 @@ import { request } from '@umijs/max';
 import type { QuestionsType } from './question';
 
 export type PaperType = {
-  papersId: { detail: string; _id: string; name: string };
+  papersId: { detail: string; _id: string; name: string; points: number };
   publish: boolean;
 };
 

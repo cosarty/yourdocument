@@ -146,7 +146,7 @@ const AddQuestion = () => {
 
                   return {};
                 }
-                return { type: '0', difficulty: '0' };
+                return { type: '0', difficulty: '0', isPrivate: false };
               }}
               onFinish={doSubmit}
             >

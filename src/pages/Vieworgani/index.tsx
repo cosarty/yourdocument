@@ -133,6 +133,7 @@ const Vieworgani: FC<
         <div
           style={{
             flex: 1,
+            display: 'flex',
           }}
         >
           <div>{paper.papersId.detail || '无'}</div>
@@ -248,7 +249,13 @@ const Vieworgani: FC<
             <Col className={style['content-right']} sm={24} md={14}>
               <Typography.Title level={4}>试卷详情</Typography.Title>
 
-              <PaperDetail paperId={selectPaper} />
+              <PaperDetail
+                paperId={selectPaper}
+                organizeId={og._id}
+                reset={() => {
+                  setSelectPaper('');
+                }}
+              />
             </Col>
           </Row>
         </PageContainer>

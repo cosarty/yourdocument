@@ -1,24 +1,58 @@
-import { Button, Divider, Dropdown, Empty, Menu, Typography } from 'antd';
+import QuestionDetailCard from '@/components/QuestionDetailCard';
+import type { PaperInfo } from '@/services/organize';
+import { getPaperOgInfo } from '@/services/organize';
+import { Button, Divider, Dropdown, Empty, List, Menu, MenuProps } from 'antd';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import styles from './index.less';
 interface PaperDetailProps {
-  paperId?: string;
+  paperId: string;
+  organizeId: string;
+  reset: () => void;
 }
 
-const PaperDetail: FC<PaperDetailProps> = ({ paperId }) => {
+const PaperDetail: FC<PaperDetailProps> = ({ paperId, reset, organizeId }) => {
   const [showReference, setShowReference] = useState<boolean>(true);
+  const [paperInfo, setPaperInfo] = useState<PaperInfo>({});
+
+  const getPaper = async () => {
+    const { data, code } = await getPaperOgInfo(organizeId, paperId);
+    if (code) {
+      setPaperInfo(data ?? {});
+    }
+    console.log(data);
+  };
+
   useEffect(() => {
-    console.log(paperId);
+    if (organizeId && paperId) {
+      getPaper();
+    } else {
+      setPaperInfo({});
+    }
   }, [paperId]);
 
+  const onClick: MenuProps['onClick'] = (e) => {
+    switch (e.key) {
+      case 'show':
+        setShowReference(!showReference);
+        break;
+      case 'download':
+        console.log('click ', e.key);
+        break;
+      case 'reset':
+        reset();
+        break;
+    }
+  };
   const opMenu = (
-    <Menu>
-      <Menu.Item onClick={() => setShowReference(!showReference)}>
-        {showReference ? '隐藏' : '显示'}解析
-      </Menu.Item>
-      <Menu.Item onClick={() => {}}>下载试卷</Menu.Item>
-    </Menu>
+    <Menu
+      onClick={onClick}
+      items={[
+        { label: `${showReference ? '隐藏' : '显示'}解析`, key: 'show' },
+        { label: '下载试卷', key: 'download' },
+        { label: '取消', key: 'reset' },
+      ]}
+    />
   );
 
   return (
@@ -27,30 +61,39 @@ const PaperDetail: FC<PaperDetailProps> = ({ paperId }) => {
         <>
           <div className={styles['contaner']}>
             <div className={styles['action']}>
-              <Typography.Title level={4}>{'test'}</Typography.Title>
+              <div className={styles['title']}>
+                <div>{paperInfo.paper?.name}</div>
+                <div>({paperInfo.paper?.questions.reduce((p, n) => p + n.grade || 0, 0)}分)</div>
+              </div>
               <Dropdown overlay={opMenu}>
                 <Button>操作</Button>
               </Dropdown>
             </div>
 
             <Divider />
-            <div>
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgm gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb
-              gjfldjglkdjgldjgfdlklkljgkgljgkldjgmnb nb,cnb,cbn,c
-            </div>
+            <List
+              rowKey='_id'
+              itemLayout='vertical'
+              dataSource={paperInfo?.questionInfo ?? []}
+              pagination={false}
+              style={{ paddingLeft: 20 }}
+              split
+              renderItem={(question, index) => {
+                return (
+                  <List.Item key={question._id}>
+                    <QuestionDetailCard
+                      question={question}
+                      showReference={showReference}
+                      showIndex
+                      index={index + 1}
+                      grad={
+                        paperInfo.paper?.questions.find((q) => q.question === question._id)?.grade
+                      }
+                    />
+                  </List.Item>
+                );
+              }}
+            />
           </div>
         </>
       ) : (
