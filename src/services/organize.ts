@@ -13,7 +13,7 @@ export type OrganizeType = {
   name: string;
   flag: string; //邀请码
   isPublish: boolean; // 是否公开
-  userId: CurrentUser; //组织的发起人
+  userId: CurrentUser | string; //组织的发起人
   part: SimpleUser[];
   // 参与用户 用户昵称
   motto: string;
@@ -23,6 +23,14 @@ export type OrganizeType = {
 export const getSelfOrgnize = async () =>
   await request<API.API_TYPE<{ organizes: OrganizeType[]; user: CurrentUser }>>(
     '/api/organize/self',
+    {
+      method: 'GET',
+    },
+  );
+// /api/organize/get
+export const getOrgnize = async () =>
+  await request<API.API_TYPE<{ organizes: OrganizeType[]; user: CurrentUser }>>(
+    '/api/organize/get',
     {
       method: 'GET',
     },

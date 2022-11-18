@@ -1,16 +1,22 @@
 import type { OrganizeType } from '@/services/organize';
 import { viewPaper, viewUsers } from '@/services/organize';
 import type { PaperType } from '@/services/paper';
-import { Navigate, useAccess, useLocation } from '@umijs/max';
+import { Navigate, useAccess, useLocation, useModel } from '@umijs/max';
 import { message, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 export type OgInfoType = { papers: PaperType[]; users: OrganizeType['part'] };
 
 // 编辑题目的拦截器 只有题目创建者和管理员可以编辑
-export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>) =>
+export default (
+    Component: React.FC<
+      OgInfoType & { og: OrganizeType; changePaper: () => void; isMaster: boolean }
+    >,
+  ) =>
   () => {
     const { state } = (useLocation() as { state: { og: OrganizeType } }) ?? {};
+    const { initialState } = useModel('@@initialState');
+    const { currentUser } = initialState || {};
 
     const { canLogin } = useAccess();
     const [loading, setLoading] = useState(false);
@@ -48,6 +54,7 @@ export default (Component: React.FC<OgInfoType & { og: OrganizeType; changePaper
       <Component
         {...ogInfo}
         og={state.og}
+        isMaster={currentUser?._id === state.og.userId}
         changePaper={() => {
           loadData();
         }}

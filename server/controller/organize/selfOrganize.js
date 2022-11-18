@@ -18,12 +18,12 @@ const selfOrganize = async (req, res, next) => {
         foreignField: '_id',
         localField: 'organizes',
         as: 'organizes',
-      })
-      .project({
-        _id: 0,
-        user: { nickname: 1, _id: 1 },
-        organizes: { name: 1, _id: 1, motto: 1, isPublish: 1, part: 1, flag: 1 },
       });
+    // .project({
+    //   _id: 0,
+    //   user: { nickname: 1, _id: 1 },
+    //   organizes: { name: 1, _id: 1, motto: 1, isPublish: 1, part: 1, flag: 1 },
+    // });
     res.status(200).send({ code: 200, message: '获取成功!!', data: selfList[0] });
   } catch (err) {
     console.log(err);

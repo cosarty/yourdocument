@@ -8,19 +8,16 @@ import { ProCard } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProList from '@ant-design/pro-list';
 import { history } from '@umijs/max';
-import { Button, Input, message, Popconfirm, Progress, Switch, Tag, Typography } from 'antd';
+import { Button, Input, message, Popconfirm, Progress, Space, Switch, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Approval from './Approval';
 import style from './index.less';
 
-const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }> = ({
-  users,
-  papers,
-  og,
-  changePaper,
-}) => {
+const Vieworgani: FC<
+  OgInfoType & { og: OrganizeType; changePaper: () => void; isMaster: boolean }
+> = ({ users, papers, og, changePaper, isMaster }) => {
   const [getPublish, setPublish] = useState<{ id?: string; isPublish?: boolean }[]>([{}]);
 
   const issuedOg = async (pid: string) => {
@@ -46,17 +43,19 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
 
     actions: [
       // <a key='s'>查看</a>,
-      <Popconfirm
-        key='delete'
-        title='确认删除么，操作无法撤销'
-        onConfirm={() => {
-          kitout(user.user._id);
-        }}
-      >
-        <Button danger type='link' style={{ padding: 0 }}>
-          删除
-        </Button>
-      </Popconfirm>,
+      isMaster && (
+        <Popconfirm
+          key='delete'
+          title='确认删除么，操作无法撤销'
+          onConfirm={() => {
+            kitout(user.user._id);
+          }}
+        >
+          <Button danger type='link' style={{ padding: 0 }}>
+            删除
+          </Button>
+        </Popconfirm>
+      ),
       ,
     ],
     avatar: user.user.avtar_url,
@@ -82,39 +81,43 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
         </Tag>
       ),
       actions: [
-        <Switch
-          key='fds'
-          checkedChildren='关闭'
-          unCheckedChildren='开放'
-          defaultChecked={paper.publish}
-          onChange={() => {
-            publishPaper(og._id, paper.papersId._id).then(({ code, message: msg }) => {
-              if (code === 200) {
-                message.success(msg);
-                const p = getPublish.find((p) => p.id === paper.papersId._id);
-                if (p) {
-                  p.isPublish = !p.isPublish;
-                } else {
-                  getPublish.push({ id: paper.papersId._id, isPublish: !paper.publish });
+        isMaster && (
+          <Switch
+            key='fds'
+            checkedChildren='关闭'
+            unCheckedChildren='开放'
+            defaultChecked={paper.publish}
+            onChange={() => {
+              publishPaper(og._id, paper.papersId._id).then(({ code, message: msg }) => {
+                if (code === 200) {
+                  message.success(msg);
+                  const p = getPublish.find((p) => p.id === paper.papersId._id);
+                  if (p) {
+                    p.isPublish = !p.isPublish;
+                  } else {
+                    getPublish.push({ id: paper.papersId._id, isPublish: !paper.publish });
+                  }
+                  setPublish([...getPublish]);
                 }
-                setPublish([...getPublish]);
-              }
-            });
-          }}
-        />,
+              });
+            }}
+          />
+        ),
         // <a key='a'>答题</a>,
         <a key='s'>查看</a>,
-        <Popconfirm
-          key='delete'
-          title='确认删除么，操作无法撤销'
-          onConfirm={() => {
-            issuedOg(paper.papersId._id);
-          }}
-        >
-          <Button danger type='link' style={{ padding: 0 }}>
-            删除
-          </Button>
-        </Popconfirm>,
+        isMaster && (
+          <Popconfirm
+            key='delete'
+            title='确认删除么，操作无法撤销'
+            onConfirm={() => {
+              issuedOg(paper.papersId._id);
+            }}
+          >
+            <Button danger type='link' style={{ padding: 0 }}>
+              删除
+            </Button>
+          </Popconfirm>
+        ),
       ],
       avatar: 'https://gw.alipayobjects.com/zos/antfincdn/UCSiy1j6jx/xingzhuang.svg',
       id: paper.papersId._id,
@@ -139,11 +142,20 @@ const Vieworgani: FC<OgInfoType & { og: OrganizeType; changePaper: () => void }>
             history.replace('/organi');
           }}
           tags={
-            <Tag color='blue'>
-              <Typography.Title level={4} style={{ margin: 0 }}>
-                {og.name}
-              </Typography.Title>
-            </Tag>
+            <Space>
+              <Tag color='blue'>
+                <Typography.Title level={4} style={{ margin: 0 }}>
+                  {og.name}
+                </Typography.Title>
+              </Tag>
+
+              <Typography.Paragraph
+                style={{ display: 'flex', alignItems: 'center', marginBottom: 0 }}
+                copyable={{ tooltips: ['邀请码'] }}
+              >
+                {og.flag}
+              </Typography.Paragraph>
+            </Space>
           }
           header={{
             style: {

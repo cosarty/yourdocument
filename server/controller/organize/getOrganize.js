@@ -9,9 +9,28 @@ const getOrganize = async (req, res, next) => {
         'part.pass': true,
         'part.user': userId,
       })
-      .project({ _id: 0, organizeId: '$_id', name: 1, motto: 1 });
+      .group({ _id: '$userId', organizes: { $addToSet: '$_id' } })
+      .lookup({
+        from: 'users',
+        foreignField: '_id',
+        localField: '_id',
+        as: 'user',
+      })
+      .lookup({
+        from: 'organizes',
+        foreignField: '_id',
+        localField: 'organizes',
+        as: 'organizes',
+      });
+    // .project({
+    //   _id: 0,
+    //   user: { nickname: 1, _id: 1 },
+    //   organizes: { name: 1, _id: 1, motto: 1, isPublish: 1, part: 1, flag: 1 },
+    // });
 
-    res.status(202).send({ code: 202, message: '获取成功!!', data: getList });
+    // .project({ _id: 0, organizeId: '$_id', name: 1, motto: 1 });
+
+    res.status(200).send({ code: 200, message: '获取成功!!', data: getList[0] });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败!!', data: null });

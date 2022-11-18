@@ -7,8 +7,12 @@ const usersOrganizeValidator = [
     try {
       const or = await checkOrganizeId(organizeId);
 
-      if (or.userId.toString() !== req.user._id.toString())
+      if (
+        or.userId.toString() !== req.user._id.toString() &&
+        !or.part.find((o) => o?.user?.toString() === req.user._id.toString() && o.pass)
+      )
         return next({ code: 403, message: '您没有权限', data: null });
+
       req.organize = or;
       next();
     } catch (error) {
