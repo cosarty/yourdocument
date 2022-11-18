@@ -12,6 +12,54 @@
     component: '@/pages/Home',
     exact: true,
   },
+
+  {
+    path: '/vieworgani',
+    component: '@/pages/Vieworgani',
+    // wrappers: ['@/wrappers/authVieworgani'],
+    layout: false,
+  },
+  {
+    path: '/organi',
+    name: '组织',
+    access: 'canLogin',
+    component: '@/pages/Orgniza',
+  },
+  {
+    path: '/manage',
+    access: 'canAdmin',
+    name: '管理员界面',
+    icon: 'AppstoreAddOutlined',
+    routes: [
+      {
+        path: '/manage',
+        redirect: '/manage/question',
+      },
+      {
+        name: '题目管理',
+        path: '/manage/question',
+        component: '@/pages/Mange/Question',
+        icon: 'ContainerOutlined',
+      },
+
+      {
+        name: '人员管理',
+        path: '/manage/users',
+        component: '@/pages/Mange/User',
+        icon: 'UsergroupAddOutlined',
+      },
+      {
+        name: '分类管理',
+        path: '/manage/classtify',
+        component: '@/pages/Mange/Tags',
+        access: 'canSuper',
+        icon: 'MacCommandOutlined',
+      },
+      {
+        component: './404',
+      },
+    ],
+  },
   {
     path: '/account',
     name: '个人',
@@ -75,54 +123,6 @@
       },
     ],
   },
-  {
-    path: '/vieworgani',
-    component: '@/pages/Vieworgani',
-    // wrappers: ['@/wrappers/authVieworgani'],
-    layout: false,
-  },
-  {
-    path: '/organi',
-    name: '组织',
-    access: 'canLogin',
-    component: '@/pages/Orgniza',
-  },
-  {
-    path: '/manage',
-    access: 'canAdmin',
-    name: '管理员界面',
-    icon: 'AppstoreAddOutlined',
-    routes: [
-      {
-        path: '/manage',
-        redirect: '/manage/question',
-      },
-      {
-        name: '题目管理',
-        path: '/manage/question',
-        component: '@/pages/Mange/Question',
-        icon: 'ContainerOutlined',
-      },
-
-      {
-        name: '人员管理',
-        path: '/manage/users',
-        component: '@/pages/Mange/User',
-        icon: 'UsergroupAddOutlined',
-      },
-      {
-        name: '分类管理',
-        path: '/manage/classtify',
-        component: '@/pages/Mange/Tags',
-        access: 'canSuper',
-        icon: 'MacCommandOutlined',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-
   {
     component: './404',
   },

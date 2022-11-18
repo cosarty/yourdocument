@@ -56,16 +56,18 @@ const MangeTags = () => {
         tab={
           <span style={{ cursor: 'text' }}>
             {name}
-            <Popconfirm
-              title='是否删除模块，删除后无法恢复?'
-              onConfirm={() => {
-                delTag(name);
-              }}
-              okText='确认'
-              cancelText='  取消'
-            >
-              <CloseOutlined style={{ marginLeft: '10px', cursor: 'pointer' }} />
-            </Popconfirm>
+            {tag.length === 0 && (
+              <Popconfirm
+                title='是否删除模块，删除后无法恢复?'
+                onConfirm={() => {
+                  delTag(name);
+                }}
+                okText='确认'
+                cancelText='  取消'
+              >
+                <CloseOutlined style={{ marginLeft: '10px', cursor: 'pointer' }} />
+              </Popconfirm>
+            )}
           </span>
         }
         key={name}

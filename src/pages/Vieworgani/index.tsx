@@ -24,6 +24,7 @@ const Vieworgani: FC<
   const issuedOg = async (pid: string) => {
     await issuedPaper(pid, og._id);
     changePaper();
+    if (pid === selectPaper) setSelectPaper('');
     message.success('删除成功');
   };
 
