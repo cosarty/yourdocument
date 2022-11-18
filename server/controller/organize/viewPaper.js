@@ -31,10 +31,10 @@ const viewPaper = async (req, res, next) => {
   try {
     await req.organize.populate({
       path: 'papers.papersId',
-      match,
       select: { questions: 0 },
     });
-
+    req.organize.papers = req.organize.papers.filter((p) => (req.isCreate ? true : p.publish));
+    console.log(' req.organize.papers: ', req.organize.papers);
     res.status(200).send({ code: 200, message: '获取成功!!', data: req.organize.papers });
   } catch (err) {
     console.log(err);

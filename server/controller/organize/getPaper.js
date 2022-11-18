@@ -49,8 +49,15 @@ const getPaper = async (req, res, next) => {
         foreignField: '_id',
         as: 'questionInfo',
       })
+      .lookup({
+        from: 'users',
+        localField: 'paper.ownership',
+        foreignField: '_id',
+        as: 'ownership',
+      })
       .project({
         _id: 0,
+        'paper.ownership': 0,
       })
       .unwind('paper');
 

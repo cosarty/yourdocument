@@ -4,21 +4,22 @@ import type { PaperType } from '@/services/paper';
 import { issuedPaper } from '@/services/paper';
 import type { OgInfoType } from '@/wrappers/authVieworgani';
 import AuthVieworgani from '@/wrappers/authVieworgani';
-import { ProCard } from '@ant-design/pro-components';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProList from '@ant-design/pro-list';
 import { history } from '@umijs/max';
-import { Button, Input, message, Popconfirm, Progress, Space, Switch, Tag, Typography } from 'antd';
+import { Button, Col, Input, message, Popconfirm, Row, Space, Switch, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Approval from './Approval';
 import style from './index.less';
+import PaperDetail from './PaperDetail';
 
 const Vieworgani: FC<
   OgInfoType & { og: OrganizeType; changePaper: () => void; isMaster: boolean }
 > = ({ users, papers, og, changePaper, isMaster }) => {
   const [getPublish, setPublish] = useState<{ id?: string; isPublish?: boolean }[]>([{}]);
+  const [selectPaper, setSelectPaper] = useState<string>('');
 
   const issuedOg = async (pid: string) => {
     await issuedPaper(pid, og._id);
@@ -60,17 +61,17 @@ const Vieworgani: FC<
     ],
     avatar: user.user.avtar_url,
     id: user.user._id,
-    content: (
-      <div
-        style={{
-          flex: 1,
-          width: 200,
-        }}
-      >
-        <div>完成数:</div>
-        <Progress percent={80} />
-      </div>
-    ),
+    // content: (
+    //   <div
+    //     style={{
+    //       flex: 1,
+    //       width: 200,
+    //     }}
+    //   >
+    //     <div>完成数:</div>
+    //     <Progress percent={80} />
+    //   </div>
+    // ),
   });
   const rendPaper = (paper: PaperType) => {
     return {
@@ -104,7 +105,14 @@ const Vieworgani: FC<
           />
         ),
         // <a key='a'>答题</a>,
-        <a key='s'>查看</a>,
+        <a
+          key='s'
+          onClick={() => {
+            setSelectPaper(paper.papersId._id);
+          }}
+        >
+          查看
+        </a>,
         isMaster && (
           <Popconfirm
             key='delete'
@@ -165,7 +173,7 @@ const Vieworgani: FC<
           }}
           fixedHeader
           extra={[
-            <Input.Search key='search' />,
+            <Input.Search key='search' placeholder='搜素试卷' />,
             // <Button key='3'>下发试卷</Button>,
             <Approval
               key={'approval'}
@@ -176,75 +184,73 @@ const Vieworgani: FC<
             />,
           ]}
         >
-          <ProCard
-            style={{ marginBlockStart: 24 }}
-            title={'试卷信息'}
-            className={style['paper-card']}
-          >
-            <ProList<any>
-              ghost={true}
-              itemCardProps={{
-                ghost: true,
-              }}
-              pagination={{
-                defaultPageSize: 9,
-                hideOnSinglePage: true,
-                showSizeChanger: true,
-              }}
-              grid={{ gutter: 16, column: 3 }}
-              onItem={(record: any) => {
-                return {
-                  onClick: () => {
-                    console.log(record);
-                  },
-                };
-              }}
-              metas={{
-                title: {},
-                subTitle: {},
-                type: {},
-                avatar: {},
-                content: {},
-                actions: {
-                  cardActionProps: 'extra',
-                },
-              }}
-              showHeader
-              bordered={false}
-              dataSource={papers.map((paper) => rendPaper(paper))}
-            />
-          </ProCard>
-          <ProCard
-            className={style['user-card']}
-            style={{ marginBlockStart: 24 }}
-            gutter={12}
-            title={'成员'}
-          >
-            <ProCard bordered={false} headerBordered={false}>
-              <ProList<any>
-                pagination={{
-                  defaultPageSize: 10,
-                  showSizeChanger: true,
-                  hideOnSinglePage: true,
-                }}
-                bordered={false}
-                metas={{
-                  title: {},
-                  type: {},
-                  avatar: {},
-                  content: {},
-                  actions: {},
-                }}
-                dataSource={users.map((user) => renderUser(user))}
-              />
-            </ProCard>
-
-            {/* <ProCard title='详情'>
-              <div style={{ height: 300 }}>
-                <Empty />
+          <Row className={style['content']} gutter={40} style={{ height: '100%' }}>
+            <Col sm={24} md={10} className={style['content-left']}>
+              <div className={style['paper-card']}>
+                <Typography.Title level={4}>试卷列表</Typography.Title>
+                <ProList<any>
+                  ghost={true}
+                  itemCardProps={{
+                    ghost: true,
+                  }}
+                  pagination={{
+                    defaultPageSize: 3,
+                    hideOnSinglePage: true,
+                    showSizeChanger: true,
+                  }}
+                  grid={{ gutter: 16, column: 1 }}
+                  onItem={(record: any) => {
+                    return {
+                      onClick: () => {
+                        console.log(record);
+                      },
+                    };
+                  }}
+                  metas={{
+                    title: {},
+                    subTitle: {},
+                    type: {},
+                    avatar: {},
+                    content: {},
+                    actions: {
+                      cardActionProps: 'extra',
+                    },
+                  }}
+                  showHeader
+                  bordered={false}
+                  dataSource={papers.map((paper) => rendPaper(paper))}
+                />
               </div>
-            </ProCard> */}
-          </ProCard>
+              <div>
+                <Typography.Title level={4}>用户信息</Typography.Title>
+                <ProList<any>
+                  ghost={true}
+                  itemCardProps={{
+                    ghost: true,
+                  }}
+                  pagination={{
+                    defaultPageSize: 10,
+                    showSizeChanger: true,
+                    hideOnSinglePage: true,
+                  }}
+                  bordered={false}
+                  metas={{
+                    title: {},
+                    type: {},
+                    avatar: {},
+                    content: {},
+                    actions: {},
+                  }}
+                  dataSource={users.map((user) => renderUser(user))}
+                />
+              </div>
+            </Col>
+            <Col className={style['content-right']} sm={24} md={14}>
+              <Typography.Title level={4}>试卷详情</Typography.Title>
+
+              <PaperDetail paperId={selectPaper} />
+            </Col>
+          </Row>
         </PageContainer>
       </HelmetProvider>
     </>
