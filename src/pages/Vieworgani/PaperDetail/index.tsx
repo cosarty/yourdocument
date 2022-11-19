@@ -21,8 +21,8 @@ const PaperDetail: FC<PaperDetailProps> = ({ paperId, reset, organizeId }) => {
   const getPaper = async () => {
     setLoading(true);
     const { data, code } = await getPaperOgInfo(organizeId, paperId);
-    if (code) {
-      setPaperInfo(data ?? {});
+    if (code === 200) {
+      setPaperInfo({ ...data } ?? {});
     }
     setLoading(false);
   };

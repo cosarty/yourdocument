@@ -29,7 +29,7 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = (props) => {
     <div className='question-detail-card'>
       {showIndex && (
         <p style={{ fontWeight: 'bold', fontSize: 17 }}>
-          {index}. {QUESTION_TYPE_ENUM[question.type]}题({grad || 0}分)
+          {index}. {QUESTION_TYPE_ENUM[question.type]}({grad || 0}分)
         </p>
       )}
       {showTitle && question.title && (

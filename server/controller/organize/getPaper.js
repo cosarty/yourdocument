@@ -30,12 +30,15 @@ const getPaper = async (req, res, next) => {
     const paperInfo = await OrganizeModel.aggregate()
       .match({
         _id: mongoose.Types.ObjectId(organizeId),
-        papers: {
-          $elemMatch: {
-            papersId: mongoose.Types.ObjectId(paperId),
-          },
-        },
+        //
+        // papers: {
+        //   $elemMatch: {
+        //     papersId: mongoose.Types.ObjectId(paperId),
+        //   },
+        // },
       })
+      .unwind('papers')
+      .match({ 'papers.papersId': mongoose.Types.ObjectId(paperId) })
       .lookup({
         from: 'paper',
         localField: 'papers.papersId',
