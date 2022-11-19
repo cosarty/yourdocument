@@ -7,7 +7,7 @@ const getOrganize = async (req, res, next) => {
     const getList = await OrganizeModel.aggregate()
 
       .match({
-        'part.pass': true,
+        // 'part.pass': true,
         'part.user': userId,
       })
       .group({ _id: '$userId', organizes: { $addToSet: '$_id' } })
@@ -31,7 +31,7 @@ const getOrganize = async (req, res, next) => {
     // });
 
     // .project({ _id: 0, organizeId: '$_id', name: 1, motto: 1 });
-
+    console.log('getList: ', getList);
     res.status(200).send({ code: 200, message: '获取成功!!', data: getList });
   } catch (err) {
     console.log(err);

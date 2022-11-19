@@ -16,11 +16,19 @@ const applyListOrganize = async (req, res, next) => {
       .match({ 'part.pass': false })
       .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' })
       .project({ part: 1 });
-    applyList[0] &&
-      applyList[0].part.map((p) => {
-        p.avtar_url = require('config')['site'] + p.avtar_url;
-      });
-    res.status(200).send({ code: 200, message: '获取成功!!', data: applyList[0] ?? {} });
+    const result = {};
+    if (applyList.length > 0) {
+      result._id = applyList[0]._id;
+      result.part = [];
+      for (const ap of applyList) {
+        ap.part.map((p) => {
+          p.avtar_url = require('config')['site'] + p.avtar_url;
+        });
+        result.part.push(...ap.part);
+      }
+    }
+    applyList[0].part;
+    res.status(200).send({ code: 200, message: '获取成功!!', data: result ?? {} });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败!!', data: null });
