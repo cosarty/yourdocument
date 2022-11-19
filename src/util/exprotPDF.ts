@@ -29,7 +29,8 @@ export const exportPDF = (title: string, node: any) => {
   html2canvas(element as any, {
     allowTaint: true,
     scale: 2, // 提升画面质量，但是会增加文件大小
-  }).then(function (canvas) {
+    useCORS: true,
+  }).then(function (canvas: any) {
     const contentWidth = canvas.width;
     const contentHeight = canvas.height;
     //一页pdf显示html页面生成的canvas高度;

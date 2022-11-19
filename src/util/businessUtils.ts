@@ -1,28 +1,21 @@
-
-import BraftEditor from 'braft-editor';
 import type { QuestionsType } from '@/services/question';
-
-
-
-
+import BraftEditor from 'braft-editor';
 
 /**
  * 获取题目显示详情
  * @param question
  */
 export const getQuestionDetail = (question: QuestionsType): string => {
-
+  // crossOrigin', 'anonymous'
   // 没标题，用描述代替
   return BraftEditor.createEditorState(question.detail).toText().trim();
 };
 
 export const getQuestionTitle = (question: QuestionsType): string => {
-
   // 没标题，用描述代替
   return BraftEditor.createEditorState(question.title).toText().trim();
 };
 export const getQuestionreRerence = (question: QuestionsType): string => {
-
   // 没标题，用描述代替
   return BraftEditor.createEditorState(question.reference).toText().trim();
 };

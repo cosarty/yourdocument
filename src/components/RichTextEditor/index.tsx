@@ -91,6 +91,10 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props) => {
     }
     const range = quillEditor.getSelection();
     quillEditor.insertEmbed(range?.index || 0, 'image', fileURL);
+    // 设置导出跨域问题
+    // document.querySelectorAll('.ql-editor img:not([crossOrigin])').forEach((img) => {
+    //   img.setAttribute('crossOrigin', 'anonymous');
+    // });
   };
 
   const imageHandler = () => {

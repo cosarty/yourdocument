@@ -41,7 +41,10 @@ const PaperDetail: FC<PaperDetailProps> = ({ paperId, reset, organizeId }) => {
         setShowReference(!showReference);
         break;
       case 'download':
+        // 设置导出跨域问题
+
         exportPDF(paperInfo.paper?.name || '试卷', 'paper_pd');
+
         break;
       case 'reset':
         reset();
@@ -104,6 +107,7 @@ const PaperDetail: FC<PaperDetailProps> = ({ paperId, reset, organizeId }) => {
               />
             </div>
           )}
+          <canvas id='canvas' style={{ display: 'flex' }}></canvas>
         </>
       ) : (
         <div className={styles['emty']}>
