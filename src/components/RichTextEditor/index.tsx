@@ -11,9 +11,10 @@ import './index.less';
 //https://github.com/chenjuneking/quill-image-drop-and-paste
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 // @ts-ignore
+import ossClent from '@/util/ossClent';
+import type { Sources } from 'quill';
 import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
 
-import type { Sources } from 'quill';
 // @ts-ignore
 import ImageSpec from 'quill-blot-formatter/dist/specs/ImageSpec';
 
@@ -70,7 +71,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props) => {
   const toggleFull = () => (fullScreen ? handle.exit() : handle.enter());
 
   const uploadImageAddInsert = async (file: File | undefined) => {
-    console.log(file);
+    // console.log(file);
+
     if (!file) {
       return;
     }
@@ -81,18 +83,14 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props) => {
     // @ts-ignore
     const quillEditor = quillRef.current.getEditor();
     // const res = await uploadFile(file);
+    await ossClent.getClient();
+    const fileURL = await ossClent.put(file?.name, file);
 
-    // 先不做后面做
-    const res = { fileURL: null };
-    if (!res || !res.fileURL) {
+    if (!fileURL) {
       return;
     }
-    const result = res.fileURL;
-    if (result) {
-      const range = quillEditor.getSelection();
-      console.log(range);
-      quillEditor.insertEmbed(range?.index || 0, 'image', result);
-    }
+    const range = quillEditor.getSelection();
+    quillEditor.insertEmbed(range?.index || 0, 'image', fileURL);
   };
 
   const imageHandler = () => {
