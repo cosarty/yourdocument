@@ -32,10 +32,12 @@ const passOrganize = async (req, res, next) => {
   try {
     const { isPass } = req.body;
     const { userId } = req.params;
+    const idx = req.organize.part.findIndex((u) => u?.user?.toString() === userId);
+
     if (isPass) {
-      req.organize.part[0].pass = true;
+      req.organize.part[idx].pass = true;
     } else {
-      req.organize.part = req.organize.part.filter((u) => u?.user?.toString() !== userId);
+      req.organize.part.splice(idx, 1);
     }
 
     await req.organize.save();

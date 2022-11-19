@@ -2,8 +2,8 @@ import type { OrganizeType } from '@/services/organize';
 import { getOrgnize } from '@/services/organize';
 
 import { ProCard } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
-import { Button, Col, Row, Space, Spin, Typography } from 'antd';
+import { history, useModel } from '@umijs/max';
+import { Button, Col, Row, Space, Spin, Tag, Typography } from 'antd';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 export interface MyPassOegizeRefType {
@@ -13,15 +13,21 @@ export interface MyPassOegizeRefType {
 const MyPassOrgnize = forwardRef((_, ref) => {
   const [loading, setLoading] = useState(false);
   const [orgnizaList, setOrgnizaList] = useState<OrganizeType[]>([]);
-
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const doLoadData = async () => {
     setLoading(true);
     const { code, data } = await getOrgnize();
 
     if (code === 200) {
-      setOrgnizaList(data?.organizes ?? []);
+      setOrgnizaList(data?.flatMap((a) => a.organizes) ?? []);
     }
     setLoading(false);
+  };
+
+  const isPass = (parts: OrganizeType['part']) => {
+    const user = parts.find((p) => p.user === currentUser?._id) ?? { pass: false };
+    return !user.pass;
   };
 
   useEffect(() => {
@@ -68,20 +74,26 @@ const MyPassOrgnize = forwardRef((_, ref) => {
                 loading={loading}
                 bordered
                 title={
-                  <Button
-                    type='link'
-                    onClick={() => {
-                      history.push('/vieworgani/', { og });
-                    }}
-                  >
-                    {og.name}
-                  </Button>
+                  <>
+                    <Button
+                      disabled={isPass(og.part) ?? true}
+                      type='link'
+                      onClick={() => {
+                        history.push('/vieworgani/', { og });
+                      }}
+                    >
+                      {og.name}
+                    </Button>
+                    {isPass(og.part) && <Tag>审核中</Tag>}
+                  </>
                 }
                 headerBordered
                 extra={
-                  <Typography.Paragraph copyable={{ tooltips: ['邀请码'] }}>
-                    {og.flag}
-                  </Typography.Paragraph>
+                  !isPass(og.part) && (
+                    <Typography.Paragraph copyable={{ tooltips: ['邀请码'] }}>
+                      {og.flag}
+                    </Typography.Paragraph>
+                  )
                 }
               >
                 <Space direction='vertical'>

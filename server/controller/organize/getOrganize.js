@@ -5,6 +5,7 @@ const getOrganize = async (req, res, next) => {
   try {
     const { _id: userId } = req.user;
     const getList = await OrganizeModel.aggregate()
+
       .match({
         'part.pass': true,
         'part.user': userId,
@@ -22,6 +23,7 @@ const getOrganize = async (req, res, next) => {
         localField: 'organizes',
         as: 'organizes',
       });
+
     // .project({
     //   _id: 0,
     //   user: { nickname: 1, _id: 1 },
@@ -30,7 +32,7 @@ const getOrganize = async (req, res, next) => {
 
     // .project({ _id: 0, organizeId: '$_id', name: 1, motto: 1 });
 
-    res.status(200).send({ code: 200, message: '获取成功!!', data: getList[0] });
+    res.status(200).send({ code: 200, message: '获取成功!!', data: getList });
   } catch (err) {
     console.log(err);
     next({ code: 500, message: '获取失败!!', data: null });

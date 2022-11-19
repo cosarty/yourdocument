@@ -38,7 +38,10 @@ export default (
       ]).finally(() => {
         setLoading(false);
       });
-      setOgInfo({ users: user ?? [], papers: paper ?? [] });
+      setOgInfo({
+        users: (user ?? []).sort((p) => (p.user_id === currentUser?._id ? 1 : -1)),
+        papers: paper ?? [],
+      });
     };
 
     useEffect(() => {

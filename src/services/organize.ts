@@ -5,7 +5,7 @@ import type { QuestionsType } from './question';
 import type { CurrentUser } from './users';
 
 export type SimpleUser = {
-  user: CurrentUser;
+  user: CurrentUser | string;
   pass: boolean;
 };
 
@@ -44,7 +44,7 @@ export const getSelfOrgnize = async () =>
   );
 // /api/organize/get
 export const getOrgnize = async () =>
-  await request<API.API_TYPE<{ organizes: OrganizeType[]; user: CurrentUser }>>(
+  await request<API.API_TYPE<{ organizes: OrganizeType[]; user: CurrentUser }[]>>(
     '/api/organize/get',
     {
       method: 'GET',

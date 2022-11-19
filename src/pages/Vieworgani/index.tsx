@@ -6,7 +6,7 @@ import type { OgInfoType } from '@/wrappers/authVieworgani';
 import AuthVieworgani from '@/wrappers/authVieworgani';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProList from '@ant-design/pro-list';
-import { history } from '@umijs/max';
+import { history, useModel } from '@umijs/max';
 import { Button, Col, Input, message, Popconfirm, Row, Space, Switch, Tag, Typography } from 'antd';
 import type { FC } from 'react';
 import { useState } from 'react';
@@ -20,6 +20,8 @@ const Vieworgani: FC<
 > = ({ users, papers, og, changePaper, isMaster }) => {
   const [getPublish, setPublish] = useState<{ id?: string; isPublish?: boolean }[]>([{}]);
   const [selectPaper, setSelectPaper] = useState<string>('');
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState ?? {};
 
   const issuedOg = async (pid: string) => {
     await issuedPaper(pid, og._id);
@@ -41,7 +43,11 @@ const Vieworgani: FC<
   };
 
   const renderUser = (user: SimpleUser) => ({
-    title: user.user.nickname,
+    title: (
+      <>
+        {user.user.nickname} {currentUser?._id === user.user._id && `(我)`}
+      </>
+    ),
 
     actions: [
       // <a key='s'>查看</a>,
@@ -177,13 +183,15 @@ const Vieworgani: FC<
           extra={[
             <Input.Search key='search' placeholder='搜素试卷' />,
             // <Button key='3'>下发试卷</Button>,
-            <Approval
-              key={'approval'}
-              refresh={() => {
-                changePaper();
-              }}
-              organizeId={og._id}
-            />,
+            isMaster && (
+              <Approval
+                key={'approval'}
+                refresh={() => {
+                  changePaper();
+                }}
+                organizeId={og._id}
+              />
+            ),
           ]}
         >
           <Row className={style['content']} gutter={40} style={{ height: '100%' }}>
