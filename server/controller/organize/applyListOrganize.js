@@ -10,8 +10,10 @@ const applyListOrganize = async (req, res, next) => {
     // 查找没有通过的用户信息
     // 平铺消息
     const applyList = await OrganizeModel.aggregate()
-      .match({ userId, _id: mongoose.Types.ObjectId(organizeId), 'part.pass': false })
+
+      .match({ userId, _id: mongoose.Types.ObjectId(organizeId) })
       .unwind('part')
+      .match({ 'part.pass': false })
       .lookup({ from: 'users', localField: 'part.user', foreignField: '_id', as: 'part' })
       .project({ part: 1 });
     applyList[0] &&
